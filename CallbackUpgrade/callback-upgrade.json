@@ -1,0 +1,45 @@
+{
+	"replacements": [
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerStateChange\\s*\\(\\s*playerid\\s*,\\s*newstate\\s*,\\s*oldstate\\s*\\)",
+			"to": "#if !defined PLAYER_STATE\n\t#define PLAYER_STATE: _:\n#endif\n$1 $2OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerClickPlayer\\s*\\(\\s*playerid\\s*,\\s*clickedplayerid\\s*,\\s*source\\s*\\)",
+			"to": "#if !defined CLICK_SOURCE\n\t#define CLICK_SOURCE: _:\n#endif\n$1 $2OnPlayerClickPlayer(playerid, clickedplayerid, CLICK_SOURCE:source)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerEditObject\\s*\\(\\s*playerid\\s*,\\s*playerobject\\s*,\\s*objectid\\s*,\\s*response\\s*,\\s*Float\\s*:\\s*fX\\s*,\\s*Float\\s*:\\s*fY\\s*,\\s*Float\\s*:\\s*fZ\\s*,\\s*Float\\s*:\\s*fRotX\\s*,\\s*Float\\s*:\\s*fRotY\\s*,\\s*Float\\s*:\\s*fRotZ\\s*\\)",
+			"to": "#if !defined EDIT_RESPONSE\n\t#define EDIT_RESPONSE: _:\n#endif\n$1 $2OnPlayerEditObject(playerid, playerobject, objectid, EDIT_RESPONSE:response, Float:fX, Float:fY, Float:fZ, Float:fRotX, Float:fRotY, Float:fRotZ)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerEditAttachedObject\\s*\\(\\s*playerid\\s*,\\s*response\\s*,\\s*index\\s*,\\s*modelid\\s*,\\s*boneid\\s*,\\s*Float\\s*:\\s*fOffsetX\\s*,\\s*Float\\s*:\\s*fOffsetY\\s*,\\s*Float\\s*:\\s*fOffsetZ\\s*,\\s*Float\\s*:\\s*fRotX\\s*,\\s*Float\\s*:\\s*fRotY\\s*,\\s*Float\\s*:\\s*fRotZ\\s*,\\s*Float\\s*:\\s*fScaleX\\s*,\\s*Float\\s*:\\s*fScaleY\\s*,\\s*Float\\s*:\\s*fScaleZ\\s*\\)",
+			"to": "#if !defined EDIT_RESPONSE\n\t#define EDIT_RESPONSE: _:\n#endif\n$1 $2OnPlayerEditAttachedObject(playerid, EDIT_RESPONSE:response, index, modelid, boneid, Float:fOffsetX, Float:fOffsetY, Float:fOffsetZ, Float:fRotX, Float:fRotY, Float:fRotZ, Float:fScaleX, Float:fScaleY, Float:fScaleZ)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerSelectObject\\s*\\(\\s*playerid\\s*,\\s*type\\s*,\\s*objectid\\s*,\\s*modelid\\s*,\\s*Float\\s*:\\s*fX\\s*,\\s*Float\\s*:\\s*fY\\s*,\\s*Float\\s*:\\s*fZ\\s*\\)",
+			"to": "#if !defined SELECT_OBJECT\n\t#define SELECT_OBJECT: _:\n#endif\n$1 $2OnPlayerSelectObject(playerid, SELECT_OBJECT:type, objectid, modelid, Float:fX, Float:fY, Float:fZ)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerWeaponShot\\s*\\(\\s*playerid\\s*,\\s*weaponid\\s*,\\s*hittype\\s*,\\s*hitid\\s*,\\s*Float\\s*:\\s*fX\\s*,\\s*Float\\s*:\\s*fY\\s*,\\s*Float\\s*:\\s*fZ\\s*\\)",
+			"to": "#if !defined BULLET_HIT_TYPE\n\t#define BULLET_HIT_TYPE: _:\n#endif\n$1 $2OnPlayerWeaponShot(playerid, weaponid, BULLET_HIT_TYPE:hittype, hitid, Float:fX, Float:fY, Float:fZ)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerKeyStateChange\\s*\\(\\s*playerid\\s*,\\s*newkeys\\s*,\\s*oldkeys\\s*\\)",
+			"to": "#if !defined KEY\n\t#define KEY: _:\n#endif\n$1 $2OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?OnPlayerRequestDownload\\s*\\(\\s*playerid\\s*,\\s*type\\s*,\\s*crc\\s*\\)",
+			"to": "#if !defined DOWNLOAD_REQUEST\n\t#define DOWNLOAD_REQUEST: _:\n#endif\n$1 $2OnPlayerRequestDownload(playerid, DOWNLOAD_REQUEST:type, crc)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?Streamer_OnItemStreamIn\\s*\\(\\s*type\\s*,\\s*(STREAMER_ALL_TAGS\\s*:\\s*)?id\\s*,\\s*forplayerid\\s*\\)",
+			"to": "#if !defined STREAMER_TYPE\n\t#define STREAMER_TYPE: _:\n#endif\n$1 $2Streamer_OnItemStreamIn(STREAMER_TYPE:type, $3id, forplayerid)"
+		},
+		{
+			"from": "(forward|public|hook|@hook\\(.*?\\))\\s+(\\w+_)?Streamer_OnItemStreamOut\\s*\\(\\s*type\\s*,\\s*(STREAMER_ALL_TAGS\\s*:\\s*)?id\\s*,\\s*forplayerid\\s*\\)",
+			"to": "#if !defined STREAMER_TYPE\n\t#define STREAMER_TYPE: _:\n#endif\n$1 $2Streamer_OnItemStreamOut(STREAMER_TYPE:type, $3id, forplayerid)"
+		}
+	]
+}
+
