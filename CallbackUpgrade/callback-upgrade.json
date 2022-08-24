@@ -49,6 +49,11 @@
 			"name": "Upgrade timers to decorators",
 			"from": "^(\\s+)(timer|TIMER__)\\s+([\\w@]+)\\s*\\[\\s*(.*?)\\s*\\]\\s*\\(",
 			"to": "$1@timer($4) $3("
+		},
+		{
+			"name": "Upgrade remote functions to decorators",
+			"from": "^(\\s+)(remotefunc|REMOTEFUNC__)\\s+([\\w@]+)\\s*\\(",
+			"to": "$1@remote() $3("
 		}
 	]
 }
