@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallbackUpgrade", "CallbackUpgrade\CallbackUpgrade.csproj", "{7682CD32-8A49-4206-83BC-42D7FF869ECB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7682CD32-8A49-4206-83BC-42D7FF869ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7682CD32-8A49-4206-83BC-42D7FF869ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7682CD32-8A49-4206-83BC-42D7FF869ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7682CD32-8A49-4206-83BC-42D7FF869ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {06CCBF69-B8F7-466F-B611-3A7F87230DB8}
+	EndGlobalSection
+EndGlobal
