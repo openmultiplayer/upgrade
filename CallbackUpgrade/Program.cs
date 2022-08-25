@@ -54,7 +54,7 @@ namespace CallbackUpgrade
 			string file = ArgOrDefault(args, "--scans", "../../../callback-upgrade.json");
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
-			string directory = args.Last();
+			string directory = Path.GetFullPath(args.Last());
 			if (!Directory.Exists(directory))
 			{
 				Console.WriteLine("\"" + directory + "\" is not a directory.");
