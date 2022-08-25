@@ -41,8 +41,8 @@
 		/*              */
 		/* DECLARATIONS */
 		/*              */
-		"publics": "forward\s+public|forward|public|hook\s+public|hook\s+callback|hook|HOOK_PUBLIC__|HOOK_CALLBACK__|HOOK__|@hook\s*(?&parameterlist)"
-		"start": "^[ \t]*"
+		"publics": "forward\\s+public|forward|public|hook\\s+public|hook\\s+callback|hook|HOOK_PUBLIC__|HOOK_CALLBACK__|HOOK__|@hook\\s*(?&parameterlist)",
+		"start": "^[ \\t]*"
 	},
 	"replacements":
 	[

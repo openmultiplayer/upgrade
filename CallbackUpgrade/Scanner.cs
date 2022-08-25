@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using PCRE;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace CallbackUpgrade
@@ -42,8 +44,30 @@ namespace CallbackUpgrade
 
 		public Diff[] Report(string name)
 		{
+			List<Diff> ret = new List<Diff>();
+			using (StreamReader fhnd = File.OpenText(name))
+			{
+				string contents = fhnd.ReadToEnd();
+				foreach (var rep in Replacements)
+				{
+					// Now we go for the most efficient scanning method we can (based on very little
+					// reading of the documentation).  Each replacement is done separately.
+					var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
+					using var buffer = regex.CreateMatchBuffer();
+					foreach (var match in buffer.Matches(contents))
+					{
+						var diff = new Diff {
+							Description = rep.Description,
+							From = match.Value.ToString(),
+							To = rep.To,
+							Line = match.Index
+						};
+						ret.Add(diff);
+					}
+				}
+			}
 			// Returns a list of the replacements to be made.
-			return new Diff[] { };
+			return ret.ToArray();
 		}
 
 		public int Replace(string name)

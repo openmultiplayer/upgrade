@@ -46,7 +46,8 @@ namespace CallbackUpgrade
 						foreach (var diff in diffs)
 						{
 							Console.WriteLine("");
-							Console.WriteLine("    Line " + diff.Line + ":");
+							Console.WriteLine("    Line " + diff.Line + ": " + diff.Description);
+							Console.WriteLine("");
 							Console.WriteLine("      " + diff.From + "");
 							Console.WriteLine("      " + diff.To + "");
 						}
