@@ -2,7 +2,7 @@
   "profiles": {
     "CallbackUpgrade": {
       "commandName": "Project",
-      "commandLineArgs": "--report --scans ../../../callback-upgrade.json"
+      "commandLineArgs": "--report --scans ../../../callback-upgrade.json  ../../../tests"
     }
   }
 }
