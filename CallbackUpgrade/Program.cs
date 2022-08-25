@@ -29,6 +29,13 @@ namespace CallbackUpgrade
 			{
 				JsonSerializer serializer = new JsonSerializer();
 				Scans scans = (Scans)serializer.Deserialize(file, typeof (Scans));
+				// Newtonsoft complains about `\s` being invalid, but then doesn't escape `\\s`.
+				// So now we have to manually correct this.  But only in replacements...
+				foreach (var a in scans.replacements)
+				{
+					a.from = a.from.Replace("\\\\", "\\");
+					a.to = a.to.Replace("\\\\", "\\");
+				}
 			}
 			if (args.Length == 0 || args.Contains("--help"))
 			{

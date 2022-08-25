@@ -1,4 +1,5 @@
 {
+	/* You must escape `\`, so `\\\\\\\\` matches `\\` in a test input. */
 	"defines":
 	{
 		/* This is the less strict version for all numbers and symbols. */
@@ -10,14 +11,15 @@
 		"float": "-?[0-9]+(?:_[0-9]+)*\\.[0-9]+(?:_[0-9]+)*(?:[eE][0-9])?",
 		"binary": "0[bB][01]+(?:_[01]+)*",
 		"integer": "-?[0-9]+(?:_[0-9]+)*",
-		/* Require \ and ' to be escaped, but allow anything else to maybe be escaped */
+		/* Require \ and ' to be escaped, but allow anything else to maybe be escaped. */
 		"character": "'\\\\.'|'[^\\\\']'",
-		/* Needs extra escapes to allow " in JSON */
+		/* Needs extra escapes to allow " in JSON. */
 		"string": "\"(?:\\\\\\\\|\\\\\"|[^\"])*\"",
 		/* Now we can start building up more complex expressions. */
 		"number": "(?&float)|(?&hex)|(?&binary)|(?&integer)",
 		"parameter": "\\s*(?:const\\s+)?(?:\\&\\s+)?"
 	},
+	/* Newtonsoft complains about `\s` being invalid, but then doesn't escape `\\s`. */
 	"replacements":
 	[
 		{
