@@ -2,3 +2,7 @@ hook OnPlayerEditAttachedObject(playerid, response, index, modelid, boneid, Floa
 {
 }
 
+hook native IsPlayerConnnected(playerid)
+{
+}
+
