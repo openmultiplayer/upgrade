@@ -2,13 +2,11 @@
 	/* You must escape `\`, so `\\\\\\\\` matches `\\` in a test input. */
 	"defines":
 	{
-		/* This is the less strict version for all numbers and symbols. */
-		"text": "[a-zA-Z0-9_@]+",
 		/* This is for only proper symbols that don't start with a number. */
 		"symbol": "[a-zA-Z_@][a-zA-Z0-9_@]*",
-		"hex": "0[xX][0-9a-fA-F]+(?:_[0-9a-fA-F]+)*",
 		/* Floats can look like `0_1.2_3e4` - `_` doesn't work in the exponent and `a.b` is required. */
 		"float": "-?[0-9]+(?:_[0-9]+)*\\.[0-9]+(?:_[0-9]+)*(?:[eE][0-9])?",
+		"hex": "0[xX][0-9a-fA-F]+(?:_[0-9a-fA-F]+)*",
 		"binary": "0[bB][01]+(?:_[01]+)*",
 		"integer": "-?[0-9]+(?:_[0-9]+)*",
 		/* Require \\ and ' to be escaped, but allow anything else to maybe be escaped. */
@@ -18,6 +16,7 @@
 		"operator": "[*&^%!\\-=+\\/?\\|<>.:]+",
 		/* Now we can start building up more complex expressions. */
 		"number": "(?&float)|(?&hex)|(?&binary)|(?&integer)",
+		/* Expressions are very lax with their contents.  Any letters and numbers anywhere are fine. */
 		"expressionpart": "(?&roundbrackets)|(?&curlybrackets)|(?&squarebrackets)|[*&^%!\\-=+\\/?\\|<>.:a-zA-Z0-9_@\\s]+|(?&string)|(?&character)",
 		"expression": "(?&expressionpart)+",
 		"squarebrackets": "\\[(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\]",
@@ -25,8 +24,8 @@
 		"curlybrackets": "\\{(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\}",
 		/* Be careful with this, it is untested against expression parts, which also contain `>`. */
 		"anglebrackets": "\\<(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\>",
-		"tag": "(?:(?&text)|\\{\\s*(?&text)(?:\\s*,\\s*(?&text))*\\s*\\})\\s*:",
-		"parameter": "(?:const\\s+)?(?:&\\s*)?(?:(?&tag)\\s*)?(?&text)(?:\\s*(?&squarebrackets))*(\\s*=\\s*(?&expression))?",
+		"tag": "(?&symbol)\\s*:|\\{\\s*(?&symbol)(?:\\s*,\\s*(?&symbol))*\\s*\\}\\s*:",
+		"parameter": "(?:const\\s+)?(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(\\s*=\\s*(?&expression))?",
 		"varargs": "(?&tag)?\\s*\\.\\.\\.",
 		/* Three types - at least one named parameter, only `...`, and nothing. */
 		"parameterlist": "\\(\\s*(?&parameter)\\s*(?:,\\s*(?&parameter)\\s*)*(?:,\\s*(?&varargs)\\s*)?\\)|\\(\\s*(?&varargs)\\s*\\)|\\(\\s*\\)"
