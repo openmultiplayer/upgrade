@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace CallbackUpgrade
 {
 	class Scanner
 	{
-		public bool Report { private set; get; }
+		public Dictionary<string, string> defines { get; set; }
+		public Replacement[] replacements { get; set; }
 
-		public Scanner(bool report)
+		public string Report(string name)
 		{
-			Report = report;
+			// Returns a list of the replacements to be made.
+			return "";
+		}
+
+		public void Replace(string name)
+		{
+			// Actually does the replacements.
 		}
 	}
 }

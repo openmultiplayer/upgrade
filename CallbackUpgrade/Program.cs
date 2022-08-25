@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-using PCRE;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.IO;
-using System.Collections.Generic;
 
 namespace CallbackUpgrade
 {
@@ -15,34 +12,6 @@ namespace CallbackUpgrade
 		public string to { get; set; }
 	}
 
-	public class Scanners
-	{
-		public Dictionary<string, string> defines { get; set; }
-		public Replacement[] replacements { get; set; }
-	}
-
-	public class FileScanner
-	{
-		private readonly Scanners scanners_;
-		private readonly string name_;
-
-		public FileScanner(Scanners scanners, string name)
-		{
-			scanners_ = scanners;
-			name_ = name;
-		}
-
-		public string Report()
-		{
-			// Returns a list of the replacements to be made.
-			return "";
-		}
-
-		public void Replace()
-		{
-			// Actually does the replacements.
-		}
-	}
 
 	class Program
 	{
@@ -54,6 +23,39 @@ namespace CallbackUpgrade
 				return def;
 			}
 			return args[idx];
+		}
+
+		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse)
+		{
+
+			foreach (var type in types)
+			{
+				string pattern = "*." + type;
+				foreach (var file in Directory.EnumerateFiles(root, pattern))
+				{
+					// Loop over all the files and do the replacements.
+					if (report)
+					{
+						Console.WriteLine(scanner.Report(file));
+					}
+					else
+					{
+						scanner.Replace(file);
+					}
+				}
+			}
+			if (recurse)
+			{
+				foreach (var dir in Directory.EnumerateDirectories(root, "*"))
+				{
+					// Recurse in to REAL child directories.
+					DirectoryInfo info = new DirectoryInfo(dir);
+					if (!info.Attributes.HasFlag(FileAttributes.ReparsePoint))
+					{
+						ScanDir(dir, types, scanner, report, recurse);
+					}
+				}
+			}
 		}
 
 		static void Main(string[] args)
@@ -83,12 +85,14 @@ namespace CallbackUpgrade
 				Console.WriteLine("\"" + directory + "\" is not a directory.");
 				return;
 			}
-			Scanners scanners;
+			Scanner scanners;
 			using (StreamReader fhnd = File.OpenText(file))
 			{
 				JsonSerializer serializer = new JsonSerializer();
-				scanners = (Scanners)serializer.Deserialize(fhnd, typeof (Scanners));
+				scanners = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
 			}
+			// Descend.
+			ScanDir(directory, types, scanners, report, true);
 		}
 	}
 }
