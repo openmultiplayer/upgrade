@@ -94,6 +94,8 @@ namespace CallbackUpgrade
 
 		public Diff[] Report(string name)
 		{
+			// This does things the slow way, with a replacement function and a second regex call
+			// inside it.  This is so we can report accurately.
 			List<Diff> ret = new List<Diff>();
 			using (StreamReader fhnd = File.OpenText(name))
 			{
@@ -107,15 +109,7 @@ namespace CallbackUpgrade
 					{
 						int line = GetLineNumber(contents, match.Index);
 						string from = match.Value;
-						System.Console.WriteLine("");
-						for (int i = 0; i != match.CaptureCount; ++i)
-						{
-							System.Console.WriteLine(i + ": " + match[i]);
-						}
-						System.Console.WriteLine("");
-
-						string to = PcreRegex.Replace(from, RegexDefine + rep.From, rep.To, PcreOptions.Extended | PcreOptions.MultiLine);
-						//string to = regex.Replace(from, rep.To);
+						string to = regex.Replace(from, rep.To);
 						ret.Add(new Diff {
 							Description = rep.Description,
 							Line = line,
