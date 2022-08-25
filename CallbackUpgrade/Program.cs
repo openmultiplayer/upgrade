@@ -15,10 +15,33 @@ namespace CallbackUpgrade
 		public string to { get; set; }
 	}
 
-	public class Scans
+	public class Scanners
 	{
 		public Dictionary<string, string> defines { get; set; }
 		public Replacement[] replacements { get; set; }
+	}
+
+	public class FileScanner
+	{
+		private readonly Scanners scanners_;
+		private readonly string name_;
+
+		public FileScanner(Scanners scanners, string name)
+		{
+			scanners_ = scanners;
+			name_ = name;
+		}
+
+		public string Report()
+		{
+			// Returns a list of the replacements to be made.
+			return "";
+		}
+
+		public void Replace()
+		{
+			// Actually does the replacements.
+		}
 	}
 
 	class Program
@@ -60,11 +83,11 @@ namespace CallbackUpgrade
 				Console.WriteLine("\"" + directory + "\" is not a directory.");
 				return;
 			}
-			Scans scans;
+			Scanners scanners;
 			using (StreamReader fhnd = File.OpenText(file))
 			{
 				JsonSerializer serializer = new JsonSerializer();
-				scans = (Scans)serializer.Deserialize(fhnd, typeof (Scans));
+				scanners = (Scanners)serializer.Deserialize(fhnd, typeof (Scanners));
 			}
 		}
 	}
