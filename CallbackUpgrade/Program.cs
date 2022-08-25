@@ -2,11 +2,36 @@
 using System.Linq;
 using Newtonsoft.Json;
 using System.IO;
+using System.Text;
 
 namespace CallbackUpgrade
 {
 	class Program
 	{
+		private static int CountLines(string text)
+		{
+			return 1 + text.Count((c) => c == '\n');
+		}
+
+		private static string MakeDiff(Diff diff)
+		{
+			StringBuilder sb = new StringBuilder("@@ -");
+			sb.Append(diff.Line);
+			sb.Append(',');
+			sb.Append(CountLines(diff.From));
+			sb.Append(" +");
+			sb.Append(diff.Line);
+			sb.Append(',');
+			sb.Append(CountLines(diff.To));
+			sb.Append(" @@ ");
+			sb.Append(diff.Description);
+			sb.Append("\n-");
+			sb.Append(diff.From.Replace("\n", "\n-"));
+			sb.Append("\n+");
+			sb.Append(diff.To.Replace("\n", "\n+"));
+			return sb.ToString();
+		}
+
 		private static string ArgOrDefault(string[] args, string name, string def)
 		{
 			int idx = Array.FindIndex(args, (n) => n == name) + 1;
@@ -46,13 +71,7 @@ namespace CallbackUpgrade
 						foreach (var diff in diffs)
 						{
 							Console.WriteLine("");
-							Console.WriteLine("    Line " + diff.Line + " - " + diff.Description + ":");
-							Console.WriteLine("");
-							Console.WriteLine("      " + diff.From.Replace("\n", "\n      ") + "");
-							Console.WriteLine("");
-							Console.WriteLine("    >>>");
-							Console.WriteLine("");
-							Console.WriteLine("      " + diff.To.Replace("\n", "\n      ") + "");
+							Console.WriteLine(MakeDiff(diff));
 						}
 					}
 					else
