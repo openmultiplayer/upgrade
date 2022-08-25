@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace CallbackUpgrade
 {
 	class Scanner
 	{
-		public Dictionary<string, string> defines { get; set; }
-		public Replacement[] replacements { get; set; }
+		[JsonProperty("defines")]
+		public Dictionary<string, string> Defines { get; set; }
+
+		[JsonProperty("replacements")]
+		public Replacement[] Replacements { get; set; }
 
 		public Diff[] Report(string name)
 		{

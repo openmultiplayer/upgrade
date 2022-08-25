@@ -1,11 +1,17 @@
-﻿namespace CallbackUpgrade
+﻿using Newtonsoft.Json;
+
+namespace CallbackUpgrade
 {
 	class Replacement
 	{
-		public string description { get; set; }
-		public string from { get; set; }
-		public string to { get; set; }
-	}
+		[JsonProperty("description")]
+		public string Description { get; set; }
 
+		[JsonProperty("from")]
+		public string From { get; set; }
+
+		[JsonProperty("to")]
+		public string To { get; set; }
+	}
 }
 
