@@ -1,5 +1,9 @@
- FAQ
------
+ Notes
+-------
+
+* Replacements are strictly ordered.
+
+So for example `Upgrading hooks to decorators` comes before `Adding 'CLICK_SOURCE' tag to 'OnPlayerClickPlayer'`, and the latter only looks for `public|forward|@hook` not `public|forward|hook|HOOK__|@hook`, because it will know that the other two can't exist any more.
 
 * Why does this use PCRE.NET instead of the inbuilt regex grammar?
 
