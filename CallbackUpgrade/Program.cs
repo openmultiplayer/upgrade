@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 
 namespace CallbackUpgrade
 {
@@ -10,7 +11,7 @@ namespace CallbackUpgrade
 			if (args.Length == 1 || args.Contains("--help"))
 			{
 				// Display the help message.
-				Console.WriteLine("Upgrades forward/hook/public prototypes from SA:MP to open.mp");
+				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp");
 				Console.WriteLine("");
 				Console.WriteLine("Usage:");
 				Console.WriteLine("");
