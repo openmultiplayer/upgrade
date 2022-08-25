@@ -2,6 +2,9 @@
 	/* You must escape `\`, so `\\\\\\\\` matches `\\` in a test input. */
 	"defines":
 	{
+		/*       */
+		/* ATOMS */
+		/*       */
 		/* This is for only proper symbols that don't start with a number. */
 		"symbol": "[a-zA-Z_@][a-zA-Z0-9_@]*",
 		/* Floats can look like `0_1.2_3e4` - `_` doesn't work in the exponent and `a.b` is required. */
@@ -14,8 +17,16 @@
 		/* Needs extra escapes to allow " in JSON. */
 		"string": "\"(?:\\\\\\\\|\\\\\\\"|[^\\\"])*\"",
 		"operator": "[*&^%!\\-=+\\/?\\|<>.:]+",
+		/*       */
+		/* PARTS */
+		/*       */
 		/* Now we can start building up more complex expressions. */
 		"number": "(?&float)|(?&hex)|(?&binary)|(?&integer)",
+		"tag": "(?&symbol)\\s*:|\\{\\s*(?&symbol)(?:\\s*,\\s*(?&symbol))*\\s*\\}\\s*:",
+		"varargs": "(?&tag)?\\s*\\.\\.\\.",
+		/*             */
+		/* EXPRESSIONS */
+		/*             */
 		/* Expressions are very lax with their contents - any letters, numbers, and operators anywhere are fine. */
 		"expressionpart": "(?&roundbrackets)|(?&curlybrackets)|(?&squarebrackets)|[*&^%!\\-=+\\/?\\|<>.:a-zA-Z0-9_@\\s]+|(?&string)|(?&character)",
 		"expression": "(?&expressionpart)+",
@@ -24,11 +35,13 @@
 		"curlybrackets": "\\{(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\}",
 		/* Be careful with this, it is untested against expression parts, which also contain `>`. */
 		"anglebrackets": "\\<(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\>",
-		"tag": "(?&symbol)\\s*:|\\{\\s*(?&symbol)(?:\\s*,\\s*(?&symbol))*\\s*\\}\\s*:",
 		"parameter": "(?:const\\s+)?(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(\\s*=\\s*(?&expression))?",
-		"varargs": "(?&tag)?\\s*\\.\\.\\.",
 		/* Three types - at least one named parameter, only `...`, and nothing. */
-		"parameterlist": "\\(\\s*(?&parameter)\\s*(?:,\\s*(?&parameter)\\s*)*(?:,\\s*(?&varargs)\\s*)?\\)|\\(\\s*(?&varargs)\\s*\\)|\\(\\s*\\)"
+		"parameterlist": "\\(\\s*(?&parameter)\\s*(?:,\\s*(?&parameter)\\s*)*(?:,\\s*(?&varargs)\\s*)?\\)|\\(\\s*(?&varargs)\\s*\\)|\\(\\s*\\)",
+		/*              */
+		/* DECLARATIONS */
+		/*              */
+		"publics": "forward\s+public|forward|public|hook\s+function|hook\s+stock|hook\s+public|hook\s+native|hook\s+callback|hook|HOOK_FUNCTION__|HOOK_STOCK_|HOOK_PUBLIC__|HOOK_NATIVE__|HOOK_CALLBACK__|HOOK__|@hook\s*(?&parameterlist)"
 	},
 	"replacements":
 	[
