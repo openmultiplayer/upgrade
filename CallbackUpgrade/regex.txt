@@ -30,19 +30,28 @@
     [*&^%!\-=+\/?\|<>.:]+
   )
   (?<expressionpart>
-    \(\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\)|\{\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\}|(?&dimension)|(?&text)|(?&operator)|(?&string)|(?&character)
+    (?&roundbrackets)|(?&curlybrackets)|(?&squarebrackets)|[*&^%!\-=+\/?\|<>.:a-zA-Z0-9_@\s]+|(?&string)|(?&character)
   )
   (?<expression>
     (?&expressionpart)(?:\s*(?&expressionpart))*
   )
-  (?<dimension>
+  (?<squarebrackets>
     \[\s*\]|\[\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\]
+  )
+  (?<roundbrackets>
+    \(\s*\)|\(\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\)
+  )
+  (?<curlybrackets>
+    \{\s*\}|\{\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\}
+  )
+  (?<anglebrackets>
+    <\s*>|<\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*>
   )
   (?<tag>
     (?:(?&text)|\{\s*(?&text)(?:\s*,\s*(?&text))*\s*\})\s*:
   )
   (?<parameter>
-    (?:const\s+)?(?:&\s*)?(?:(?&tag)\s*)?(?&text)(?:\s*(?&dimension))*(\s*=\s*(?&expression))?
+    (?:const\s+)?(?:&\s*)?(?:(?&tag)\s*)?(?&text)(?:\s*(?&squarebrackets))*(\s*=\s*(?&expression))?
   )
   (?<varargs>
     (?&tag)?\s*\.\.\.
