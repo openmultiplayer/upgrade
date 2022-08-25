@@ -41,7 +41,7 @@
 		/*              */
 		/* DECLARATIONS */
 		/*              */
-		"publics": "forward\s+public|forward|public|hook\s+function|hook\s+stock|hook\s+public|hook\s+native|hook\s+callback|hook|HOOK_FUNCTION__|HOOK_STOCK_|HOOK_PUBLIC__|HOOK_NATIVE__|HOOK_CALLBACK__|HOOK__|@hook\s*(?&parameterlist)"
+		"publics": "forward\s+public|forward|public|hook\s+public|hook\s+callback|hook|HOOK_PUBLIC__|HOOK_CALLBACK__|HOOK__|@hook\s*(?&parameterlist)"
 	},
 	"replacements":
 	[
