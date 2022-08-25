@@ -23,13 +23,18 @@ namespace CallbackUpgrade
 
 	class Program
 	{
+		private static string ArgOrDefault(string[] args, string name, string def)
+		{
+			int idx = Array.FindIndex(args, (n) => n == name) + 1;
+			if (idx == 0 || idx == args.Length)
+			{
+				return def;
+			}
+			return args[idx];
+		}
+
 		static void Main(string[] args)
 		{
-			using (StreamReader file = File.OpenText(@"../../../callback-upgrade.json"))
-			{
-				JsonSerializer serializer = new JsonSerializer();
-				Scans scans = (Scans)serializer.Deserialize(file, typeof (Scans));
-			}
 			if (args.Length == 0 || args.Contains("--help"))
 			{
 				// Display the help message.
@@ -37,15 +42,29 @@ namespace CallbackUpgrade
 				Console.WriteLine("");
 				Console.WriteLine("Usage:");
 				Console.WriteLine("");
-				Console.WriteLine("    callback_upgrade [--report] [--help] directory");
+				Console.WriteLine("    callback_upgrade [--report] [--scans file] [--types types] [--help] directory");
 				Console.WriteLine("");
 				Console.WriteLine("  --report - Show changes to make, but don't make them.");
+				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `callback-upgrade.json`).");
+				Console.WriteLine("  --types types - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("  --help - Show this message and exit.");
-				Console.WriteLine("  directory - Where to run the scan.");
+				Console.WriteLine("  directory - Root directory in which to run the scan.");
+				return;
 			}
-			else
+			string file = ArgOrDefault(args, "--scans", "../../../callback-upgrade.json");
+			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
+			bool report = args.Contains("--report");
+			string directory = args.Last();
+			if (!Directory.Exists(directory))
 			{
-
+				Console.WriteLine("\"" + directory + "\" is not a directory.");
+				return;
+			}
+			Scans scans;
+			using (StreamReader fhnd = File.OpenText(file))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				scans = (Scans)serializer.Deserialize(fhnd, typeof (Scans));
 			}
 		}
 	}
