@@ -11,7 +11,7 @@
 		"binary": "0[bB][01]+(?:_[01]+)*",
 		"integer": "-?[0-9]+(?:_[0-9]+)*",
 		/* Require \ and ' to be escaped, but allow anything else to maybe be escaped */
-		"character": "'\\?[^\\']'|'\\''|'\\\\'",
+		"character": "'\\.'|'[^\\']'",
 		"string": "-?[0-9]+(?:_[0-9]+)*",
 		/* Now we can start building up more complex expressions. */
 		"number": "(?&float)|(?&hex)|(?&binary)|(?&integer)"
