@@ -23,6 +23,7 @@
 		"squarebrackets": "\\[(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\]",
 		"roundbrackets": "\\((?&expressionpart)*(?:[,;](?&expressionpart)*)*\\)",
 		"curlybrackets": "\\{(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\}",
+		/* Be careful with this, it is untested against expression parts, which also contain `>`. */
 		"anglebrackets": "\\<(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\>",
 		"tag": "(?:(?&text)|\\{\\s*(?&text)(?:\\s*,\\s*(?&text))*\\s*\\})\\s*:",
 		"parameter": "(?:const\\s+)?(?:&\\s*)?(?:(?&tag)\\s*)?(?&text)(?:\\s*(?&squarebrackets))*(\\s*=\\s*(?&expression))?",
