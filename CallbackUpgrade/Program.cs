@@ -31,19 +31,41 @@ namespace CallbackUpgrade
 					if (report)
 					{
 						Diff[] diffs = scanner.Report(file);
-						Console.WriteLine(" - " + diffs.Length + " replacement(s) found:");
+						switch (diffs.Length)
+						{
+						case 0:
+							Console.WriteLine("  No replacements found.");
+							break;
+						case 1:
+							Console.WriteLine("  1 replacement found:");
+							break;
+						default:
+							Console.WriteLine("  " + diffs.Length + " replacements found:");
+							break;
+						}
 						foreach (var diff in diffs)
 						{
 							Console.WriteLine("");
 							Console.WriteLine("    Line " + diff.Line + ":");
-							Console.WriteLine("    " + diff.From + "");
-							Console.WriteLine("    " + diff.To + "");
+							Console.WriteLine("      " + diff.From + "");
+							Console.WriteLine("      " + diff.To + "");
 						}
 					}
 					else
 					{
 						int diffs = scanner.Replace(file);
-						Console.WriteLine(" - " + diffs + " replacement(s) done.");
+						switch (diffs)
+						{
+						case 0:
+							Console.WriteLine("  No replacements made.");
+							break;
+						case 1:
+							Console.WriteLine("  1 replacement made.");
+							break;
+						default:
+							Console.WriteLine("  " + diffs + " replacements made.");
+							break;
+						}
 					}
 					Console.WriteLine("");
 				}
