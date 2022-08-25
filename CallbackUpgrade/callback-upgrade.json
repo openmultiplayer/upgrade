@@ -3,7 +3,7 @@
 	"defines":
 	{
 		/* This is the less strict version for all numbers and symbols. */
-		"text": "[a-zA-Z0-9_@]*",
+		"text": "[a-zA-Z0-9_@]+",
 		/* This is for only proper symbols that don't start with a number. */
 		"symbol": "[a-zA-Z_@][a-zA-Z0-9_@]*",
 		"hex": "0[xX][0-9a-fA-F]+(?:_[0-9a-fA-F]+)*",
@@ -17,7 +17,8 @@
 		"string": "\"(?:\\\\\\\\|\\\\\"|[^\"])*\"",
 		/* Now we can start building up more complex expressions. */
 		"number": "(?&float)|(?&hex)|(?&binary)|(?&integer)",
-		"parameter": "\\s*(?:const\\s+)?(?:\\&\\s+)?"
+		"tag": "(?:(?&text)|\\{\\s*(?&text)(?:\\s*,\\s*(?&text))*\\s*\\})\\s*:"
+		"parameter": "(?:const\s+)?(?:&\s*)?(?:(?&tag)\s*)?(?&text)"
 	},
 	"replacements":
 	[

@@ -1,0 +1,46 @@
+(?(DEFINE)
+  (?<text>
+    [a-zA-Z0-9_@]+
+  )
+  (?<symbol>
+    [a-zA-Z_@][a-zA-Z0-9_@]*
+  )
+  (?<hex>
+    0[xX][0-9a-fA-F]+(?:_[0-9a-fA-F]+)*
+  )
+  (?<float>
+    -?[0-9]+(?:_[0-9]+)*\.[0-9]+(?:_[0-9]+)*(?:[eE][0-9])?
+  )
+  (?<binary>
+    0[bB][01]+(?:_[01]+)*
+  )
+  (?<integer>
+    -?[0-9]+(?:_[0-9]+)*
+  )
+  (?<character>
+    '\\.'|'[^\\']'
+  )
+  (?<string>
+    \"(?:\\\\|\\\"|[^\"])*\"
+  )
+  (?<number>
+    (?&float)|(?&hex)|(?&binary)|(?&integer)
+  )
+  (?<dimension>
+    \[\]
+  )
+  (?<tag>
+    (?:(?&text)|\{\s*(?&text)(?:\s*,\s*(?&text))*\s*\})\s*:
+  )
+  (?<parameter>
+    (?:const\s+)?(?:&\s*)?(?:(?&tag)\s*)?(?&text)
+  )
+  (?<parameterlist>
+    \(\s*(?&parameter)\s*(?:,\s*(?&parameter)\s*)*(?:,\s*(?&tag)?\s*\.\.\.\s*)?\)
+  )
+
+
+
+)
+
+(?&parameterlist)
