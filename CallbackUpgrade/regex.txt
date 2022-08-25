@@ -35,8 +35,12 @@
   (?<parameter>
     (?:const\s+)?(?:&\s*)?(?:(?&tag)\s*)?(?&text)
   )
+  (?<varargs>
+    (?&tag)?\s*\.\.\.
+  )
+  # Three types - at least one named parameter, only `...`, and nothing.
   (?<parameterlist>
-    \(\s*(?&parameter)\s*(?:,\s*(?&parameter)\s*)*(?:,\s*(?&tag)?\s*\.\.\.\s*)?\)
+    \(\s*(?&parameter)\s*(?:,\s*(?&parameter)\s*)*(?:,\s*(?&varargs)\s*)?\)|\(\s*(?&varargs)\s*\)|\(\s*\)
   )
 
 
