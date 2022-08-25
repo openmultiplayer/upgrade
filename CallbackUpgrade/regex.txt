@@ -33,19 +33,19 @@
     (?&roundbrackets)|(?&curlybrackets)|(?&squarebrackets)|[*&^%!\-=+\/?\|<>.:a-zA-Z0-9_@\s]+|(?&string)|(?&character)
   )
   (?<expression>
-    (?&expressionpart)(?:\s*(?&expressionpart))*
+    (?&expressionpart)+
   )
   (?<squarebrackets>
-    \[\s*\]|\[\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\]
+    \[(?&expressionpart)*(?:[,;](?&expressionpart)*)*\]
   )
   (?<roundbrackets>
-    \(\s*\)|\(\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\)
+    \((?&expressionpart)*(?:[,;](?&expressionpart)*)*\)
   )
   (?<curlybrackets>
-    \{\s*\}|\{\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*\}
+    \{(?&expressionpart)*(?:[,;](?&expressionpart)*)*\}
   )
   (?<anglebrackets>
-    <\s*>|<\s*(?&expression)\s*(?:[,;]\s*(?&expression)\s*)*>
+    \<(?&expressionpart)*(?:[,;](?&expressionpart)*)*\>
   )
   (?<tag>
     (?:(?&text)|\{\s*(?&text)(?:\s*,\s*(?&text))*\s*\})\s*:
