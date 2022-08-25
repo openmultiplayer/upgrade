@@ -54,16 +54,7 @@ namespace CallbackUpgrade
 					// reading of the documentation).  Each replacement is done separately.
 					var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
 					using var buffer = regex.CreateMatchBuffer();
-					foreach (var match in buffer.Matches(contents))
-					{
-						var diff = new Diff {
-							Description = rep.Description,
-							From = match.Value.ToString(),
-							To = rep.To,
-							Line = match.Index
-						};
-						ret.Add(diff);
-					}
+					contents = regex.Replace(contents, rep.To);
 				}
 			}
 			// Returns a list of the replacements to be made.
