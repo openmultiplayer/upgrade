@@ -26,14 +26,26 @@ namespace CallbackUpgrade
 				foreach (var file in Directory.EnumerateFiles(root, pattern))
 				{
 					// Loop over all the files and do the replacements.
+					Console.WriteLine("Scanning file: " + file);
+					Console.WriteLine("");
 					if (report)
 					{
-						Console.WriteLine(scanner.Report(file));
+						Diff[] diffs = scanner.Report(file);
+						Console.WriteLine(" - " + diffs.Length + " replacement(s) found:");
+						foreach (var diff in diffs)
+						{
+							Console.WriteLine("");
+							Console.WriteLine("    Line " + diff.Line + ":");
+							Console.WriteLine("    " + diff.From + "");
+							Console.WriteLine("    " + diff.To + "");
+						}
 					}
 					else
 					{
-						scanner.Replace(file);
+						int diffs = scanner.Replace(file);
+						Console.WriteLine(" - " + diffs + " replacement(s) done.");
 					}
+					Console.WriteLine("");
 				}
 			}
 			if (recurse)
