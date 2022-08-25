@@ -19,7 +19,6 @@
 		"number": "(?&float)|(?&hex)|(?&binary)|(?&integer)",
 		"parameter": "\\s*(?:const\\s+)?(?:\\&\\s+)?"
 	},
-	/* Newtonsoft complains about `\s` being invalid, but then doesn't escape `\\s`. */
 	"replacements":
 	[
 		{
