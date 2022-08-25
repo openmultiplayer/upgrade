@@ -16,7 +16,7 @@
 		"operator": "[*&^%!\\-=+\\/?\\|<>.:]+",
 		/* Now we can start building up more complex expressions. */
 		"number": "(?&float)|(?&hex)|(?&binary)|(?&integer)",
-		/* Expressions are very lax with their contents.  Any letters and numbers anywhere are fine. */
+		/* Expressions are very lax with their contents - any letters, numbers, and operators anywhere are fine. */
 		"expressionpart": "(?&roundbrackets)|(?&curlybrackets)|(?&squarebrackets)|[*&^%!\\-=+\\/?\\|<>.:a-zA-Z0-9_@\\s]+|(?&string)|(?&character)",
 		"expression": "(?&expressionpart)+",
 		"squarebrackets": "\\[(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\]",
