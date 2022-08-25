@@ -9,7 +9,7 @@ namespace CallbackUpgrade
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 1 || args.Contains("--help"))
+			if (args.Length == 0 || args.Contains("--help"))
 			{
 				// Display the help message.
 				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp");
