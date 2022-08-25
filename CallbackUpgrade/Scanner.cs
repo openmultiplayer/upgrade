@@ -7,15 +7,16 @@ namespace CallbackUpgrade
 		public Dictionary<string, string> defines { get; set; }
 		public Replacement[] replacements { get; set; }
 
-		public string Report(string name)
+		public Diff[] Report(string name)
 		{
 			// Returns a list of the replacements to be made.
-			return "";
+			return new Diff[] { };
 		}
 
-		public void Replace(string name)
+		public int Replace(string name)
 		{
 			// Actually does the replacements.
+			return 0;
 		}
 	}
 }

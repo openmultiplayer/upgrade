@@ -5,14 +5,6 @@ using System.IO;
 
 namespace CallbackUpgrade
 {
-	public class Replacement
-	{
-		public string description { get; set; }
-		public string from { get; set; }
-		public string to { get; set; }
-	}
-
-
 	class Program
 	{
 		private static string ArgOrDefault(string[] args, string name, string def)
