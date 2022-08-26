@@ -86,10 +86,38 @@ namespace Upgrade
 					case '{':
 						{
 							var startIdx = idx;
-							while (idx < replacementPattern.Length && replacementPattern[idx] != '}')
-								++idx;
+							int depth = 1;
+							int trueBranch = -1;
+							int falseBranch = -1;
+							while (idx < replacementPattern.Length)
+							{
+								if (replacementPattern[idx] == '}')
+								{
+									if (--depth == 0)
+										break;
+								}
+								else
+								{
+									// Parse `${5:+true:${nesting}}` syntax.
+									if (replacementPattern[idx] == '{')
+										++depth;
+									// Parse `${5:+true:false}` syntax.
+									if (replacementPattern[idx] == ':' && depth == 1)
+									{
+										if (trueBranch == -1)
+										{
+											trueBranch = idx + 1;
+											if (replacementPattern[idx + 1] == '+')
+												trueBranch = idx + 2;
+										}
+										else if (falseBranch == -1)
+											falseBranch = idx + 1;
+									}
+									++idx;
+								}
+							}
 
-							if (idx < replacementPattern.Length && replacementPattern[idx] == '}' && idx > startIdx + 1)
+							if (idx < replacementPattern.Length && replacementPattern[idx] == '}' && idx > startIdx + 1 && depth == 0)
 							{
 								var groupName = replacementPattern.Substring(startIdx + 1, idx - startIdx - 1);
 								var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
