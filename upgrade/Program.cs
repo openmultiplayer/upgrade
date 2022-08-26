@@ -114,6 +114,7 @@ namespace Upgrade
 			{
 				JsonSerializer serializer = new JsonSerializer();
 				generator = (Generator)serializer.Deserialize(fhnd, typeof(Generator));
+				generator.Dump();
 			}
 		}
 

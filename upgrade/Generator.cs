@@ -196,6 +196,17 @@ namespace Upgrade
 			}
 		}
 
+		public void Dump()
+		{
+			var sb = new StringBuilder("");
+			foreach (var entry in Generators)
+			{
+				WriteDeclarationScanner(sb, entry);
+				sb.Append("\n\n");
+			}
+			System.Console.WriteLine(sb.ToString());
+		}
+
 		public Generator()
 		{
 		}
