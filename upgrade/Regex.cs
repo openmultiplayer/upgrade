@@ -280,7 +280,12 @@ namespace Upgrade
 				if (match.TryGetGroup(_index, out var group))
 				{
 					if (group.Success)
-						sb.Append(Subject(match), group.Index, group.Length);
+						if (_true is null)
+							sb.Append(Subject(match), group.Index, group.Length);
+						else
+							_true.Append(match, sb);
+					else
+						_false?.Append(match, sb);
 				}
 				else
 				{
@@ -318,7 +323,12 @@ namespace Upgrade
 				if (match.TryGetGroup(_name, out var group) || match.TryGetGroup(_index, out group))
 				{
 					if (group.Success)
-						sb.Append(Subject(match), group.Index, group.Length);
+						if (_true is null)
+							sb.Append(Subject(match), group.Index, group.Length);
+						else
+							_true.Append(match, sb);
+					else
+						_false?.Append(match, sb);
 				}
 				else
 				{
