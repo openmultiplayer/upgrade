@@ -16,13 +16,34 @@ namespace Upgrade
 		public string Code { get; set; }
 
 		[JsonIgnore()]
-		public string[] EnumValues
+		public Dictionary<string, int> EnumValues
 		{
 			get
 			{
 				// This is simple because we control the input so can be strict.
-				string values = Enum.Split('{')[1].Split('}')[0];
-				return values.Split(',').Select((v) => v.Trim()).ToArray();
+				string all = Enum.Split('{')[1].Split('}')[0];
+				IEnumerable<string> entries = all.Split(',').Select((v) => v.Trim());
+
+				int idx = 0;
+				Dictionary<string, int> ret = new Dictionary<string, int>();
+				foreach (var entry in entries)
+				{
+					var parts = entry.Split('=');
+					if (parts.Length == 1)
+					{
+					}
+					else if (int.TryParse(parts[1].Trim(), out int nv))
+					{
+						idx = nv;
+					}
+					else
+					{
+						idx = ret[parts[1].Trim()];
+					}
+					ret.Add(parts[0].Trim(), idx);
+					idx = idx + 1;
+				}
+				return ret;
 			}
 		}
 
