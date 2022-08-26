@@ -35,13 +35,13 @@ namespace Upgrade
 			}
 			// The defines are (incorrectly) counted in the match numbers.  Adjust the replacements.
 			int adjust = defines_.Count;
-			var regex = new PcreRegex("\\$(\\d+)", PcreOptions.Compiled);
+			var regex = new PcreRegex("\\$(\\{?)(\\d+)", PcreOptions.Compiled);
 			foreach (var i in replacements_)
 			{
 				i.To = regex.Replace(i.To, (m) =>
 				{
-					int idx = int.Parse(m[1]) + adjust;
-					return "$" + idx;
+					int idx = int.Parse(m[2]) + adjust;
+					return "$" + m[1] + idx;
 				});
 			}
 		}
