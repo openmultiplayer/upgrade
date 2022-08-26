@@ -3,6 +3,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace CallbackUpgrade
 {
@@ -45,9 +47,9 @@ namespace CallbackUpgrade
 			return args[idx];
 		}
 
-		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse)
+		private static Task ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse)
 		{
-
+			List<Task> tasks = new List<Task>();
 			foreach (var type in types)
 			{
 				string pattern = "*." + type;
@@ -80,8 +82,7 @@ namespace CallbackUpgrade
 					}
 					else
 					{
-						scanner.Replace(file);
-						Console.WriteLine("  Done.");
+						tasks.Add(scanner.Replace(file));
 						//int diffs = scanner.Replace(file);
 						//switch (diffs)
 						//{
@@ -107,10 +108,11 @@ namespace CallbackUpgrade
 					DirectoryInfo info = new DirectoryInfo(dir);
 					if (!info.Attributes.HasFlag(FileAttributes.ReparsePoint))
 					{
-						ScanDir(dir, types, scanner, report, recurse);
+						tasks.Add(ScanDir(dir, types, scanner, report, recurse));
 					}
 				}
 			}
+			return Task.WhenAll(tasks.ToArray());
 		}
 
 		static void Main(string[] args)
@@ -147,7 +149,7 @@ namespace CallbackUpgrade
 				scanners = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
 			}
 			// Descend.
-			ScanDir(directory, types, scanners, report, true);
+			ScanDir(directory, types, scanners, report, true).Wait();
 		}
 	}
 }

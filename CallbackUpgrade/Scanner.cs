@@ -3,6 +3,7 @@ using PCRE;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CallbackUpgrade
 {
@@ -122,14 +123,14 @@ namespace CallbackUpgrade
 			return ret;
 		}
 
-		public int Replace(string name)
+		public async Task<int> Replace(string name)
 		{
 			// Actually does the replacements.
 			List<Diff> ret = new List<Diff>();
 			string contents = "";
 			using (StreamReader fhnd = File.OpenText(name))
 			{
-				contents = fhnd.ReadToEnd();
+				contents = await fhnd.ReadToEndAsync();
 				foreach (var rep in Replacements)
 				{
 					// Now we go for the most efficient scanning method we can (based on very little
@@ -138,7 +139,7 @@ namespace CallbackUpgrade
 					contents = regex.Replace(contents, rep.To);
 				}
 			}
-			File.WriteAllText(name, contents);
+			await File.WriteAllTextAsync(name, contents);
 			// It turns out that counting the replacements is hard when we want to be fast.
 			return 0;
 		}
