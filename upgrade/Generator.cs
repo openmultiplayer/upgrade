@@ -154,6 +154,16 @@ namespace Upgrade
 		[JsonProperty("generators")]
 		public Entry[] Generators { get; set; }
 
+		private string GetDefaultValue(string param)
+		{
+			string[] bits = param.Split('=', 2);
+			if (bits.Length == 1)
+			{
+				return null;
+			}
+			return bits[1].Trim();
+		}
+
 		private void WriteDeclarationScanner(StringBuilder sb, Entry entry)
 		{
 			int paramIdx = 0;
