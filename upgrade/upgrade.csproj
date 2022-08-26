@@ -10,4 +10,8 @@
     <PackageReference Include="PCRE.NET" Version="0.19.0" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(SolutionDir)*.json&quot; &quot;$(TargetDir)&quot;" />
+  </Target>
+
 </Project>

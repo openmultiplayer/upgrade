@@ -127,13 +127,13 @@ namespace CallbackUpgrade
 				Console.WriteLine("    upgrade [--report] [--scans file] [--types types] [--help] directory");
 				Console.WriteLine("");
 				Console.WriteLine("  --report - Show changes to make, but don't make them.");
-				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `callback-upgrade.json`).");
+				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `upgrade.json`).");
 				Console.WriteLine("  --types types - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("  --help - Show this message and exit.");
 				Console.WriteLine("  directory - Root directory in which to run the scan.");
 				return;
 			}
-			string file = ArgOrDefault(args, "--scans", "../../../callback-upgrade.json");
+			string file = ArgOrDefault(args, "--scans", "upgrade.json");
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
 			string directory = Path.GetFullPath(args.Last());
