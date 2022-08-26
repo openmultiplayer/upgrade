@@ -175,6 +175,50 @@ namespace Upgrade
 			return param.Contains('&');
 		}
 
+		private void WriteUseScanner(StringBuilder sb, Entry entry, int curIdx)
+		{
+			int paramIdx = 0;
+			int replaceIdx = 0;
+			int paramCount = entry.ParamCount;
+			int[] locations = entry.ReplaceIndexes.ToArray();
+			sb.Append("((?&start))((?&stocks))");
+			string tag = entry.ReturnTag;
+			if (!(tag is null))
+			{
+				sb.Append("\\\\s+");
+				sb.Append(tag);
+				sb.Append("\\\\s*:\\\\s*");
+			}
+			sb.Append("((?&symbol))?");
+			sb.Append(entry.FunctionName);
+			sb.Append("\\\\s*\\\\(");
+			while (replaceIdx < locations.Length)
+			{
+				if (paramIdx == locations[replaceIdx])
+				{
+					++replaceIdx;
+					// Output the replacement scanner.
+					sb.Append("\\\\s*(?:(?&tag)\\\\s*)?((?&symbol))(?:\\\\s*=\\\\s*(?&expression))?");
+				}
+				else
+				{
+					// Output the default scanner.
+					sb.Append("\\\\s*((?&parameter))");
+				}
+				++paramIdx;
+				if (paramIdx == paramCount)
+				{
+					// Output a `)`.
+					sb.Append("\\\\s*\\\\)");
+				}
+				else
+				{
+					// Output a `,`.
+					sb.Append("\\\\s*,");
+				}	
+			}
+		}
+		
 		private void WriteDeclarationScanner(StringBuilder sb, Entry entry)
 		{
 			int paramIdx = 0;

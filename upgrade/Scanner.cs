@@ -107,11 +107,12 @@ namespace Upgrade
 				// Now we go for the most efficient scanning method we can (based on very little
 				// reading of the documentation).  Each replacement is done separately.
 				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
+				var func = ReplacementPattern.Parse(rep.To);
 				contents = regex.Replace(contents, (match) =>
 				{
 					int line = GetLineNumber(contents, match.Index);
 					string from = match.Value;
-					string to = regex.Replace(from, rep.To);
+					string to = regex.Replace(from, func);
 					ret.Add(new Diff {
 						Description = rep.Description,
 						Line = line,
@@ -135,10 +136,11 @@ namespace Upgrade
 				contents = await fhnd.ReadToEndAsync();
 				foreach (var rep in Replacements)
 				{
+					var func = ReplacementPattern.Parse(rep.To);
 					// Now we go for the most efficient scanning method we can (based on very little
 					// reading of the documentation).  Each replacement is done separately.
 					var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
-					contents = regex.Replace(contents, rep.To);
+					contents = regex.Replace(contents, func);
 				}
 			}
 			await File.WriteAllTextAsync(name, contents);

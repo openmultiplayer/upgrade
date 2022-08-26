@@ -2,7 +2,7 @@
   "profiles": {
     "CallbackUpgrade": {
       "commandName": "Project",
-      "commandLineArgs": "--generate --report --scans const ../../../tests"
+      "commandLineArgs": "--report --scans const ../../../tests"
     }
   }
 }
