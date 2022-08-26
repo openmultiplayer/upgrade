@@ -39,7 +39,7 @@ namespace Upgrade
 						else
 						{
 							// False branch.
-							idx += 2;
+							idx += 1;
 							falseBranch = ParseNestedGroup(replacementPattern, ref idx);
 						}
 					}
