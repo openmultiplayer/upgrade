@@ -93,12 +93,22 @@ namespace Upgrade
 
 		// Get the parameter index we are putting the custom tag in to.
 		[JsonIgnore()]
-		public int ReplaceIdx
+		public IEnumerable<int> ReplaceIndexes
 		{
 			get
 			{
 				// This is simple because we control the input so can be strict.
-				return Code.Substring(0, Code.IndexOf('$')).Count((c) => c == ',');
+				int cur = 0;
+				for (; ;)
+				{
+					cur = Code.IndexOf('$', cur) + 1;
+					if (cur == 0)
+					{
+						break;
+					}
+					yield return Code.Substring(0, cur).Count((c) => c == ',');
+				}
+
 			}
 		}
 	}
