@@ -108,8 +108,17 @@ namespace Upgrade
 					}
 					yield return Code.Substring(0, cur).Count((c) => c == ',');
 				}
-
 			}
+		}
+
+		public string GetValueName(int value)
+		{
+			return EnumValues.FirstOrDefault((kv) => kv.Value == value).Key;
+		}
+
+		public int GetNameValue(string name)
+		{
+			return EnumValues.GetValueOrDefault(name, -1);
 		}
 	}
 
