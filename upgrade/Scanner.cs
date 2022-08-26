@@ -11,8 +11,28 @@ namespace CallbackUpgrade
 	{
 		private Dictionary<string, string> defines_ = null;
 
-		private void UpdateCaptureGroups()
+		public void UpdateDefines()
 		{
+			if (defines_ is null)
+			{
+				return;
+			}
+			// Construct the regex version of these defines.
+			StringBuilder sb = new StringBuilder("(?(DEFINE)");
+			foreach (var kv in defines_)
+			{
+				sb.Append("\n  (?<");
+				sb.Append(kv.Key);
+				sb.Append(">\n    ");
+				sb.Append(kv.Value);
+				sb.Append("\n  )");
+			}
+			sb.Append("\n)\n");
+			RegexDefine = sb.ToString();
+			if (replacements_ is null)
+			{
+				return;
+			}
 			// The defines are (incorrectly) counted in the match numbers.  Adjust the replacements.
 			int adjust = defines_.Count;
 			var regex = new PcreRegex("\\$(\\d+)", PcreOptions.Compiled);
@@ -37,22 +57,7 @@ namespace CallbackUpgrade
 			set
 			{
 				defines_ = value;
-				// Construct the regex version of these defines.
-				StringBuilder sb = new StringBuilder("(?(DEFINE)");
-				foreach (var kv in defines_)
-				{
-					sb.Append("\n  (?<");
-					sb.Append(kv.Key);
-					sb.Append(">\n    ");
-					sb.Append(kv.Value);
-					sb.Append("\n  )");
-				}
-				sb.Append("\n)\n");
-				RegexDefine = sb.ToString();
-				if (!(replacements_ is null))
-				{
-					UpdateCaptureGroups();
-				}
+				UpdateDefines();
 			}
 		}
 
@@ -69,10 +74,7 @@ namespace CallbackUpgrade
 			set
 			{
 				replacements_ = value;
-				if (!(defines_ is null))
-				{
-					UpdateCaptureGroups();
-				}
+				UpdateDefines();
 			}
 		}
 

@@ -142,12 +142,26 @@ namespace CallbackUpgrade
 				Console.WriteLine("\"" + directory + "\" is not a directory.");
 				return;
 			}
+			Scanner defines;
 			Scanner scanners;
+			// Get generic shared defines.
+			using (StreamReader fhnd = File.OpenText("_defines.json"))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				defines = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
+			}
+			// Get defines specific to this file.
 			using (StreamReader fhnd = File.OpenText(file))
 			{
 				JsonSerializer serializer = new JsonSerializer();
 				scanners = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
 			}
+			// Merge them, preferring specific ones over generic ones.
+			foreach (var kv in defines.Defines)
+			{
+				scanners.Defines.TryAdd(kv.Key, kv.Value);
+			}
+			scanners.UpdateDefines();
 			// Descend.
 			List<Task> tasks = new List<Task>();
 			ScanDir(directory, types, scanners, report, true, tasks);
