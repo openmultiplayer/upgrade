@@ -13,22 +13,25 @@ namespace CallbackUpgrade
 			return 1 + text.Count((c) => c == '\n');
 		}
 
-		private static string MakeDiff(Diff diff)
+		private static string MakeDiff(Diff diff, ref int change)
 		{
+			int ilines = CountLines(diff.From);
+			int olines = CountLines(diff.To);
 			StringBuilder sb = new StringBuilder("@@ -");
 			sb.Append(diff.Line);
 			sb.Append(',');
-			sb.Append(CountLines(diff.From));
+			sb.Append(ilines);
 			sb.Append(" +");
-			sb.Append(diff.Line);
+			sb.Append(diff.Line + change);
 			sb.Append(',');
-			sb.Append(CountLines(diff.To));
+			sb.Append(olines);
 			sb.Append(" @@ ");
 			sb.Append(diff.Description);
 			sb.Append("\n-");
 			sb.Append(diff.From.Replace("\n", "\n-"));
 			sb.Append("\n+");
 			sb.Append(diff.To.Replace("\n", "\n+"));
+			change = change + olines - ilines;
 			return sb.ToString();
 		}
 
@@ -62,16 +65,17 @@ namespace CallbackUpgrade
 							Console.WriteLine("  No replacements found.");
 							break;
 						case 1:
-							Console.WriteLine("  1 replacement found:");
+							Console.WriteLine("  1 replacement found:\n");
 							break;
 						default:
-							Console.WriteLine("  " + diffs.Length + " replacements found:");
+							Console.WriteLine("  " + diffs.Length + " replacements found:\n");
 							break;
 						}
+						// How many lines the output has grown or shrunk by.
+						int change = 0;
 						foreach (var diff in diffs)
 						{
-							Console.WriteLine("");
-							Console.WriteLine(MakeDiff(diff));
+							Console.WriteLine(MakeDiff(diff, ref change));
 						}
 					}
 					else
