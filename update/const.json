@@ -50,6 +50,21 @@
 	"replacements":
 	[
 		{
+			"description": "Upgrading hooks to decorators",
+			"from": "((?&start))(hook|HOOK__)\\s+([\\w@]+)\\s*\\(",
+			"to": "$1@hook() $3("
+		},
+		{
+			"description": "Upgrading timers to decorators",
+			"from": "((?&start))(timer|TIMER__)\\s+([\\w@]+)\\s*\\[\\s*(.*?)\\s*\\]\\s*\\(",
+			"to": "$1@timer($4) $3("
+		},
+		{
+			"description": "Upgrading remote functions to decorators",
+			"from": "((?&start))(remotefunc|REMOTEFUNC__)\\s+([\\w@]+)\\s*\\(",
+			"to": "$1@remote() $3("
+		},
+		{
 			"description": "Adding `PLAYER_STATE` tag to `OnPlayerStateChange`",
 			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerStateChange\\s*\\(\\s*playerid\\s*,\\s*newstate\\s*,\\s*oldstate\\s*\\)",
 			"to": "$1#if !defined PLAYER_STATE\n$1\t#define PLAYER_STATE: _:\n$1#endif\n$1$2 $3OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)"
