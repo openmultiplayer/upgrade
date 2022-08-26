@@ -127,7 +127,7 @@ namespace CallbackUpgrade
 				Console.WriteLine("    upgrade [--report] [--scans file] [--types types] [--help] directory");
 				Console.WriteLine("");
 				Console.WriteLine("  --report - Show changes to make, but don't make them.");
-				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `upgrade.json`).");
+				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `upgrade`).");
 				Console.WriteLine("  --types types - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("  --help - Show this message and exit.");
 				Console.WriteLine("  directory - Root directory in which to run the scan.");
@@ -151,7 +151,7 @@ namespace CallbackUpgrade
 				defines = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
 			}
 			// Get defines specific to this file.
-			using (StreamReader fhnd = File.OpenText(file))
+			using (StreamReader fhnd = File.OpenText(file + ".json"))
 			{
 				JsonSerializer serializer = new JsonSerializer();
 				scanners = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
