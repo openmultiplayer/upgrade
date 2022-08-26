@@ -57,6 +57,7 @@ namespace Upgrade
 			}
 		}
 
+		// Get the function name we are putting the custom tag in to.
 		[JsonIgnore()]
 		public string FunctionName
 		{
@@ -65,6 +66,29 @@ namespace Upgrade
 				// This regex is simple because we control the input so can be strict.
 				var regex = new PcreRegex("(?:native|stock) (?:\\w+\\:)?(\\w+)");
 				return regex.Match(Code).Groups[1];
+			}
+		}
+
+		// Does this declaration have a return tag?
+		[JsonIgnore()]
+		public bool ReturnTag
+		{
+			get
+			{
+				// This regex is simple because we control the input so can be strict.
+				var regex = new PcreRegex("(?:native|stock) (\\w+\\:)?");
+				return !(regex.Match(Code).Groups[1] is null);
+			}
+		}
+
+		// Get the parameter index we are putting the custom tag in to.
+		[JsonIgnore()]
+		public int ReplaceIdx
+		{
+			get
+			{
+				// This is simple because we control the input so can be strict.
+				return Code.Substring(0, Code.IndexOf('$')).Count((c) => c == ',');
 			}
 		}
 	}
