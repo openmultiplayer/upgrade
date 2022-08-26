@@ -164,6 +164,16 @@ namespace Upgrade
 			}
 			return bits[1].Trim();
 		}
+		
+		private bool IsConst(string param)
+		{
+			return param.Trim().StartsWith("const ");
+		}
+		
+		private bool IsRef(string param)
+		{
+			return param.Contains('&');
+		}
 
 		private void WriteDeclarationScanner(StringBuilder sb, Entry entry)
 		{
@@ -208,6 +218,72 @@ namespace Upgrade
 				}	
 			}
 		}
+		
+		private void WriteDeclarationReplacer(StringBuilder sb, Entry entry)
+		{
+			int paramIdx = 0;
+			int replaceIdx = 0;
+			int paramCount = entry.ParamCount;
+			int[] locations = entry.ReplaceIndexes.ToArray();
+			string[] p = entry.Params;
+			sb.Append("$1$2 ");
+			string tag = entry.ReturnTag;
+			if (!(tag is null))
+			{
+				sb.Append(tag);
+				sb.Append(":");
+			}
+			tag = entry.TagName;
+			sb.Append("$3");
+			sb.Append(entry.FunctionName);
+			sb.Append("(");
+			while (replaceIdx < locations.Length)
+			{
+				if (paramIdx != 0)
+				{
+					sb.Append(" ");
+				}
+				if (paramIdx == locations[replaceIdx])
+				{
+					++replaceIdx;
+					// Output the replacement scanner.
+					if (IsConst(p[paramIdx]))
+					{
+						sb.Append("const ");
+					}
+					if (IsRef(p[paramIdx]))
+					{
+						sb.Append("&");
+					}
+					sb.Append(tag);
+					sb.Append(":$");
+					sb.Append(paramIdx + 4);
+					string def = GetDefaultValue(p[paramIdx]);
+					if (!(def is null))
+					{
+						sb.Append(" = ");
+						sb.Append(def);
+					}
+				}
+				else
+				{
+					// Output the default scanner.
+					sb.Append("$");
+					sb.Append(paramIdx + 4);
+				}
+				++paramIdx;
+				if (paramIdx == paramCount)
+				{
+					// Output a `)`.
+					sb.Append(")");
+				}
+				else
+				{
+					// Output a `,`.
+					sb.Append(",");
+				}	
+			}
+		}
 
 		public void Dump()
 		{
@@ -215,6 +291,8 @@ namespace Upgrade
 			foreach (var entry in Generators)
 			{
 				WriteDeclarationScanner(sb, entry);
+				sb.Append("\n");
+				WriteDeclarationReplacer(sb, entry);
 				sb.Append("\n\n");
 			}
 			System.Console.WriteLine(sb.ToString());
