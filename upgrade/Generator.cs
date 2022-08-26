@@ -71,13 +71,23 @@ namespace Upgrade
 
 		// Does this declaration have a return tag?
 		[JsonIgnore()]
-		public bool ReturnTag
+		public string ReturnTag
 		{
 			get
 			{
 				// This regex is simple because we control the input so can be strict.
 				var regex = new PcreRegex("(?:native|stock) (\\w+\\:)?");
-				return !(regex.Match(Code).Groups[1] is null);
+				return regex.Match(Code).Groups[1];
+			}
+		}
+		
+		// Does this declaration have a return tag?
+		[JsonIgnore()]
+		public bool HasReturnTag
+		{
+			get
+			{
+				return ReturnTag != "";
 			}
 		}
 
