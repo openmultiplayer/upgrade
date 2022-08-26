@@ -97,28 +97,26 @@ namespace CallbackUpgrade
 			// This does things the slow way, with a replacement function and a second regex call
 			// inside it.  This is so we can report accurately.
 			List<Diff> ret = new List<Diff>();
-			using (StreamReader fhnd = File.OpenText(name))
+			using StreamReader fhnd = File.OpenText(name);
+			string contents = fhnd.ReadToEnd();
+			foreach (var rep in Replacements)
 			{
-				string contents = fhnd.ReadToEnd();
-				foreach (var rep in Replacements)
+				// Now we go for the most efficient scanning method we can (based on very little
+				// reading of the documentation).  Each replacement is done separately.
+				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
+				contents = regex.Replace(contents, (match) =>
 				{
-					// Now we go for the most efficient scanning method we can (based on very little
-					// reading of the documentation).  Each replacement is done separately.
-					var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
-					contents = regex.Replace(contents, (match) =>
-					{
-						int line = GetLineNumber(contents, match.Index);
-						string from = match.Value;
-						string to = regex.Replace(from, rep.To);
-						ret.Add(new Diff {
-							Description = rep.Description,
-							Line = line,
-							From = from,
-							To = to
-						});
-						return to;
+					int line = GetLineNumber(contents, match.Index);
+					string from = match.Value;
+					string to = regex.Replace(from, rep.To);
+					ret.Add(new Diff {
+						Description = rep.Description,
+						Line = line,
+						From = from,
+						To = to
 					});
-				}
+					return to;
+				});
 			}
 			// Returns a list of the replacements to be made.
 			return ret;
@@ -127,6 +125,17 @@ namespace CallbackUpgrade
 		public int Replace(string name)
 		{
 			// Actually does the replacements.
+			List<Diff> ret = new List<Diff>();
+			using StreamReader fhnd = File.OpenText(name);
+			string contents = fhnd.ReadToEnd();
+			foreach (var rep in Replacements)
+			{
+				// Now we go for the most efficient scanning method we can (based on very little
+				// reading of the documentation).  Each replacement is done separately.
+				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
+				contents = regex.Replace(contents, rep.To);
+			}
+			// It turns out that counting the replacements is hard when we want to be fast.
 			return 0;
 		}
 	}

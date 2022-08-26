@@ -80,19 +80,21 @@ namespace CallbackUpgrade
 					}
 					else
 					{
-						int diffs = scanner.Replace(file);
-						switch (diffs)
-						{
-						case 0:
-							Console.WriteLine("  No replacements made.");
-							break;
-						case 1:
-							Console.WriteLine("  1 replacement made.");
-							break;
-						default:
-							Console.WriteLine("  " + diffs + " replacements made.");
-							break;
-						}
+						scanner.Replace(file);
+						Console.WriteLine("  Done.");
+						//int diffs = scanner.Replace(file);
+						//switch (diffs)
+						//{
+						//case 0:
+						//	Console.WriteLine("  No replacements made.");
+						//	break;
+						//case 1:
+						//	Console.WriteLine("  1 replacement made.");
+						//	break;
+						//default:
+						//	Console.WriteLine("  " + diffs + " replacements made.");
+						//	break;
+						//}
 					}
 					Console.WriteLine("");
 				}
