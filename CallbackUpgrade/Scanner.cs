@@ -92,7 +92,7 @@ namespace CallbackUpgrade
 			return count;
 		}
 
-		public Diff[] Report(string name)
+		public IEnumerable<Diff> Report(string name)
 		{
 			// This does things the slow way, with a replacement function and a second regex call
 			// inside it.  This is so we can report accurately.
@@ -121,7 +121,7 @@ namespace CallbackUpgrade
 				}
 			}
 			// Returns a list of the replacements to be made.
-			return ret.ToArray();
+			return ret;
 		}
 
 		public int Replace(string name)

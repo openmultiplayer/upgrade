@@ -58,8 +58,8 @@ namespace CallbackUpgrade
 					Console.WriteLine("");
 					if (report)
 					{
-						Diff[] diffs = scanner.Report(file);
-						switch (diffs.Length)
+						IOrderedEnumerable<Diff> diffs = scanner.Report(file).OrderBy((d) => d.Line);
+						switch (diffs.Count())
 						{
 						case 0:
 							Console.WriteLine("  No replacements found.");
@@ -68,7 +68,7 @@ namespace CallbackUpgrade
 							Console.WriteLine("  1 replacement found:\n");
 							break;
 						default:
-							Console.WriteLine("  " + diffs.Length + " replacements found:\n");
+							Console.WriteLine("  " + diffs.Count() + " replacements found:\n");
 							break;
 						}
 						// How many lines the output has grown or shrunk by.
