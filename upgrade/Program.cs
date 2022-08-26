@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace CallbackUpgrade
+namespace Upgrade
 {
 	class Program
 	{
@@ -107,6 +107,53 @@ namespace CallbackUpgrade
 			}
 		}
 
+		static void RunGenerate(string[] args)
+		{
+			Generator generator;
+			using (StreamReader fhnd = File.OpenText("_generate.json"))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				generator = (Generator)serializer.Deserialize(fhnd, typeof(Generator));
+			}
+		}
+
+		static void RunScan(string[] args)
+		{
+			string file = ArgOrDefault(args, "--scans", "upgrade.json");
+			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
+			bool report = args.Contains("--report");
+			string directory = Path.GetFullPath(args.Last());
+			if (!Directory.Exists(directory))
+			{
+				Console.WriteLine("\"" + directory + "\" is not a directory.");
+				return;
+			}
+			Scanner defines;
+			Scanner scanners;
+			// Get generic shared defines.
+			using (StreamReader fhnd = File.OpenText("_define.json"))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				defines = (Scanner)serializer.Deserialize(fhnd, typeof(Scanner));
+			}
+			// Get defines specific to this file.
+			using (StreamReader fhnd = File.OpenText(file + ".json"))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				scanners = (Scanner)serializer.Deserialize(fhnd, typeof(Scanner));
+			}
+			// Merge them, preferring specific ones over generic ones.
+			foreach (var kv in defines.Defines)
+			{
+				scanners.Defines.TryAdd(kv.Key, kv.Value);
+			}
+			scanners.UpdateDefines();
+			// Descend.
+			List<Task> tasks = new List<Task>();
+			ScanDir(directory, types, scanners, report, true, tasks);
+			Task.WaitAll(tasks.ToArray());
+		}
+
 		static void Main(string[] args)
 		{
 			if (args.Length == 0 || args.Contains("--help"))
@@ -123,41 +170,15 @@ namespace CallbackUpgrade
 				Console.WriteLine("  --types types - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("  --help - Show this message and exit.");
 				Console.WriteLine("  directory - Root directory in which to run the scan.");
-				return;
 			}
-			string file = ArgOrDefault(args, "--scans", "upgrade.json");
-			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
-			bool report = args.Contains("--report");
-			string directory = Path.GetFullPath(args.Last());
-			if (!Directory.Exists(directory))
+			else if (args.Contains("--generate"))
 			{
-				Console.WriteLine("\"" + directory + "\" is not a directory.");
-				return;
+				RunGenerate(args);
 			}
-			Scanner defines;
-			Scanner scanners;
-			// Get generic shared defines.
-			using (StreamReader fhnd = File.OpenText("_defines.json"))
+			else
 			{
-				JsonSerializer serializer = new JsonSerializer();
-				defines = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
-			}
-			// Get defines specific to this file.
-			using (StreamReader fhnd = File.OpenText(file + ".json"))
-			{
-				JsonSerializer serializer = new JsonSerializer();
-				scanners = (Scanner)serializer.Deserialize(fhnd, typeof (Scanner));
-			}
-			// Merge them, preferring specific ones over generic ones.
-			foreach (var kv in defines.Defines)
-			{
-				scanners.Defines.TryAdd(kv.Key, kv.Value);
-			}
-			scanners.UpdateDefines();
-			// Descend.
-			List<Task> tasks = new List<Task>();
-			ScanDir(directory, types, scanners, report, true, tasks);
-			Task.WaitAll(tasks.ToArray());
+				RunScan(args);
+			}	
 		}
 	}
 }

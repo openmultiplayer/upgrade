@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CallbackUpgrade
+namespace Upgrade
 {
 	class Replacement
 	{

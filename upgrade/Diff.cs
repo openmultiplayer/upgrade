@@ -1,4 +1,4 @@
-﻿namespace CallbackUpgrade
+﻿namespace Upgrade
 {
 	class Diff
 	{

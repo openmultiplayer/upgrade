@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CallbackUpgrade
+namespace Upgrade
 {
 	class Scanner
 	{
