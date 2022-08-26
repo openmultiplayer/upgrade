@@ -83,6 +83,32 @@ namespace Upgrade
 		
 		// Does this declaration have a return tag?
 		[JsonIgnore()]
+		public string[] Params
+		{
+			get
+			{
+				int start = Code.IndexOf('(') + 1;
+				return Code.Substring(start, Code.Length - start - 1).Split(',');
+			}
+		}
+		
+		// Does this declaration have a return tag?
+		[JsonIgnore()]
+		public int ParamCount
+		{
+			get
+			{
+				string[] p = Params;
+				if (p.Length == 1 && p[0].Trim() == "")
+				{
+					return 0;
+				}
+				return p.Length;
+			}
+		}
+		
+		// Does this declaration have a return tag?
+		[JsonIgnore()]
 		public bool HasReturnTag
 		{
 			get
@@ -127,6 +153,38 @@ namespace Upgrade
 	{
 		[JsonProperty("generators")]
 		public Entry[] Generators { get; set; }
+
+		private void WriteDeclarationScanner(StringBuilder sb, Entry entry)
+		{
+			int paramIdx = 0;
+			int replaceIdx = 0;
+			int paramCount = entry.ParamCount;
+			int[] locations = entry.ReplaceIndexes.ToArray();
+			while (replaceIdx < locations.Length)
+			{
+				if (paramIdx == locations[replaceIdx])
+				{
+					++replaceIdx;
+					// Output the replacement scanner.
+				}
+				else
+				{
+					// Output the default scanner.
+					sb.Append("\\\\s*((?&parameter))");
+				}
+				++paramIdx;
+				if (paramIdx == paramCount)
+				{
+					// Output a `)`.
+					sb.Append("\\\\s*\\\\)");
+				}
+				else
+				{
+					// Output a `,`.
+					sb.Append("\\\\s*,");
+				}	
+			}
+		}
 
 		public Generator()
 		{
