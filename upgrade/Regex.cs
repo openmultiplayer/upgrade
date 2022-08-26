@@ -51,14 +51,7 @@ namespace Upgrade
 				{
 					var groupName = replacementPattern.Substring(startIdx + 1, endIdx == -1 ? idx - startIdx - 1 : endIdx - startIdx - 1);
 					var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
-					if (int.TryParse(groupName, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
-					{
-						ret = new IndexedGroupPart(groupIndex, fallback, trueBranch, falseBranch);
-					}
-					else
-					{
-						ret = new NamedGroupPart(groupName, fallback, trueBranch, falseBranch);
-					}
+					ret = new NamedGroupPart(groupName, fallback, trueBranch, falseBranch);
 					++idx;
 				}
 				else
@@ -182,7 +175,7 @@ namespace Upgrade
 
 							if (int.TryParse(groupIndexString, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
 							{
-								parts.Add(new IndexedGroupPart(groupIndex, fallback, null, null));
+								parts.Add(new IndexedGroupPart(groupIndex, fallback));
 								break;
 							}
 
@@ -260,19 +253,15 @@ namespace Upgrade
 
 		private sealed class IndexedGroupPart : ReplacementPart
 		{
-			public static readonly IndexedGroupPart FullMatch = new IndexedGroupPart(0, null, null, null);
+			public static readonly IndexedGroupPart FullMatch = new IndexedGroupPart(0, null);
 
 			private readonly int _index;
 			private readonly ReplacementPart? _fallback;
-			private readonly ReplacementPart? _true;
-			private readonly ReplacementPart? _false;
 
-			public IndexedGroupPart(int index, ReplacementPart? fallback, ReplacementPart? trueBranch, ReplacementPart? falseBranch)
+			public IndexedGroupPart(int index, ReplacementPart? fallback)
 			{
 				_index = index;
 				_fallback = fallback;
-				_true = trueBranch;
-				_false = falseBranch;
 			}
 
 			public override void Append(PcreMatch match, StringBuilder sb)
@@ -280,12 +269,7 @@ namespace Upgrade
 				if (match.TryGetGroup(_index, out var group))
 				{
 					if (group.Success)
-						if (_true is null)
-							sb.Append(Subject(match), group.Index, group.Length);
-						else
-							_true.Append(match, sb);
-					else
-						_false?.Append(match, sb);
+						sb.Append(Subject(match), group.Index, group.Length);
 				}
 				else
 				{
