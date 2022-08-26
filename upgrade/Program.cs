@@ -17,11 +17,11 @@ namespace CallbackUpgrade
 
 		private static string MakeDiff(Diff diff, ref int change)
 		{
-			string from = diff.From.Replace("\n", "\n-");
-			string to = diff.To.Replace("\n", "\n+");
+			string from = diff.From.Replace("\n", "\n    -").Replace("\t", "    ");
+			string to = diff.To.Replace("\n", "\n    +").Replace("\t", "    ");
 			int ilines = CountLines(from);
 			int olines = CountLines(to);
-			StringBuilder sb = new StringBuilder("@@ -");
+			StringBuilder sb = new StringBuilder("    @@ -");
 			sb.Append(diff.Line);
 			sb.Append(',');
 			sb.Append(ilines);
@@ -31,9 +31,9 @@ namespace CallbackUpgrade
 			sb.Append(olines);
 			sb.Append(" @@ ");
 			sb.Append(diff.Description);
-			sb.Append("\n-");
+			sb.Append("\n    -");
 			sb.Append(from);
-			sb.Append("\n+");
+			sb.Append("\n    +");
 			sb.Append(to);
 			change = change + olines - ilines;
 			return sb.ToString();
@@ -62,17 +62,9 @@ namespace CallbackUpgrade
 					if (report)
 					{
 						IOrderedEnumerable<Diff> diffs = scanner.Report(file).OrderBy((d) => d.Line);
-						switch (diffs.Count())
+						if (diffs.Count() == 0)
 						{
-						case 0:
-							Console.WriteLine("  No replacements found.");
-							break;
-						case 1:
-							Console.WriteLine("  1 replacement found:\n");
-							break;
-						default:
-							Console.WriteLine("  " + diffs.Count() + " replacements found:\n");
-							break;
+							Console.WriteLine("    No replacements found.");
 						}
 						// How many lines the output has grown or shrunk by.
 						int change = 0;
