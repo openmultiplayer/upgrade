@@ -260,7 +260,7 @@
 		{
 			"description": "Add `const` to `SetVehicleNumberPlate`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?SetVehicleNumberPlate\\s*\\(\\s*((?&parameter))\\s*,\\s*(?:const\\s+)?((?&nonconst))\\s*\\)",
-			"to": "$1$2 $3SetVehicleNumberPlate($4, const $5)"
+			"to": "$1$2 $3SetVehicleNumberPlate(${4:+yes:no}, const $5)"
 		}
 	]
 }

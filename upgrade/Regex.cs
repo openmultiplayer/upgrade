@@ -10,6 +10,74 @@ namespace Upgrade
 {
 	internal static class ReplacementPattern
 	{
+		private static ReplacementPart ParseNestedGroup(string replacementPattern, ref int idx)
+		{
+			ReplacementPart ret;
+	
+			// Call this initially with `--idx`.
+			if (replacementPattern[idx] == '$')
+			{
+				// Group match.  This doesn't do the full group parse currently.
+				var startIdx = idx + 1;
+				var endIdx = -1;
+				ReplacementPart trueBranch = null;
+				ReplacementPart falseBranch = null;
+				while (idx < replacementPattern.Length && replacementPattern[idx] != '}')
+				{
+					// Parse `${5:+true:${nesting}}` syntax.
+					// Parse `${5:+true:false}` syntax.
+					if (replacementPattern[idx] == ':')
+					{
+						if (endIdx == -1)
+							endIdx = idx;
+						if (replacementPattern[idx + 1] == '+')
+						{
+							// True branch.
+							idx += 2;
+							trueBranch = ParseNestedGroup(replacementPattern, ref idx);
+						}
+						else
+						{
+							// False branch.
+							idx += 2;
+							falseBranch = ParseNestedGroup(replacementPattern, ref idx);
+						}
+					}
+					else
+						++idx;
+				}
+
+				if (idx < replacementPattern.Length && replacementPattern[idx] == '}' && idx > startIdx + 1)
+				{
+					var groupName = replacementPattern.Substring(startIdx + 1, endIdx == -1 ? idx - startIdx - 1 : endIdx - startIdx - 1);
+					var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
+					if (int.TryParse(groupName, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
+					{
+						ret = new IndexedGroupPart(groupIndex, fallback);
+					}
+					else
+					{
+						ret = new NamedGroupPart(groupName, fallback);
+					}
+					++idx;
+				}
+				else
+				{
+					ret = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 1);
+				}
+			}
+			else
+			{
+				// Literal, ended by `:` or `}`.
+				var startIdx = idx;
+				while (idx < replacementPattern.Length && replacementPattern[idx] != '}' && replacementPattern[idx] != ':')
+					++idx;
+				ret = new LiteralPart(replacementPattern, startIdx, idx - startIdx);
+			}
+
+			return ret;
+		}
+
 		public static Func<PcreMatch, string> Parse(string replacementPattern)
 		{
 			if (replacementPattern == null)
