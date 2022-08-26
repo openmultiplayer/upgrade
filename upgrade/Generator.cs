@@ -249,6 +249,50 @@ namespace Upgrade
 			}
 		}
 		
+		private void WriteUseReplacer(StringBuilder sb, Entry entry)
+		{
+			int paramIdx = 0;
+			int matchIdx = 2;
+			int replaceIdx = 0;
+			int paramCount = entry.ParamCount;
+			int[] locations = entry.ReplaceIndexes.ToArray();
+			sb.Append("$1");
+			sb.Append(entry.FunctionName);
+			sb.Append("(");
+			while (paramIdx != paramCount)
+			{
+				if (replaceIdx != locations.Length && paramIdx == locations[replaceIdx])
+				{
+					++replaceIdx;
+					if (paramIdx != 0)
+					{
+						// Output a `)`.
+						sb.Append(' ');
+					}
+					// Output the enum replacement.
+					matchIdx = WriteEnumOutput(sb, entry, matchIdx);
+				}
+				else
+				{
+					// Output the default replacement.
+					sb.Append('$');
+					sb.Append(matchIdx);
+					++matchIdx;
+				}
+				++paramIdx;
+				if (paramIdx == paramCount)
+				{
+					// Output a `)`.
+					sb.Append(")");
+				}
+				else
+				{
+					// Output a `,`.
+					sb.Append(",");
+				}
+			}
+		}
+		
 		private void WriteDeclarationScanner(StringBuilder sb, Entry entry)
 		{
 			int paramIdx = 0;
@@ -369,6 +413,8 @@ namespace Upgrade
 				WriteDeclarationReplacer(sb, entry);
 				sb.Append("\n");
 				WriteUseScanner(sb, entry);
+				sb.Append("\n");
+				WriteUseReplacer(sb, entry);
 				sb.Append("\n\n");
 			}
 			System.Console.WriteLine(sb.ToString());
