@@ -93,7 +93,14 @@ namespace Upgrade
 							{
 								var groupName = replacementPattern.Substring(startIdx + 1, idx - startIdx - 1);
 								var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
-								parts.Add(new NamedGroupPart(groupName, fallback));
+								if (int.TryParse(groupName, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
+								{
+									parts.Add(new IndexedGroupPart(groupIndex, fallback));
+								}
+								else
+								{
+									parts.Add(new NamedGroupPart(groupName, fallback));
+								}
 								++idx;
 								break;
 							}
