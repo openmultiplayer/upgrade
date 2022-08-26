@@ -53,11 +53,11 @@ namespace Upgrade
 					var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
 					if (int.TryParse(groupName, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
 					{
-						ret = new IndexedGroupPart(groupIndex, fallback);
+						ret = new IndexedGroupPart(groupIndex, fallback, trueBranch, falseBranch);
 					}
 					else
 					{
-						ret = new NamedGroupPart(groupName, fallback);
+						ret = new NamedGroupPart(groupName, fallback, trueBranch, falseBranch);
 					}
 					++idx;
 				}
@@ -182,7 +182,7 @@ namespace Upgrade
 
 							if (int.TryParse(groupIndexString, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
 							{
-								parts.Add(new IndexedGroupPart(groupIndex, fallback));
+								parts.Add(new IndexedGroupPart(groupIndex, fallback, null, null));
 								break;
 							}
 
@@ -260,15 +260,19 @@ namespace Upgrade
 
 		private sealed class IndexedGroupPart : ReplacementPart
 		{
-			public static readonly IndexedGroupPart FullMatch = new IndexedGroupPart(0, null);
+			public static readonly IndexedGroupPart FullMatch = new IndexedGroupPart(0, null, null, null);
 
 			private readonly int _index;
 			private readonly ReplacementPart? _fallback;
+			private readonly ReplacementPart? _true;
+			private readonly ReplacementPart? _false;
 
-			public IndexedGroupPart(int index, ReplacementPart? fallback)
+			public IndexedGroupPart(int index, ReplacementPart? fallback, ReplacementPart? trueBranch, ReplacementPart? falseBranch)
 			{
 				_index = index;
 				_fallback = fallback;
+				_true = trueBranch;
+				_false = falseBranch;
 			}
 
 			public override void Append(PcreMatch match, StringBuilder sb)
@@ -295,11 +299,15 @@ namespace Upgrade
 			private readonly string _name;
 			private readonly int _index;
 			private readonly ReplacementPart? _fallback;
+			private readonly ReplacementPart? _true;
+			private readonly ReplacementPart? _false;
 
-			public NamedGroupPart(string name, ReplacementPart? fallback)
+			public NamedGroupPart(string name, ReplacementPart? fallback, ReplacementPart? trueBranch, ReplacementPart? falseBranch)
 			{
 				_name = name;
 				_fallback = fallback;
+				_true = trueBranch;
+				_false = falseBranch;
 
 				if (!int.TryParse(name, NumberStyles.None, CultureInfo.InvariantCulture, out _index))
 					_index = -1;
