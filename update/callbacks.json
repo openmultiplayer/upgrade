@@ -43,7 +43,8 @@
 		/*              */
 		/* DECLARATIONS */
 		/*              */
-		"publics": "forward\\s+public|forward|public|hook\\s+public|hook\\s+callback|hook|HOOK_PUBLIC__|HOOK_CALLBACK__|HOOK__|@hook\\s*(?&parameterlist)",
+		"publics": "forward\\s+public|forward|public|hook\\s+public|hook\\s+callback|hook|HOOK__\\s+public|HOOK__\\s+callback|HOOK_PUBLIC__|HOOK_CALLBACK__|HOOK__|@hook\\s*(?&parameterlist)",
+		"stocks": "stock|native|hook\\s+stock|hook\\s+native|hook\\s+function|HOOK__\\s+stock|HOOK__\\s+native|HOOK__\\s+function|HOOK_STOCK__|HOOK_FUNCTION__|HOOK_NATIVE__|@hook\\s*(?&parameterlist)",
 		/* This is unusual in that it contains trailing whitespace, most defines don't. */
 		"start": "^[ \t]*"
 	},
