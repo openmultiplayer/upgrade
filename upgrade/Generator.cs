@@ -77,7 +77,8 @@ namespace Upgrade
 			{
 				// This regex is simple because we control the input so can be strict.
 				var regex = new PcreRegex("(?:native|stock) (\\w+\\:)?");
-				return regex.Match(Code).Groups[1];
+				string ret = regex.Match(Code).Groups[1].ToString().Trim();
+				return ret == "" ? null : ret.Substring(0, ret.Length - 1);
 			}
 		}
 		
@@ -113,7 +114,7 @@ namespace Upgrade
 		{
 			get
 			{
-				return ReturnTag != "";
+				return !(ReturnTag is null);
 			}
 		}
 
@@ -170,12 +171,24 @@ namespace Upgrade
 			int replaceIdx = 0;
 			int paramCount = entry.ParamCount;
 			int[] locations = entry.ReplaceIndexes.ToArray();
+			sb.Append("((?&start))((?&stocks))");
+			string tag = entry.ReturnTag;
+			if (!(tag is null))
+			{
+				sb.Append("\\\\s+");
+				sb.Append(tag);
+				sb.Append("\\\\s*:\\\\s*");
+			}
+			sb.Append("((?&symbol))?");
+			sb.Append(entry.FunctionName);
+			sb.Append("\\\\s*\\\\(");
 			while (replaceIdx < locations.Length)
 			{
 				if (paramIdx == locations[replaceIdx])
 				{
 					++replaceIdx;
 					// Output the replacement scanner.
+					sb.Append("\\\\s*(?:(?&tag)\\\\s*)?((?&symbol))(?:\\\\s*=\\\\s*(?&expression))?");
 				}
 				else
 				{
