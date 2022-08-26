@@ -17,8 +17,10 @@ namespace CallbackUpgrade
 
 		private static string MakeDiff(Diff diff, ref int change)
 		{
-			int ilines = CountLines(diff.From);
-			int olines = CountLines(diff.To);
+			string from = diff.From.Replace("\n", "\n-");
+			string to = diff.To.Replace("\n", "\n+");
+			int ilines = CountLines(from);
+			int olines = CountLines(to);
 			StringBuilder sb = new StringBuilder("@@ -");
 			sb.Append(diff.Line);
 			sb.Append(',');
@@ -30,9 +32,9 @@ namespace CallbackUpgrade
 			sb.Append(" @@ ");
 			sb.Append(diff.Description);
 			sb.Append("\n-");
-			sb.Append(diff.From.Replace("\n", "\n-"));
+			sb.Append(from);
 			sb.Append("\n+");
-			sb.Append(diff.To.Replace("\n", "\n+"));
+			sb.Append(to);
 			change = change + olines - ilines;
 			return sb.ToString();
 		}

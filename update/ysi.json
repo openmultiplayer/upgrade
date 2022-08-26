@@ -37,8 +37,9 @@
 		/* Be careful with this, it is untested against expression parts, which also contain `>`. */
 		"anglebrackets": "\\<(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\>",
 		"parameter": "(?:const\\s+)?(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
-		"const": "const\\s+(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
-		"nonconst": "(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
+		"const": "const\\s+(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
+		"nonconst": "(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
+		"untagged": "(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
 		/* Three types - at least one named parameter, only `...`, and nothing. */
 		"parameterlist": "\\(\\s*(?&parameter)\\s*(?:,\\s*(?&parameter)\\s*)*(?:,\\s*(?&varargs)\\s*)?\\)|\\(\\s*(?&varargs)\\s*\\)|\\(\\s*\\)",
 		"declaration": "(?&tag)?\\s*(?&symbol)",
