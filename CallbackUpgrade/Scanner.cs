@@ -126,15 +126,19 @@ namespace CallbackUpgrade
 		{
 			// Actually does the replacements.
 			List<Diff> ret = new List<Diff>();
-			using StreamReader fhnd = File.OpenText(name);
-			string contents = fhnd.ReadToEnd();
-			foreach (var rep in Replacements)
+			string contents = "";
+			using (StreamReader fhnd = File.OpenText(name))
 			{
-				// Now we go for the most efficient scanning method we can (based on very little
-				// reading of the documentation).  Each replacement is done separately.
-				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
-				contents = regex.Replace(contents, rep.To);
+				contents = fhnd.ReadToEnd();
+				foreach (var rep in Replacements)
+				{
+					// Now we go for the most efficient scanning method we can (based on very little
+					// reading of the documentation).  Each replacement is done separately.
+					var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
+					contents = regex.Replace(contents, rep.To);
+				}
 			}
+			File.WriteAllText(name, contents);
 			// It turns out that counting the replacements is hard when we want to be fast.
 			return 0;
 		}
