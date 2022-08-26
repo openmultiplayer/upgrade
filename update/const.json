@@ -38,7 +38,7 @@
 		"anglebrackets": "\\<(?&expressionpart)*(?:[,;](?&expressionpart)*)*\\>",
 		"parameter": "(?:const\\s+)?(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
 		"const": "const\\s+(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
-		"unconst": "(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
+		"nonconst": "(?:&\\s*)?(?:(?&tag)\\s*)?(?&symbol)(?:\\s*(?&squarebrackets))*(?:\\s*=\\s*(?&expression))?",
 		/* Three types - at least one named parameter, only `...`, and nothing. */
 		"parameterlist": "\\(\\s*(?&parameter)\\s*(?:,\\s*(?&parameter)\\s*)*(?:,\\s*(?&varargs)\\s*)?\\)|\\(\\s*(?&varargs)\\s*\\)|\\(\\s*\\)",
 		"declaration": "(?&tag)?\\s*(?&symbol)",
@@ -138,11 +138,6 @@
 			"to": "$1$2 $3GetPVarString($4, const $5,"
 		},
 		{
-			"description": "Add `const` to `GetPVarString`",
-			"from": "((?&start))((?&stocks))\\s+((?&symbol))?GetPVarString\\s*\\(\\s*((?&parameter))\\s*,\\s*(?:const\\s+)?((?&nonconst))\\s*,",
-			"to": "$1$2 $3GetPVarString($4, const $5,"
-		},
-		{
 			"description": "Add `const` to `SetPVarFloat`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?SetPVarFloat\\s*\\(\\s*((?&parameter))\\s*,\\s*(?:const\\s+)?((?&nonconst))\\s*,",
 			"to": "$1$2 $3SetPVarFloat($4, const $5,"
@@ -193,11 +188,6 @@
 			"to": "$1$2 $3SHA256_PassHash(const $4, const $5,"
 		},
 		{
-			"description": "Add `const` to `SHA256_PassHash`",
-			"from": "((?&start))((?&stocks))\\s+((?&symbol))?SHA256_PassHash\\s*\\(\\s*(?:const\\s+)?((?&nonconst))\\s*,\\s*(?:const\\s+)?((?&nonconst))\\s*,",
-			"to": "$1$2 $3SHA256_PassHash(const $4, const $5,"
-		},
-		{
 			"description": "Add `const` to `SetSVarInt`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?SetSVarInt\\s*\\(\\s*(?:const\\s+)?((?&nonconst))\\s*,",
 			"to": "$1$2 $3SetSVarInt(const $4,"
@@ -211,11 +201,6 @@
 			"description": "Add `const` to `SetSVarString`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?SetSVarString\\s*\\(\\s*(?:const\\s+)?((?&nonconst))\\s*,\\s*(?:const\\s+)?((?&nonconst))\\s*\\)",
 			"to": "$1$2 $3SetSVarString(const $4, const $5)"
-		},
-		{
-			"description": "Add `const` to `GetSVarString`",
-			"from": "((?&start))((?&stocks))\\s+((?&symbol))?GetSVarString\\s*\\(\\s*(?:const\\s+)?((?&nonconst))\\s*,",
-			"to": "$1$2 $3GetSVarString(const $4,"
 		},
 		{
 			"description": "Add `const` to `GetSVarString`",

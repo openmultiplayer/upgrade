@@ -2,7 +2,7 @@
   "profiles": {
     "CallbackUpgrade": {
       "commandName": "Project",
-      "commandLineArgs": "--scans ../../../ysi.json  ../../../tests"
+      "commandLineArgs": "--report --scans ../../../const.json  ../../../tests"
     }
   }
 }
