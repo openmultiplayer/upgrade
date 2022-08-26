@@ -152,58 +152,10 @@ namespace Upgrade
 						break;
 
 					case '{':
-						{
-							var startIdx = idx;
-							int depth = 1;
-							int trueBranch = -1;
-							int falseBranch = -1;
-							while (idx < replacementPattern.Length)
-							{
-								if (replacementPattern[idx] == '}')
-								{
-									if (--depth == 0)
-										break;
-								}
-								else
-								{
-									// Parse `${5:+true:${nesting}}` syntax.
-									if (replacementPattern[idx] == '{')
-										++depth;
-									// Parse `${5:+true:false}` syntax.
-									if (replacementPattern[idx] == ':' && depth == 1)
-									{
-										if (trueBranch == -1)
-										{
-											trueBranch = idx + 1;
-											if (replacementPattern[idx + 1] == '+')
-												trueBranch = idx + 2;
-										}
-										else if (falseBranch == -1)
-											falseBranch = idx + 1;
-									}
-									++idx;
-								}
-							}
-
-							if (idx < replacementPattern.Length && replacementPattern[idx] == '}' && idx > startIdx + 1 && depth == 0)
-							{
-								var groupName = replacementPattern.Substring(startIdx + 1, idx - startIdx - 1);
-								var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
-								if (int.TryParse(groupName, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
-								{
-									parts.Add(new IndexedGroupPart(groupIndex, fallback));
-								}
-								else
-								{
-									parts.Add(new NamedGroupPart(groupName, fallback));
-								}
-								++idx;
-								break;
-							}
-
-							parts.Add(new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 1));
-							break;
-						}
+						// Move back to the start `$`.
+						--idx;
+						parts.Add(ParseNestedGroup(replacementPattern, ref idx));
+						break;
 
 					case '0':
 					case '1':
