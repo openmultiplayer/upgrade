@@ -124,7 +124,7 @@ namespace CallbackUpgrade
 				Console.WriteLine("");
 				Console.WriteLine("Usage:");
 				Console.WriteLine("");
-				Console.WriteLine("    callback_upgrade [--report] [--scans file] [--types types] [--help] directory");
+				Console.WriteLine("    upgrade [--report] [--scans file] [--types types] [--help] directory");
 				Console.WriteLine("");
 				Console.WriteLine("  --report - Show changes to make, but don't make them.");
 				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `callback-upgrade.json`).");
