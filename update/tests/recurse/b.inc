@@ -18,3 +18,7 @@ HOOK_STOCK__ MyFunc(a, b, c, string:d[])
 {
 }
 
+timer Timer[100]()
+{
+}
+	
