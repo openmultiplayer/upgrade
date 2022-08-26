@@ -175,46 +175,76 @@ namespace Upgrade
 			return param.Contains('&');
 		}
 
-		private void WriteUseScanner(StringBuilder sb, Entry entry, int curIdx)
+		private int WriteEnumInput(StringBuilder sb, Entry entry, int baseIdx)
+		{
+			sb.Append("(?:");
+			foreach (var kv in entry.EnumValues)
+			{
+				sb.Append('(');
+				sb.Append(kv.Value);
+				sb.Append(")|");
+				++baseIdx;
+			}
+			sb.Append("((?&expression)))");
+			return baseIdx + 1;
+		}
+
+		private int WriteEnumOutput(StringBuilder sb, Entry entry, int baseIdx)
+		{
+			foreach (var kv in entry.EnumValues)
+			{
+				sb.Append("${");
+				sb.Append(baseIdx);
+				sb.Append(":+");
+				sb.Append(kv.Key);
+				sb.Append(':');
+				++baseIdx;
+			}
+			sb.Append('$');
+			sb.Append(baseIdx);
+			foreach (var kv in entry.EnumValues)
+			{
+				sb.Append('}');
+			}
+			return baseIdx + 1;
+		}
+
+		private void WriteUseScanner(StringBuilder sb, Entry entry)
 		{
 			int paramIdx = 0;
+			int matchIdx = 2;
 			int replaceIdx = 0;
 			int paramCount = entry.ParamCount;
 			int[] locations = entry.ReplaceIndexes.ToArray();
-			sb.Append("((?&start))((?&stocks))");
-			string tag = entry.ReturnTag;
-			if (!(tag is null))
-			{
-				sb.Append("\\\\s+");
-				sb.Append(tag);
-				sb.Append("\\\\s*:\\\\s*");
-			}
 			sb.Append("((?&symbol))?");
 			sb.Append(entry.FunctionName);
 			sb.Append("\\\\s*\\\\(");
-			while (replaceIdx < locations.Length)
+			while (paramIdx != paramCount)
 			{
-				if (paramIdx == locations[replaceIdx])
+				if (replaceIdx != locations.Length && paramIdx == locations[replaceIdx])
 				{
 					++replaceIdx;
 					// Output the replacement scanner.
-					sb.Append("\\\\s*(?:(?&tag)\\\\s*)?((?&symbol))(?:\\\\s*=\\\\s*(?&expression))?");
+					sb.Append("\\\\s*");
+					matchIdx = WriteEnumInput(sb, entry, matchIdx);
+					sb.Append("\\\\s*");
 				}
 				else
 				{
 					// Output the default scanner.
-					sb.Append("\\\\s*((?&parameter))");
+					sb.Append("((?&expression))");
+					++matchIdx;
 				}
 				++paramIdx;
 				if (paramIdx == paramCount)
 				{
 					// Output a `)`.
-					sb.Append("\\\\s*\\\\)");
+					sb.Append("\\\\)");
 				}
 				else
 				{
 					// Output a `,`.
-					sb.Append("\\\\s*,");
+					sb.Append(",");
 				}	
 			}
 		}
@@ -337,6 +367,8 @@ namespace Upgrade
 				WriteDeclarationScanner(sb, entry);
 				sb.Append("\n");
 				WriteDeclarationReplacer(sb, entry);
+				sb.Append("\n");
+				WriteUseScanner(sb, entry);
 				sb.Append("\n\n");
 			}
 			System.Console.WriteLine(sb.ToString());
