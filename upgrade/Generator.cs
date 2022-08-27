@@ -405,6 +405,12 @@ namespace Upgrade
 				sb.Append(tag);
 				sb.Append(":$");
 				sb.Append(matchIdx);
+				string def = GetDefaultValue(p[nextIdx]);
+				if (!(def is null))
+				{
+					sb.Append(" = ");
+					sb.Append(def);
+				}
 				++matchIdx;
 				paramIdx = nextIdx + 1;
 				++replaceIdx;

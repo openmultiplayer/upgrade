@@ -10,7 +10,7 @@
 		{
 			"description": "Add tags to `AddPlayerClass`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?AddPlayerClass\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){5})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3AddPlayerClass($4 WEAPON:$5,$6 WEAPON:$7,$8 WEAPON:$9$10"
+			"to": "$1$2 $3AddPlayerClass($4 WEAPON:$5 = WEAPON_FIST,$6 WEAPON:$7 = WEAPON_FIST,$8 WEAPON:$9 = WEAPON_FIST$10"
 		},
 		{
 			"description": "Add enums to `AddPlayerClass`",
@@ -20,7 +20,7 @@
 		{
 			"description": "Add tags to `AddPlayerClassEx`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?AddPlayerClassEx\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){6})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3AddPlayerClassEx($4 WEAPON:$5,$6 WEAPON:$7,$8 WEAPON:$9$10"
+			"to": "$1$2 $3AddPlayerClassEx($4 WEAPON:$5 = WEAPON_FIST,$6 WEAPON:$7 = WEAPON_FIST,$8 WEAPON:$9 = WEAPON_FIST$10"
 		},
 		{
 			"description": "Add enums to `AddPlayerClassEx`",
@@ -30,7 +30,7 @@
 		{
 			"description": "Add tags to `SetSpawnInfo`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&symbol))?SetSpawnInfo\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){7})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3SetSpawnInfo($4 WEAPON:$5,$6 WEAPON:$7,$8 WEAPON:$9$10"
+			"to": "$1$2 bool:$3SetSpawnInfo($4 WEAPON:$5 = WEAPON_FIST,$6 WEAPON:$7 = WEAPON_FIST,$8 WEAPON:$9 = WEAPON_FIST$10"
 		},
 		{
 			"description": "Add enums to `SetSpawnInfo`",
@@ -40,7 +40,7 @@
 		{
 			"description": "Add tags to `GetPlayerClass`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?GetPlayerClass\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){7})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3GetPlayerClass($4 &WEAPON:$5,$6 &WEAPON:$7,$8 &WEAPON:$9$10"
+			"to": "$1$2 $3GetPlayerClass($4 &WEAPON:$5 = WEAPON_FIST,$6 &WEAPON:$7 = WEAPON_FIST,$8 &WEAPON:$9 = WEAPON_FIST$10"
 		},
 		{
 			"description": "Add enums to `GetPlayerClass`",
@@ -50,7 +50,7 @@
 		{
 			"description": "Add tags to `EditPlayerClass`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?EditPlayerClass\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){7})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3EditPlayerClass($4 WEAPON:$5,$6 WEAPON:$7,$8 WEAPON:$9$10"
+			"to": "$1$2 $3EditPlayerClass($4 WEAPON:$5 = WEAPON_FIST,$6 WEAPON:$7 = WEAPON_FIST,$8 WEAPON:$9 = WEAPON_FIST$10"
 		},
 		{
 			"description": "Add enums to `EditPlayerClass`",
@@ -180,7 +180,7 @@
 		{
 			"description": "Add tags to `SetObjectMaterialText`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&symbol))?SetObjectMaterialText\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){3})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3SetObjectMaterialText($4 OBJECT_MATERIAL_SIZE:$5$6"
+			"to": "$1$2 bool:$3SetObjectMaterialText($4 OBJECT_MATERIAL_SIZE:$5 = OBJECT_MATERIAL_SIZE_256x128$6"
 		},
 		{
 			"description": "Add enums to `SetObjectMaterialText`",
@@ -190,7 +190,7 @@
 		{
 			"description": "Add tags to `SetPlayerObjectMaterialText`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&symbol))?SetPlayerObjectMaterialText\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){4})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3SetPlayerObjectMaterialText($4 OBJECT_MATERIAL_SIZE:$5$6"
+			"to": "$1$2 bool:$3SetPlayerObjectMaterialText($4 OBJECT_MATERIAL_SIZE:$5 = OBJECT_MATERIAL_SIZE_256x128$6"
 		},
 		{
 			"description": "Add enums to `SetPlayerObjectMaterialText`",
@@ -220,7 +220,7 @@
 		{
 			"description": "Add tags to `SetObjectMaterialText`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&symbol))?SetObjectMaterialText\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){9})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3SetObjectMaterialText($4 OBJECT_MATERIAL_TEXT_ALIGN:$5$6"
+			"to": "$1$2 bool:$3SetObjectMaterialText($4 OBJECT_MATERIAL_TEXT_ALIGN:$5 = OBJECT_MATERIAL_TEXT_ALIGN_LEFT$6"
 		},
 		{
 			"description": "Add enums to `SetObjectMaterialText`",
@@ -230,7 +230,7 @@
 		{
 			"description": "Add tags to `SetPlayerObjectMaterialText`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&symbol))?SetPlayerObjectMaterialText\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){10})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3SetPlayerObjectMaterialText($4 OBJECT_MATERIAL_TEXT_ALIGN:$5$6"
+			"to": "$1$2 bool:$3SetPlayerObjectMaterialText($4 OBJECT_MATERIAL_TEXT_ALIGN:$5 = OBJECT_MATERIAL_TEXT_ALIGN_LEFT$6"
 		},
 		{
 			"description": "Add enums to `SetPlayerObjectMaterialText`",
@@ -240,7 +240,7 @@
 		{
 			"description": "Add tags to `GetObjectMaterialText`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&symbol))?GetObjectMaterialText\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){11})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3GetObjectMaterialText($4 &OBJECT_MATERIAL_TEXT_ALIGN:$5$6"
+			"to": "$1$2 bool:$3GetObjectMaterialText($4 &OBJECT_MATERIAL_TEXT_ALIGN:$5 = OBJECT_MATERIAL_TEXT_ALIGN_LEFT$6"
 		},
 		{
 			"description": "Add enums to `GetObjectMaterialText`",
@@ -250,7 +250,7 @@
 		{
 			"description": "Add tags to `GetPlayerObjectMaterialText`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&symbol))?GetPlayerObjectMaterialText\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){12})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3GetPlayerObjectMaterialText($4 &OBJECT_MATERIAL_TEXT_ALIGN:$5$6"
+			"to": "$1$2 bool:$3GetPlayerObjectMaterialText($4 &OBJECT_MATERIAL_TEXT_ALIGN:$5 = OBJECT_MATERIAL_TEXT_ALIGN_LEFT$6"
 		},
 		{
 			"description": "Add enums to `GetPlayerObjectMaterialText`",
@@ -300,7 +300,7 @@
 		{
 			"description": "Add tags to `SetPlayerCameraLookAt`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?SetPlayerCameraLookAt\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){4})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3SetPlayerCameraLookAt($4 CAM_MOVE:$5$6"
+			"to": "$1$2 $3SetPlayerCameraLookAt($4 CAM_MOVE:$5 = CAMERA_CUT$6"
 		},
 		{
 			"description": "Add enums to `SetPlayerCameraLookAt`",
@@ -310,7 +310,7 @@
 		{
 			"description": "Add tags to `InterpolateCameraPos`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?InterpolateCameraPos\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){8})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3InterpolateCameraPos($4 CAM_MOVE:$5$6"
+			"to": "$1$2 $3InterpolateCameraPos($4 CAM_MOVE:$5 = CAMERA_CUT$6"
 		},
 		{
 			"description": "Add enums to `InterpolateCameraPos`",
@@ -320,7 +320,7 @@
 		{
 			"description": "Add tags to `InterpolateCameraLookAt`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?InterpolateCameraLookAt\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){8})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3InterpolateCameraLookAt($4 CAM_MOVE:$5$6"
+			"to": "$1$2 $3InterpolateCameraLookAt($4 CAM_MOVE:$5 = CAMERA_CUT$6"
 		},
 		{
 			"description": "Add enums to `InterpolateCameraLookAt`",
@@ -330,7 +330,7 @@
 		{
 			"description": "Add tags to `SetPlayerMapIcon`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?SetPlayerMapIcon\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){7})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3SetPlayerMapIcon($4 MAPICON:$5$6"
+			"to": "$1$2 $3SetPlayerMapIcon($4 MAPICON:$5 = MAPICON_LOCAL$6"
 		},
 		{
 			"description": "Add enums to `SetPlayerMapIcon`",
@@ -340,7 +340,7 @@
 		{
 			"description": "Add tags to `PlayerSpectatePlayer`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?PlayerSpectatePlayer\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){2})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3PlayerSpectatePlayer($4 SPECTATE_MODE:$5$6"
+			"to": "$1$2 $3PlayerSpectatePlayer($4 SPECTATE_MODE:$5 = SPECTATE_MODE_NORMAL$6"
 		},
 		{
 			"description": "Add enums to `PlayerSpectatePlayer`",
@@ -350,7 +350,7 @@
 		{
 			"description": "Add tags to `PlayerSpectateVehicle`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?PlayerSpectateVehicle\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){2})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3PlayerSpectateVehicle($4 SPECTATE_MODE:$5$6"
+			"to": "$1$2 $3PlayerSpectateVehicle($4 SPECTATE_MODE:$5 = SPECTATE_MODE_NORMAL$6"
 		},
 		{
 			"description": "Add enums to `PlayerSpectateVehicle`",
@@ -360,7 +360,7 @@
 		{
 			"description": "Add tags to `ClearAnimations`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?ClearAnimations\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3ClearAnimations($4 FORCE_SYNC:$5$6"
+			"to": "$1$2 $3ClearAnimations($4 FORCE_SYNC:$5 = SYNC_NONE$6"
 		},
 		{
 			"description": "Add enums to `ClearAnimations`",
@@ -370,7 +370,7 @@
 		{
 			"description": "Add tags to `ApplyAnimation`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?ApplyAnimation\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){9})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3ApplyAnimation($4 FORCE_SYNC:$5$6"
+			"to": "$1$2 $3ApplyAnimation($4 FORCE_SYNC:$5 = SYNC_NONE$6"
 		},
 		{
 			"description": "Add enums to `ApplyAnimation`",
@@ -540,7 +540,7 @@
 		{
 			"description": "Add tags to `Create3DTextLabel`",
 			"from": "((?&start))((?&stocks))\\s+(?:Text3D\\s*+:\\s*+)?((?&symbol))?Create3DTextLabel\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){7})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 Text3D:$3Create3DTextLabel($4 bool:$5$6"
+			"to": "$1$2 Text3D:$3Create3DTextLabel($4 bool:$5 = false$6"
 		},
 		{
 			"description": "Add enums to `Create3DTextLabel`",
@@ -550,7 +550,7 @@
 		{
 			"description": "Add tags to `CreatePlayer3DTextLabel`",
 			"from": "((?&start))((?&stocks))\\s+(?:PlayerText3D\\s*+:\\s*+)?((?&symbol))?CreatePlayer3DTextLabel\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){9})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 PlayerText3D:$3CreatePlayer3DTextLabel($4 bool:$5$6"
+			"to": "$1$2 PlayerText3D:$3CreatePlayer3DTextLabel($4 bool:$5 = false$6"
 		},
 		{
 			"description": "Add enums to `CreatePlayer3DTextLabel`",
@@ -570,7 +570,7 @@
 		{
 			"description": "Add tags to `CreateVehicle`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?CreateVehicle\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){8})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3CreateVehicle($4 bool:$5$6"
+			"to": "$1$2 $3CreateVehicle($4 bool:$5 = false$6"
 		},
 		{
 			"description": "Add enums to `CreateVehicle`",
@@ -580,7 +580,7 @@
 		{
 			"description": "Add tags to `AddStaticVehicleEx`",
 			"from": "((?&start))((?&stocks))\\s+((?&symbol))?AddStaticVehicleEx\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){8})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3AddStaticVehicleEx($4 bool:$5$6"
+			"to": "$1$2 $3AddStaticVehicleEx($4 bool:$5 = false$6"
 		},
 		{
 			"description": "Add enums to `AddStaticVehicleEx`",
@@ -609,5 +609,4 @@
 		}
 	]
 }
-
 
