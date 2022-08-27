@@ -11,12 +11,8 @@ namespace Upgrade
 	{
 		private Dictionary<string, string> defines_ = null;
 
-		public void UpdateDefines()
+		public string DebugDefines()
 		{
-			if (defines_ is null)
-			{
-				return;
-			}
 			// Construct the regex version of these defines.
 			StringBuilder sb = new StringBuilder("(?(DEFINE)");
 			foreach (var kv in defines_)
@@ -28,6 +24,26 @@ namespace Upgrade
 				sb.Append("\n  )");
 			}
 			sb.Append("\n)\n");
+			return sb.ToString();
+		}
+
+		public void UpdateDefines()
+		{
+			if (defines_ is null)
+			{
+				return;
+			}
+			// Construct the regex version of these defines.
+			StringBuilder sb = new StringBuilder("(?(DEFINE)");
+			foreach (var kv in defines_)
+			{
+				sb.Append("(?<");
+				sb.Append(kv.Key);
+				sb.Append(">");
+				sb.Append(kv.Value);
+				sb.Append(")");
+			}
+			sb.Append(")");
 			RegexDefine = sb.ToString();
 			if (replacements_ is null)
 			{
@@ -109,10 +125,10 @@ namespace Upgrade
 				if (debug)
 				{
 					System.Console.WriteLine("\nRunning:\n");
-					System.Console.WriteLine(RegexDefine + rep.From);
+					System.Console.WriteLine(DebugDefines() + rep.From);
 					System.Console.WriteLine("");
 				}
-				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
+				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.MultiLine);
 				var func = ReplacementPattern.Parse(rep.To);
 				contents = regex.Replace(contents, (match) =>
 				{
