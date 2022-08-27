@@ -405,18 +405,33 @@ namespace Upgrade
 
 		public void Dump()
 		{
-			var sb = new StringBuilder("");
+			var sb = new StringBuilder("{\n\t\"defines\":\n\t{\n\t},\n\t\"replacements\":\n\t[");
+			bool first = true;
 			foreach (var entry in Generators)
 			{
+				if (first)
+				{
+					first = false;
+				}
+				else
+				{
+					sb.Append(',');
+				}
+				sb.Append("\n\t\t{\n\t\t\t\"description\": \"Add tags to `");
+				sb.Append(entry.FunctionName);
+				sb.Append("`\",\n\t\t\t\"from\": \"");
 				WriteDeclarationScanner(sb, entry);
-				sb.Append("\n");
+				sb.Append("\",\n\t\t\t\"to\": \"");
 				WriteDeclarationReplacer(sb, entry);
-				sb.Append("\n");
+				sb.Append("\"\n\t\t},\n\t\t{\n\t\t\t\"description\": \"Add enums to `");
+				sb.Append(entry.FunctionName);
+				sb.Append("`\",\n\t\t\t\"from\": \"");
 				WriteUseScanner(sb, entry);
-				sb.Append("\n");
+				sb.Append("\",\n\t\t\t\"to\": \"");
 				WriteUseReplacer(sb, entry);
-				sb.Append("\n\n");
+				sb.Append("\"\n\t\t}");
 			}
+			sb.Append("\n\t]\n}\n\n");
 			System.Console.WriteLine(sb.ToString());
 		}
 
