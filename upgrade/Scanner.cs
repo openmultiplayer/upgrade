@@ -95,7 +95,7 @@ namespace Upgrade
 			return count;
 		}
 
-		public IEnumerable<Diff> Report(string name)
+		public IEnumerable<Diff> Report(string name, bool debug)
 		{
 			// This does things the slow way, with a replacement function and a second regex call
 			// inside it.  This is so we can report accurately.
@@ -106,6 +106,11 @@ namespace Upgrade
 			{
 				// Now we go for the most efficient scanning method we can (based on very little
 				// reading of the documentation).  Each replacement is done separately.
+				if (debug)
+				{
+					System.Console.WriteLine("\nRunning:\n");
+					System.Console.WriteLine(RegexDefine + rep.From);
+				}
 				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
 				var func = ReplacementPattern.Parse(rep.To);
 				contents = regex.Replace(contents, (match) =>

@@ -49,7 +49,7 @@ namespace Upgrade
 			return args[idx];
 		}
 
-		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse, List<Task> tasks)
+		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks)
 		{
 			foreach (var type in types)
 			{
@@ -61,7 +61,7 @@ namespace Upgrade
 					Console.WriteLine("");
 					if (report)
 					{
-						IOrderedEnumerable<Diff> diffs = scanner.Report(file).OrderBy((d) => d.Line);
+						IOrderedEnumerable<Diff> diffs = scanner.Report(file, debug != 0).OrderBy((d) => d.Line);
 						if (diffs.Count() == 0)
 						{
 							Console.WriteLine("    No replacements found.");
@@ -101,7 +101,7 @@ namespace Upgrade
 					DirectoryInfo info = new DirectoryInfo(dir);
 					if (!info.Attributes.HasFlag(FileAttributes.ReparsePoint))
 					{
-						ScanDir(dir, types, scanner, report, recurse, tasks);
+						ScanDir(dir, types, scanner, report, recurse, debug, tasks);
 					}
 				}
 			}
@@ -123,6 +123,7 @@ namespace Upgrade
 			string file = ArgOrDefault(args, "--scans", "upgrade.json");
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
+			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
 			string directory = Path.GetFullPath(args.Last());
 			if (!Directory.Exists(directory))
 			{
@@ -151,7 +152,7 @@ namespace Upgrade
 			scanners.UpdateDefines();
 			// Descend.
 			List<Task> tasks = new List<Task>();
-			ScanDir(directory, types, scanners, report, true, tasks);
+			ScanDir(directory, types, scanners, report, true, debug, tasks);
 			Task.WaitAll(tasks.ToArray());
 		}
 
