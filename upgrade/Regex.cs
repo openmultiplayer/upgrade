@@ -10,65 +10,140 @@ namespace Upgrade
 {
 	internal static class ReplacementPattern
 	{
-		private static ReplacementPart ParseNestedGroup(string replacementPattern, ref int idx)
+		private static ReplacementPart ParseDollar(string replacementPattern, ref int idx)
 		{
-			ReplacementPart ret;
-	
-			// Call this initially with `--idx`.
-			if (replacementPattern[idx] == '$')
+			++idx;
+			if (idx >= replacementPattern.Length)
 			{
-				// Group match.  This doesn't do the full group parse currently.
-				var startIdx = idx + 1;
-				var endIdx = -1;
-				ReplacementPart trueBranch = null;
-				ReplacementPart falseBranch = null;
-				while (idx < replacementPattern.Length && replacementPattern[idx] != '}')
+				return LiteralPart.Dollar;
+			}
+
+			switch (replacementPattern[idx])
+			{
+			case '$':
+				++idx;
+				return LiteralPart.Dollar;
+
+			case '&':
+				++idx;
+				return IndexedGroupPart.FullMatch;
+
+			case '`':
+				++idx;
+				return PreMatchPart.Instance;
+
+			case '\'':
+				++idx;
+				return PostMatchPart.Instance;
+
+			case '_':
+				++idx;
+				return FullInputPart.Instance;
+
+			case '+':
+				++idx;
+				return LastMatchedGroupPart.Instance;
+
+			case '{':
+				return ParseNestedGroup(replacementPattern, ref idx);
+
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
 				{
-					// Parse `${5:+true:${nesting}}` syntax.
-					// Parse `${5:+true:false}` syntax.
-					if (replacementPattern[idx] == ':')
-					{
-						if (endIdx == -1)
-							endIdx = idx;
-						if (replacementPattern[idx + 1] == '+')
-						{
-							// True branch.
-							idx += 2;
-							trueBranch = ParseNestedGroup(replacementPattern, ref idx);
-						}
-						else
-						{
-							// False branch.
-							idx += 1;
-							falseBranch = ParseNestedGroup(replacementPattern, ref idx);
-						}
-					}
-					else
+					var startIdx = idx;
+					while (idx < replacementPattern.Length && replacementPattern[idx] >= '0' && replacementPattern[idx] <= '9')
 						++idx;
+
+					var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 1);
+
+#if NETCOREAPP
+					var groupIndexString = replacementPattern.AsSpan(startIdx, idx - startIdx);
+#else
+							var groupIndexString = replacementPattern.Substring(startIdx, idx - startIdx);
+#endif
+
+					if (int.TryParse(groupIndexString, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
+					{
+						return new IndexedGroupPart(groupIndex, fallback);
+					}
+
+					return fallback;
 				}
 
-				if (idx < replacementPattern.Length && replacementPattern[idx] == '}' && idx > startIdx + 1)
+			default:
+				++idx;
+				return new LiteralPart(replacementPattern, idx - 1, 2);
+			}
+		}
+
+		private static ReplacementPart ParseText(string replacementPattern, ref int idx)
+		{
+			// Literal, ended by `:` or `}`.
+			var startIdx = idx;
+			while (idx < replacementPattern.Length && replacementPattern[idx] != '}' && replacementPattern[idx] != ':')
+				++idx;
+			return new LiteralPart(replacementPattern, startIdx, idx - startIdx);
+		}
+		
+		private static ReplacementPart ParseCondtional(string replacementPattern, ref int idx)
+		{
+			if (replacementPattern[idx] == '$')
+				return ParseDollar(replacementPattern, ref idx);
+			else
+				return ParseText(replacementPattern, ref idx);
+		}
+
+		private static ReplacementPart ParseNestedGroup(string replacementPattern, ref int idx)
+		{
+			// Group match.  This doesn't do the full group parse currently.
+			var startIdx = idx + 1;
+			var endIdx = -1;
+			ReplacementPart trueBranch = null;
+			ReplacementPart falseBranch = null;
+			while (idx < replacementPattern.Length && replacementPattern[idx] != '}')
+			{
+				// Parse `${5:+true:${nesting}}` syntax.
+				// Parse `${5:+true:false}` syntax.
+				if (replacementPattern[idx] == ':')
 				{
-					var groupName = replacementPattern.Substring(startIdx + 1, endIdx == -1 ? idx - startIdx - 1 : endIdx - startIdx - 1);
-					var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
-					ret = new NamedGroupPart(groupName, fallback, trueBranch, falseBranch);
-					++idx;
+					if (endIdx == -1)
+						endIdx = idx;
+					if (replacementPattern[idx + 1] == '+')
+					{
+						// True branch.
+						idx += 2;
+						trueBranch = ParseCondtional(replacementPattern, ref idx);
+					}
+					else
+					{
+						// False branch.
+						idx += 1;
+						falseBranch = ParseCondtional(replacementPattern, ref idx);
+					}
 				}
 				else
-				{
-					ret = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 1);
-				}
+					++idx;
+			}
+
+			if (idx < replacementPattern.Length && replacementPattern[idx] == '}' && idx > startIdx + 1)
+			{
+				var groupName = replacementPattern.Substring(startIdx + 1, endIdx == -1 ? idx - startIdx - 1 : endIdx - startIdx - 1);
+				var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 2);
+				++idx;
+				return new NamedGroupPart(groupName, fallback, trueBranch, falseBranch);
 			}
 			else
 			{
-				// Literal, ended by `:` or `}`.
-				var startIdx = idx;
-				while (idx < replacementPattern.Length && replacementPattern[idx] != '}' && replacementPattern[idx] != ':')
-					++idx;
-				ret = new LiteralPart(replacementPattern, startIdx, idx - startIdx);
+				return new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 1);
 			}
-
-			return ret;
 		}
 
 		public static Func<PcreMatch, string> Parse(string replacementPattern)
@@ -104,90 +179,7 @@ namespace Upgrade
 
 				if (replacementPattern[idx] == '$')
 				{
-					++idx;
-
-					if (idx >= replacementPattern.Length)
-					{
-						parts.Add(LiteralPart.Dollar);
-						break;
-					}
-
-					switch (replacementPattern[idx])
-					{
-					case '$':
-						parts.Add(LiteralPart.Dollar);
-						++idx;
-						break;
-
-					case '&':
-						parts.Add(IndexedGroupPart.FullMatch);
-						++idx;
-						break;
-
-					case '`':
-						parts.Add(PreMatchPart.Instance);
-						++idx;
-						break;
-
-					case '\'':
-						parts.Add(PostMatchPart.Instance);
-						++idx;
-						break;
-
-					case '_':
-						parts.Add(FullInputPart.Instance);
-						++idx;
-						break;
-
-					case '+':
-						parts.Add(LastMatchedGroupPart.Instance);
-						++idx;
-						break;
-
-					case '{':
-						// Move back to the start `$`.
-						--idx;
-						parts.Add(ParseNestedGroup(replacementPattern, ref idx));
-						break;
-
-					case '0':
-					case '1':
-					case '2':
-					case '3':
-					case '4':
-					case '5':
-					case '6':
-					case '7':
-					case '8':
-					case '9':
-						{
-							var startIdx = idx;
-							while (idx < replacementPattern.Length && replacementPattern[idx] >= '0' && replacementPattern[idx] <= '9')
-								++idx;
-
-							var fallback = new LiteralPart(replacementPattern, startIdx - 1, idx - startIdx + 1);
-
-#if NETCOREAPP
-							var groupIndexString = replacementPattern.AsSpan(startIdx, idx - startIdx);
-#else
-							var groupIndexString = replacementPattern.Substring(startIdx, idx - startIdx);
-#endif
-
-							if (int.TryParse(groupIndexString, NumberStyles.None, CultureInfo.InvariantCulture, out var groupIndex))
-							{
-								parts.Add(new IndexedGroupPart(groupIndex, fallback));
-								break;
-							}
-
-							parts.Add(fallback);
-							break;
-						}
-
-					default:
-						parts.Add(new LiteralPart(replacementPattern, idx - 1, 2));
-						++idx;
-						break;
-					}
+					parts.Add(ParseDollar(replacementPattern, ref idx));
 				}
 				else
 				{
