@@ -215,7 +215,7 @@
 		},
 		{
 			"enum": "enum bool:__bool { false, true }",
-			"code": "native SetTimerEx(const functionName[], interval, $:repeating, const specifiers[] = "", OPEN_MP_TAGS:...)"
+			"code": "native SetTimerEx(const functionName[], interval, $:repeating, const specifiers[] = \\\"\\\", OPEN_MP_TAGS:...)"
 		},
 		{
 			"enum": "enum bool:__bool { false, true }",
@@ -259,14 +259,4 @@
 		}
 	]
 }
-
-
-
-
-
-
-
-
-
-
 
