@@ -208,7 +208,65 @@
 		{
 			"enum": "enum VEHICLE_TYRE_STATUS:__VEHICLE_TYRE_STATUS { VEHICLE_TYRE_STATUS_FRONT_LEFT_POPPED = 8, VEHICLE_TYRE_STATUS_FRONT_RIGHT_POPPED = 2, VEHICLE_TYRE_STATUS_REAR_LEFT_POPPED = 4, VEHICLE_TYRE_STATUS_REAR_RIGHT_POPPED = 1, VEHICLE_TIRE_STATUS_FRONT_LEFT_POPPED = 8, VEHICLE_TIRE_STATUS_FRONT_RIGHT_POPPED = 2, VEHICLE_TIRE_STATUS_REAR_LEFT_POPPED = 4, VEHICLE_TIRE_STATUS_REAR_RIGHT_POPPED = 1, CARTYRE_FRONT_LEFT_POPPED = 8, CARTYRE_FRONT_RIGHT_POPPED = 2, CARTYRE_REAR_LEFT_POPPED = 4, CARTYRE_REAR_RIGHT_POPPED = 1, CARTIRE_FRONT_LEFT_POPPED = 8, CARTIRE_FRONT_RIGHT_POPPED = 2, CARTIRE_REAR_LEFT_POPPED = 4, CARTIRE_REAR_RIGHT_POPPED = 1 }",
 			"code": "native bool:UpdateVehicleDamageStatus(vehicleid, VEHICLE_PANEL_STATUS:panels, VEHICLE_DOOR_STATUS:doors, VEHICLE_LIGHT_STATUS:lights, $:tires)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native SetTimer(const functionName[], interval, $:repeating)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native SetTimerEx(const functionName[], interval, $:repeating, const specifiers[] = "", OPEN_MP_TAGS:...)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native Text3D:Create3DTextLabel(const text[], colour, Float:x, Float:y, Float:z, Float:drawDistance, virtualWorld, $:testLOS = false, OPEN_MP_TAGS:...)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native PlayerText3D:CreatePlayer3DTextLabel(playerid, const text[], colour, Float:x, Float:y, Float:z, Float:drawDistance, parentPlayerid = INVALID_PLAYER_ID, parentVehicleid = INVALID_VEHICLE_ID, $:testLOS = false, OPEN_MP_TAGS:...)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native TogglePlayerControllable(playerid, $:controllable)"
+		},
+		/*{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "forward void:AllowInteriorWeapons($:allow)"
+		},*/
+		/*{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "forward AllowPlayerTeleport(playerid, $:allow)"
+		},*/
+		/*{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "forward void:AllowAdminTeleport($:allow)"
+		},*/
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native AddStaticVehicleEx(modelid, Float:spawnX, Float:spawnY, Float:spawnZ, Float:angle, colour1, colour2, respawnDelay, $:addSiren = false)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native CreateVehicle(modelid, Float:spawnX, Float:spawnY, Float:spawnZ, Float:angle, colour1, colour2, respawnDelay, $:addSiren = false)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native TogglePlayerSpectating(playerid, $:toggle)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native TogglePlayerClock(playerid, $:toggle)"
 		}
 	]
 }
+
+
+
+
+
+
+
+
+
+
 
