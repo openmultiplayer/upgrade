@@ -161,15 +161,14 @@ namespace Upgrade
 			if (args.Length == 0 || args.Contains("--help"))
 			{
 				// Display the help message.
-				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp");
-				Console.WriteLine("");
-				Console.WriteLine("Usage:");
-				Console.WriteLine("");
-				Console.WriteLine("    upgrade [--report] [--scans file] [--types types] [--help] directory");
-				Console.WriteLine("");
+				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp\n");
+				Console.WriteLine("Usage:\n");
+				Console.WriteLine("    upgrade [--generate] [--report] [--scans file] [--types types] [--debug level] [--help] directory\n");
+				Console.WriteLine("  --generate - Generate the regex to match the functions in `_generate.json`.");
 				Console.WriteLine("  --report - Show changes to make, but don't make them.");
 				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `upgrade`).");
 				Console.WriteLine("  --types types - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
+				Console.WriteLine("  --debug level - Enable debugging output.");
 				Console.WriteLine("  --help - Show this message and exit.");
 				Console.WriteLine("  directory - Root directory in which to run the scan.");
 			}

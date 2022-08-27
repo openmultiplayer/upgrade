@@ -110,6 +110,7 @@ namespace Upgrade
 				{
 					System.Console.WriteLine("\nRunning:\n");
 					System.Console.WriteLine(RegexDefine + rep.From);
+					System.Console.WriteLine("");
 				}
 				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
 				var func = ReplacementPattern.Parse(rep.To);
