@@ -162,9 +162,11 @@ namespace Upgrade
 			{
 				// Display the help message.
 				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp\n");
-				Console.WriteLine("Usage:\n");
-				Console.WriteLine("    upgrade [--generate] [--report] [--scans file] [--types types] [--debug level] [--help] directory\n");
+				Console.WriteLine("Usage:");
+				Console.WriteLine("\n    upgrade --generate [--debug level]\n");
 				Console.WriteLine("  --generate - Generate the regex to match the functions in `_generate.json`.");
+				Console.WriteLine("  --debug level - Enable debugging output.");
+				Console.WriteLine("\n    upgrade [--report] [--scans file] [--types types] [--debug level] [--help] directory\n");
 				Console.WriteLine("  --report - Show changes to make, but don't make them.");
 				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `upgrade`).");
 				Console.WriteLine("  --types types - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
