@@ -2,7 +2,7 @@
   "profiles": {
     "CallbackUpgrade": {
       "commandName": "Project",
-      "commandLineArgs": "--report --scans tags --debug 1 ../../../tests"
+      "commandLineArgs": "--generate --report --scans tags --debug 1 ../../../tests"
     }
   }
 }

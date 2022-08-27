@@ -32,11 +32,11 @@
 		/* Expressions are very lax with their contents - any letters, numbers, and operators anywhere are fine. */
 		"expressionpart": "(?&roundbrackets)|(?&curlybrackets)|(?&squarebrackets)|[*&^%!\\-=+\\/?\\|<>.:a-zA-Z0-9_@\\s]++|(?&string)|(?&character)",
 		"expression": "(?&expressionpart)++",
-		"squarebrackets": "\\[(?:,|;|(?&expressionpart))*+\\]",
-		"roundbrackets": "\\((?:,|;|(?&expressionpart))*+\\)",
-		"curlybrackets": "\\{(?:,|;|(?&expressionpart))*+\\}",
+		"squarebrackets": "\\[(?:[,;]|(?&expressionpart))*+\\]",
+		"roundbrackets": "\\((?:[,;]|(?&expressionpart))*+\\)",
+		"curlybrackets": "\\{(?:[,;]|(?&expressionpart))*+\\}",
 		/* Be careful with this, it is untested against expression parts, which also contain `>`. */
-		"anglebrackets": "\\<(?:,|;|(?&expressionpart))*+\\>",
+		"anglebrackets": "\\<(?:[,;]|(?&expressionpart))*+\\>",
 		"parameter": "(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?(?&symbol)(?:\\s*+(?&squarebrackets))*+(?:\\s*+=\\s*+(?&expression))?",
 		"const": "const\\s++(?:(?&tag)\\s*+)?(?&symbol)(?:\\s*+(?&squarebrackets))*+(?:\\s*+=\\s*+(?&expression))?",
 		"nonconst": "(?&symbol)(?:\\s*+(?&squarebrackets))*+(?:\\s*+=\\s*+(?&expression))?",

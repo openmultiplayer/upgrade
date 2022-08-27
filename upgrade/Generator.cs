@@ -177,8 +177,7 @@ namespace Upgrade
 
 		private int WriteEnumInput(StringBuilder sb, Entry entry, int baseIdx)
 		{
-			++baseIdx;
-			sb.Append("(");
+			sb.Append("(?:");
 			foreach (var kv in entry.EnumValues)
 			{
 				sb.Append('(');
@@ -192,7 +191,6 @@ namespace Upgrade
 
 		private int WriteEnumOutput(StringBuilder sb, Entry entry, int baseIdx)
 		{
-			++baseIdx;
 			foreach (var kv in entry.EnumValues)
 			{
 				sb.Append("${");
@@ -213,84 +211,89 @@ namespace Upgrade
 
 		private void WriteUseScanner(StringBuilder sb, Entry entry)
 		{
-			int paramIdx = 0;
+			int paramIdx = -1;
 			int matchIdx = 2;
 			int replaceIdx = 0;
-			int paramCount = entry.ParamCount;
 			int[] locations = entry.ReplaceIndexes.ToArray();
-			sb.Append("((?&symbol))?");
+			sb.Append("((?&symbol)?)");
 			sb.Append(entry.FunctionName);
 			sb.Append("\\\\s*\\\\(");
-			while (paramIdx != paramCount)
+			for ( ; ; )
 			{
-				if (replaceIdx != locations.Length && paramIdx == locations[replaceIdx])
+				int nextIdx = locations[replaceIdx];
+				int diff = nextIdx - paramIdx - 1;
+				// Skip over all the intervening parameters at once.
+				switch (diff)
 				{
-					++replaceIdx;
-					// Output the replacement scanner.
-					sb.Append("\\\\s*");
-					matchIdx = WriteEnumInput(sb, entry, matchIdx);
-					sb.Append("\\\\s*");
-				}
-				else
-				{
-					// Output the default scanner.
-					sb.Append("((?&expression))");
+				case 0:
+					break;
+				case 1:
+					sb.Append("((?&expression),)");
 					++matchIdx;
+					break;
+				default:
+					sb.Append("((?:(?&expression),){");
+					sb.Append(diff);
+					sb.Append("})");
+					++matchIdx;
+					break;
 				}
-				++paramIdx;
-				if (paramIdx == paramCount)
+				// Output the replacement scanner.
+				sb.Append("\\\\s*");
+				matchIdx = WriteEnumInput(sb, entry, matchIdx);
+				sb.Append("\\\\s*");
+				paramIdx = nextIdx;
+				++replaceIdx;
+				if (replaceIdx == locations.Length)
 				{
-					// Output a `)`.
-					sb.Append("\\\\)");
+					sb.Append("([,)])");
+					break;
 				}
 				else
 				{
-					// Output a `,`.
 					sb.Append(",");
-				}	
+				}
 			}
 		}
 		
 		private void WriteUseReplacer(StringBuilder sb, Entry entry)
 		{
-			int paramIdx = 0;
+			int paramIdx = -1;
 			int matchIdx = 2;
 			int replaceIdx = 0;
 			int paramCount = entry.ParamCount;
 			int[] locations = entry.ReplaceIndexes.ToArray();
 			sb.Append("$1");
 			sb.Append(entry.FunctionName);
-			sb.Append("(");
-			while (paramIdx != paramCount)
+			sb.Append('(');
+			for ( ; ; )
 			{
-				if (replaceIdx != locations.Length && paramIdx == locations[replaceIdx])
+				int nextIdx = locations[replaceIdx];
+				int diff = nextIdx - paramIdx - 1;
+				// Skip over all the intervening parameters at once.
+				switch (diff)
 				{
-					++replaceIdx;
-					if (paramIdx != 0)
-					{
-						// Output a `)`.
-						sb.Append(' ');
-					}
-					// Output the enum replacement.
-					matchIdx = WriteEnumOutput(sb, entry, matchIdx);
-				}
-				else
-				{
-					// Output the default replacement.
+				case 0:
+					break;
+				default:
 					sb.Append('$');
 					sb.Append(matchIdx);
 					++matchIdx;
+					break;
 				}
-				++paramIdx;
-				if (paramIdx == paramCount)
+				if (matchIdx != 2)
 				{
-					// Output a `)`.
-					sb.Append(")");
+					sb.Append(' ');
 				}
-				else
+				// Output the enum replacement.
+				matchIdx = WriteEnumOutput(sb, entry, matchIdx);
+				paramIdx = nextIdx;
+				++replaceIdx;
+				if (replaceIdx == locations.Length)
 				{
-					// Output a `,`.
-					sb.Append(",");
+					sb.Append('$');
+					sb.Append(matchIdx);
+					break;
 				}
 			}
 		}
