@@ -19,6 +19,39 @@ upgrade --report --scans const ../qawno/include
 
 Which will instead just tell you of the changes to be made.
 
+ Example
+---------
+
+Given the following file:
+
+```pawn
+native SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0);
+SetTimer("MyFunction", 2000, 0);
+```
+
+The report output will be:
+
+```
+Scanning file: D:\open.mp\upgrade\example.inc
+
+    @@ -1,1 +1,1 @@ Add tags to `SetPlayerObjectMaterialText`
+    -native SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, materialsize = OBJECT_MATERIAL_SIZE_256x128,
+    +native bool:SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, OBJECT_MATERIAL_SIZE:materialsize = OBJECT_MATERIAL_SIZE_256x128,
+    @@ -1,1 +1,1 @@ Add tags to `SetPlayerObjectMaterialText`
+    -native bool:SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, OBJECT_MATERIAL_SIZE:materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0)
+    +native bool:SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, OBJECT_MATERIAL_SIZE:materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, OBJECT_MATERIAL_TEXT_ALIGN:textalignment = OBJECT_MATERIAL_TEXT_ALIGN_LEFT)
+    @@ -2,1 +2,1 @@ Add enums to `SetTimer`
+    -SetTimer("MyFunction", 2000, 0)
+    +SetTimer("MyFunction", 2000, false)
+```
+
+The replace output will be:
+
+```pawn
+native bool:SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, OBJECT_MATERIAL_SIZE:materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, OBJECT_MATERIAL_TEXT_ALIGN:textalignment = OBJECT_MATERIAL_TEXT_ALIGN_LEFT);
+SetTimer("MyFunction", 2000, false);
+```
+
  Generation
 ------------
 
