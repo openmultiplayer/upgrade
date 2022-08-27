@@ -229,25 +229,25 @@
 			"enum": "enum bool:__bool { false, true }",
 			"code": "native TogglePlayerControllable(playerid, $:controllable)"
 		},
-		/*{
-			"enum": "enum bool:__bool { false, true }",
-			"code": "forward void:AllowInteriorWeapons($:allow)"
-		},*/
-		/*{
-			"enum": "enum bool:__bool { false, true }",
-			"code": "forward AllowPlayerTeleport(playerid, $:allow)"
-		},*/
-		/*{
-			"enum": "enum bool:__bool { false, true }",
-			"code": "forward void:AllowAdminTeleport($:allow)"
-		},*/
 		{
 			"enum": "enum bool:__bool { false, true }",
-			"code": "native AddStaticVehicleEx(modelid, Float:spawnX, Float:spawnY, Float:spawnZ, Float:angle, colour1, colour2, respawnDelay, $:addSiren = false)"
+			"code": "forward void:AllowInteriorWeapons($:allow)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "forward AllowPlayerTeleport(playerid, $:allow)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "forward void:AllowAdminTeleport($:allow)"
 		},
 		{
 			"enum": "enum bool:__bool { false, true }",
 			"code": "native CreateVehicle(modelid, Float:spawnX, Float:spawnY, Float:spawnZ, Float:angle, colour1, colour2, respawnDelay, $:addSiren = false)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native AddStaticVehicleEx(modelid, Float:spawnX, Float:spawnY, Float:spawnZ, Float:angle, colour1, colour2, respawnDelay, $:addSiren = false)"
 		},
 		{
 			"enum": "enum bool:__bool { false, true }",
