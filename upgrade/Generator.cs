@@ -177,7 +177,8 @@ namespace Upgrade
 
 		private int WriteEnumInput(StringBuilder sb, Entry entry, int baseIdx)
 		{
-			sb.Append("(?:");
+			++baseIdx;
+			sb.Append("(");
 			foreach (var kv in entry.EnumValues)
 			{
 				sb.Append('(');
@@ -191,6 +192,7 @@ namespace Upgrade
 
 		private int WriteEnumOutput(StringBuilder sb, Entry entry, int baseIdx)
 		{
+			++baseIdx;
 			foreach (var kv in entry.EnumValues)
 			{
 				sb.Append("${");
