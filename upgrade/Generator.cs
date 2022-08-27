@@ -299,11 +299,10 @@ namespace Upgrade
 			int replaceIdx = 0;
 			int paramCount = entry.ParamCount;
 			int[] locations = entry.ReplaceIndexes.ToArray();
-			sb.Append("((?&start))((?&stocks))");
+			sb.Append("((?&start))((?&stocks))\\\\s+");
 			string tag = entry.ReturnTag;
 			if (!(tag is null))
 			{
-				sb.Append("\\\\s+");
 				sb.Append(tag);
 				sb.Append("\\\\s*:\\\\s*");
 			}
