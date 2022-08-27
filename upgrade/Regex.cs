@@ -104,7 +104,7 @@ namespace Upgrade
 		private static ReplacementPart ParseNestedGroup(string replacementPattern, ref int idx)
 		{
 			// Group match.  This doesn't do the full group parse currently.
-			var startIdx = idx + 1;
+			var startIdx = idx;
 			var endIdx = -1;
 			ReplacementPart trueBranch = null;
 			ReplacementPart falseBranch = null;
