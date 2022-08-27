@@ -211,17 +211,17 @@ namespace Upgrade
 
 		private void WriteUseScanner(StringBuilder sb, Entry entry)
 		{
-			int paramIdx = -1;
+			int paramIdx = 0;
 			int matchIdx = 2;
 			int replaceIdx = 0;
 			int[] locations = entry.ReplaceIndexes.ToArray();
-			sb.Append("((?&symbol)?)");
+			sb.Append("((?&symbol))?");
 			sb.Append(entry.FunctionName);
-			sb.Append("\\\\s*\\\\(");
+			sb.Append("\\\\s*+\\\\(");
 			for ( ; ; )
 			{
 				int nextIdx = locations[replaceIdx];
-				int diff = nextIdx - paramIdx - 1;
+				int diff = nextIdx - paramIdx;
 				// Skip over all the intervening parameters at once.
 				switch (diff)
 				{
@@ -239,10 +239,10 @@ namespace Upgrade
 					break;
 				}
 				// Output the replacement scanner.
-				sb.Append("\\\\s*");
+				sb.Append("\\\\s*+");
 				matchIdx = WriteEnumInput(sb, entry, matchIdx);
-				sb.Append("\\\\s*");
-				paramIdx = nextIdx;
+				sb.Append("\\\\s*+");
+				paramIdx = nextIdx + 1;
 				++replaceIdx;
 				if (replaceIdx == locations.Length)
 				{
@@ -258,7 +258,7 @@ namespace Upgrade
 		
 		private void WriteUseReplacer(StringBuilder sb, Entry entry)
 		{
-			int paramIdx = -1;
+			int paramIdx = 0;
 			int matchIdx = 2;
 			int replaceIdx = 0;
 			int paramCount = entry.ParamCount;
@@ -269,7 +269,7 @@ namespace Upgrade
 			for ( ; ; )
 			{
 				int nextIdx = locations[replaceIdx];
-				int diff = nextIdx - paramIdx - 1;
+				int diff = nextIdx - paramIdx;
 				// Skip over all the intervening parameters at once.
 				switch (diff)
 				{
@@ -287,7 +287,7 @@ namespace Upgrade
 				}
 				// Output the enum replacement.
 				matchIdx = WriteEnumOutput(sb, entry, matchIdx);
-				paramIdx = nextIdx;
+				paramIdx = nextIdx + 1;
 				++replaceIdx;
 				if (replaceIdx == locations.Length)
 				{
@@ -295,12 +295,17 @@ namespace Upgrade
 					sb.Append(matchIdx);
 					break;
 				}
+				else
+				{
+					sb.Append(",");
+				}
 			}
 		}
 		
 		private void WriteDeclarationScanner(StringBuilder sb, Entry entry)
 		{
 			int paramIdx = 0;
+			int matchIdx = 4;
 			int replaceIdx = 0;
 			int paramCount = entry.ParamCount;
 			int[] locations = entry.ReplaceIndexes.ToArray();
@@ -308,48 +313,59 @@ namespace Upgrade
 			string tag = entry.ReturnTag;
 			if (!(tag is null))
 			{
+				sb.Append("(?:");
 				sb.Append(tag);
-				sb.Append("\\\\s*:\\\\s*");
+				sb.Append("\\\\s*+:\\\\s*+)?");
 			}
 			sb.Append("((?&symbol))?");
 			sb.Append(entry.FunctionName);
-			sb.Append("\\\\s*\\\\(");
-			while (replaceIdx < locations.Length)
+			sb.Append("\\\\s*+\\\\(");
+			for ( ; ; )
 			{
-				if (paramIdx == locations[replaceIdx])
+				int nextIdx = locations[replaceIdx];
+				int diff = nextIdx - paramIdx;
+				switch (diff)
 				{
-					++replaceIdx;
-					// Output the replacement scanner.
-					sb.Append("\\\\s*(?:(?&tag)\\\\s*)?((?&symbol))(?:\\\\s*=\\\\s*(?&expression))?");
+				case 0:
+					break;
+				case 1:
+					sb.Append("(\\\\s*+(?&parameter)\\\\s*+,)");
+					++matchIdx;
+					break;
+				default:
+					sb.Append("((?:\\\\s*+(?&parameter)\\\\s*+,){");
+					sb.Append(diff);
+					sb.Append("})");
+					++matchIdx;
+					break;
+				}
+				// Output the replacement searcher.
+				sb.Append("\\\\s*+(?:const\\\\s++)?(?:&\\\\s*+)?(?:(?&tag)\\\\s*+)?((?&symbol))\\\\s*+(?:(?&squarebrackets)\\\\s*+)*+(?:=(?&expression))?");
+				++matchIdx;
+				paramIdx = nextIdx + 1;
+				++replaceIdx;
+				if (replaceIdx == locations.Length)
+				{
+					sb.Append("([,)])");
+					break;
 				}
 				else
 				{
-					// Output the default scanner.
-					sb.Append("\\\\s*((?&parameter))");
+					sb.Append(",");
 				}
-				++paramIdx;
-				if (paramIdx == paramCount)
-				{
-					// Output a `)`.
-					sb.Append("\\\\s*\\\\)");
-				}
-				else
-				{
-					// Output a `,`.
-					sb.Append("\\\\s*,");
-				}	
 			}
 		}
 		
 		private void WriteDeclarationReplacer(StringBuilder sb, Entry entry)
 		{
 			int paramIdx = 0;
+			int matchIdx = 4;
 			int replaceIdx = 0;
 			int paramCount = entry.ParamCount;
 			int[] locations = entry.ReplaceIndexes.ToArray();
-			string[] p = entry.Params;
 			sb.Append("$1$2 ");
 			string tag = entry.ReturnTag;
+			string[] p = entry.Params;
 			if (!(tag is null))
 			{
 				sb.Append(tag);
@@ -359,51 +375,49 @@ namespace Upgrade
 			sb.Append("$3");
 			sb.Append(entry.FunctionName);
 			sb.Append("(");
-			while (replaceIdx < locations.Length)
+			for ( ; ; )
 			{
-				if (paramIdx != 0)
+				int nextIdx = locations[replaceIdx];
+				int diff = nextIdx - paramIdx;
+				switch (diff)
 				{
-					sb.Append(" ");
+				case 0:
+					break;
+				default:
+					sb.Append('$');
+					sb.Append(matchIdx);
+					++matchIdx;
+					break;
 				}
-				if (paramIdx == locations[replaceIdx])
+				if (matchIdx != 4)
 				{
-					++replaceIdx;
-					// Output the replacement scanner.
-					if (IsConst(p[paramIdx]))
-					{
-						sb.Append("const ");
-					}
-					if (IsRef(p[paramIdx]))
-					{
-						sb.Append("&");
-					}
-					sb.Append(tag);
-					sb.Append(":$");
-					sb.Append(paramIdx + 4);
-					string def = GetDefaultValue(p[paramIdx]);
-					if (!(def is null))
-					{
-						sb.Append(" = ");
-						sb.Append(def);
-					}
+					sb.Append(' ');
+				}
+				// Output the replacement scanner.
+				if (IsConst(p[nextIdx]))
+				{
+					sb.Append("const ");
+				}
+				if (IsRef(p[nextIdx]))
+				{
+					sb.Append("&");
+				}
+				sb.Append(tag);
+				sb.Append(":$");
+				sb.Append(matchIdx);
+				++matchIdx;
+				paramIdx = nextIdx + 1;
+				++replaceIdx;
+				if (replaceIdx == locations.Length)
+				{
+					sb.Append('$');
+					sb.Append(matchIdx);
+					break;
 				}
 				else
 				{
-					// Output the default scanner.
-					sb.Append("$");
-					sb.Append(paramIdx + 4);
-				}
-				++paramIdx;
-				if (paramIdx == paramCount)
-				{
-					// Output a `)`.
-					sb.Append(")");
-				}
-				else
-				{
-					// Output a `,`.
 					sb.Append(",");
-				}	
+				}
 			}
 		}
 
