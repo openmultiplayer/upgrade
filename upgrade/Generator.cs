@@ -215,7 +215,7 @@ namespace Upgrade
 			int matchIdx = 2;
 			int replaceIdx = 0;
 			int[] locations = entry.ReplaceIndexes.ToArray();
-			sb.Append("((?&symbol))?");
+			sb.Append("((?&prefix))");
 			sb.Append(entry.FunctionName);
 			sb.Append("\\\\s*+\\\\(");
 			for ( ; ; )
@@ -317,7 +317,7 @@ namespace Upgrade
 				sb.Append(tag);
 				sb.Append("\\\\s*+:\\\\s*+)?");
 			}
-			sb.Append("((?&symbol))?");
+			sb.Append("((?&prefix))");
 			sb.Append(entry.FunctionName);
 			sb.Append("\\\\s*+\\\\(");
 			for ( ; ; )

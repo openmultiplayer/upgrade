@@ -7,8 +7,9 @@
 		/* ATOMS */
 		/*       */
 		/* This is for only proper symbols that don't start with a number. */
-		/* This is NOT possessive, because it is used for hook name starts. */
-		"symbol": "[a-zA-Z_@][a-zA-Z0-9_@]*",
+		"symbol": "[a-zA-Z_@][a-zA-Z0-9_@]*+",
+		/* Hook prefixes MUST start `Prefix_`. */
+		"prefix": "(?:[a-zA-Z_@][a-zA-Z0-9_@]*_|_)?",
 		/* Floats can look like `0_1.2_3e4` - `_` doesn't work in the exponent and `a.b` is required. */
 		"float": "-?[0-9]++(?:_[0-9]++)*+\\.[0-9]++(?:_[0-9]++)*+(?:[eE][0-9])?",
 		"hex": "0[xX][0-9a-fA-F]++(?:_[0-9a-fA-F]++)*+",
