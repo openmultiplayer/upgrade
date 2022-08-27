@@ -135,12 +135,16 @@ namespace Upgrade
 					int line = GetLineNumber(contents, match.Index);
 					string from = match.Value;
 					string to = regex.Replace(from, func);
-					ret.Add(new Diff {
-						Description = rep.Description,
-						Line = line,
-						From = from,
-						To = to
-					});
+					if (to.Replace(" ", "") != from.Replace(" ", ""))
+					{
+						// Only report this replacement if something meaningful changed.
+						ret.Add(new Diff {
+							Description = rep.Description,
+							Line = line,
+							From = from,
+							To = to
+						});
+					}	
 					return to;
 				});
 			}
