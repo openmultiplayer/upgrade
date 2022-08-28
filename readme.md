@@ -19,14 +19,20 @@ upgrade --report --scans const ../qawno/include
 
 Which will instead just tell you of the changes to be made.
 
- Example
----------
+ Tag Example
+-------------
 
 Given the following file:
 
 ```pawn
 native SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0);
 SetTimer("MyFunction", 2000, 0);
+```
+
+And parameters:
+
+```
+--scans tags ../qawno/include
 ```
 
 The report output will be:
@@ -49,6 +55,59 @@ The replace output will be:
 
 ```pawn
 native bool:SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, OBJECT_MATERIAL_SIZE:materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, OBJECT_MATERIAL_TEXT_ALIGN:textalignment = OBJECT_MATERIAL_TEXT_ALIGN_LEFT);
+SetTimer("MyFunction", 2000, false);
+```
+
+ Const Example
+---------------
+
+Given the following file:
+
+```pawn
+native SetPlayerObjectMaterialText(playerid, objectid, text[], materialindex = 0, materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0);
+SetTimer("MyFunction", 2000, 0);
+```
+
+And parameters:
+
+```
+--scans const ../qawno/include
+```
+
+The report output will be:
+
+```
+Scanning file: D:\open.mp\upgrade\example.inc
+
+    @@ -1,1 +1,1 @@ Add `const` to `SetPlayerObjectMaterialText`
+    -native SetPlayerObjectMaterialText(playerid, objectid, text[],
+    +native SetPlayerObjectMaterialText(playerid, objectid, const text[],
+    @@ -1,1 +1,1 @@ Add `const` to `SetPlayerObjectMaterialText`
+    -native SetPlayerObjectMaterialText(playerid, objectid, const text[], materialindex = 0, materialsize = OBJECT_MATERIAL_SIZE_256x128, fontface[] = "Arial"
+    +native SetPlayerObjectMaterialText(playerid, objectid, const text[], materialindex = 0, materialsize = OBJECT_MATERIAL_SIZE_256x128, const fontface[] = "Arial"
+```
+
+The replace output will be:
+
+```pawn
+native SetPlayerObjectMaterialText(playerid, objectid, const text[], materialindex = 0, materialsize = OBJECT_MATERIAL_SIZE_256x128, const fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0);
+SetTimer("MyFunction", 2000, 0);
+```
+
+ Double Example
+----------------
+
+You can apply multiple replacements one after the other.  Combining the replacements above:
+
+```
+upgrade --scans const ../qawno/include
+upgrade --scans tags ../qawno/include
+```
+
+Gives:
+
+```pawn
+native bool:SetPlayerObjectMaterialText(playerid, objectid, const text[], materialindex = 0, OBJECT_MATERIAL_SIZE:materialsize = OBJECT_MATERIAL_SIZE_256x128, const fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, OBJECT_MATERIAL_TEXT_ALIGN:textalignment = OBJECT_MATERIAL_TEXT_ALIGN_LEFT);
 SetTimer("MyFunction", 2000, false);
 ```
 
