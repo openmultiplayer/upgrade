@@ -131,6 +131,17 @@ upgrade --generate
 
 This will print the upgrade `.json` for replacing all similar declarations (a *similar* declaration being one that looks like `Prefix_Name` where `Prefix_` is optional and `Name` is the function name specified) and all uses.  The uses will attempt to find existing calls that look like `SetIndexedColour(playerid, 2)` and replace them with their tagged constant equivalents: `SetIndexedColour(playerid, BLUE)`.
 
+ Regex
+-------
+
+This code uses regular expressions to perform the replacements.  Don't ask why.  Anyway, in order to support things like nested brackets it uses PCRE regex with *subroutines* in the searches, and `PCRE2_SUBSTITUTE_EXTENDED` in the replacements ([actually just one feature](https://stackoverflow.com/questions/34198247/multiple-replacement-with-just-one-regex), and that was re-implemented for this release).  The file `_define.json` is automatically included with every run and contains many pre-made definitions of various pawn constructs.  For example:
+
+```json
+		"binary": "0[bB][01]++(?:_[01]++)*+",
+```
+
+That is the full definition to match any binary number in pawn (`0b01001`, `0B0_1`, etc).  It uses `++` and `*+` for possessive matching to vastly reduce backtracking in the processing.  PCRE has a very high default backtracking limit of 10,000,00; but before making many of these subroutines possessive this was being exceeded regulary by failing matches.  The majority of these defines will not match leading and trailing spaces, so these must be dealt with in every search, the exception is `expression` because it deals with arbitrary internal whitespace in a lazy manner that makes it very greedy.  They are also all non-capturing, which is why some uses may copy these defines in to a match directly in order to capture a part of it (most commonly done with parameter names).
+
  Notes
 -------
 
