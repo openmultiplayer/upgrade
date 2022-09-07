@@ -6,7 +6,7 @@ This program attempts to find old untagged and const-incorrect code and upgrade 
 To replace most native declarations and hooks with const-correct equivalents use:
 
 ```
-upgrade --scans const ../qawno/include
+./upgrade --scans const ../qawno/include
 ```
 
 This will load all the replacements from `./const.json` and apply them to every file recursively in `../qawno/include`.
@@ -14,7 +14,7 @@ This will load all the replacements from `./const.json` and apply them to every 
 If you don't want to apply the changes immediately use:
 
 ```
-upgrade --report --scans const ../qawno/include
+./upgrade --report --scans const ../qawno/include
 ```
 
 Which will instead just tell you of the changes to be made.
@@ -100,8 +100,8 @@ SetTimer("MyFunction", 2000, 0);
 You can apply multiple replacements one after the other.  Combining the replacements above:
 
 ```
-upgrade --scans const ../qawno/include
-upgrade --scans tags ../qawno/include
+./upgrade --scans const ../qawno/include
+./upgrade --scans tags ../qawno/include
 ```
 
 Gives:
@@ -126,7 +126,7 @@ To create your own replacements file for a newly tagged function you need the de
 Then use the generate command:
 
 ```
-upgrade --generate
+./upgrade --generate
 ```
 
 This will print the upgrade `.json` for replacing all similar declarations (a *similar* declaration being one that looks like `Prefix_Name` where `Prefix_` is optional and `Name` is the function name specified) and all uses.  The uses will attempt to find existing calls that look like `SetIndexedColour(playerid, 2)` and replace them with their tagged constant equivalents: `SetIndexedColour(playerid, BLUE)`.
