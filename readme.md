@@ -166,6 +166,8 @@ Especially useful for trying to figure out why a replacement you think should ha
  Writing Replacements
 ----------------------
 
+### Basic Procedures
+
 The core of the replacement system is regex ([yes, I know](https://xkcd.com/1171/)), this may seem inadequate for most situations, but it uses a lot of pre-defined procedures to enable things like matching a parameter, a declaration, or even an entire nested expression.  Fortunately pawn is fully deterministic in its parsing, so the scanners disable backtracking so that match failures don't explode.  Most of these procedures are also tightly matching, so `&symbol` will match any properly named symbol (starts with a letter, `_`, or `@`; and followed by any of those or a number), but will not consume any trailing whitespace.  Thus the majority of the scanners will use `\s*+` a lot (non-backtracking whitespace).  The pre-defined procedures are:
 
 * `&symbol` - Any properly named pawn symbol (defines, functions, variables, keywords, etc).
@@ -195,4 +197,159 @@ The core of the replacement system is regex ([yes, I know](https://xkcd.com/1171
 * `&publics` - A collection of keywords known to be used to declare public functions.
 * `&stocks` - A collection of keywords known to be used to declare normal functions.
 * `&start` - The start of a line, including any leading space.
+
+All of these procedures are completely non-capturing so that group references in the replacement are completely obvious and predictable.
+
+### Basic Example
+
+Let's look at a simple example that converts:
+
+```pawn
+native SendChat(text[]);
+```
+
+To:
+
+```pawn
+native SendChat(const text[]);
+```
+
+To match the start of the function we look for the start of a line, followed by `native`, at least one space, then the function name:
+
+```
+((?&start))native\s+SendChat
+```
+
+`((?&start))` is a reference to a named procedure `(?&start)`, inside a capture group from the outer `()`s.
+
+We then look for a parameter list containing one parameter, which shouldn't include `const`.  Again, inserting `\s*` anywhere that spaces *may* appear, or `\s+` anywhere that spaces *must* appear.  `\(` matches a literal bracket, it doesn't start a capture group; same for `\)`:
+
+```
+\s*\(\s*((?&nonconst))\s*\)\s*;
+```
+
+Again, we use double brackets around the parameter without `const` to capture (and later re-use) the name.  There are two capture groups - the indentation at the start of the line and the name (or rather the full declaration) of the parameter.  These are used in the replacement as `$1` and `$2`:
+
+```
+$1native SendChat(const $2);
+```
+
+Adding a description to this replacement gives us the full code, with one important change.  Because the replacements are defined in JSON we need to escape all the `\`s in the regex so it can be loaded correctly, leading to:
+
+```json
+		{
+			"description": "Add `const` to `SendChat`",
+			"from": "((?&start))native\\s+SendChat\\s*\\(\\s*((?&nonconst))\\s*\\)\\s*;",
+			"to": "$1native SendChat(const $2);"
+		}
+```
+
+
+This will match any of the following variants:
+
+```pawn
+    native SendChat ( chat[] );
+native SendChat (text [ ]);
+native    SendChat(the_message[]);
+```
+
+And replace them with:
+
+```pawn
+    native SendChat(const chat[]);
+native SendChat(const text [ ]);
+native SendChat(const the_message[]);
+```
+
+You could use more capture groups to exactly replicate all of the spacing, but there's no real need to.  Note, however, that spaces within a group, such as in `text [ ]` is preserved as the capture group copies the entire thing; but trailing spaces aren't captured.
+
+### Real Example
+
+The file *const.json* already contains a definition for upgrading `SendChat`, and it is far more complex than the one we just derived.  Why?
+
+First, it handles hooks as well.  If we want to const-correct `SendChat` we must also want to const-correct any ALS and y_hooks hooks of `SendChat` as well.  This system for the most part assumes a fairly consistent naming scheme for hooks, i.e. `Module_HookedFunction`, so if an anti-cheat include were to hook `SendChat` it might name the internal version `AC_SendChat`.  This is precisely why the procedure `&prefix` was declared in the first place, and is added to the search expression in a capturing group.
+
+Secondly hooks are generally `stock` or `@hook`, not `native`, so we need to preserve the declaration type as well, via `((?&stocks))`.
+
+Finally, some hooks might already contain `const`.  Surely in that case they can be skipped?  In the case of `SendChat` theoretically yes they could, there's no point adding `const` when `const` is already there, but `ApplyActorAnimation` shows why we still search for them.  This function has two parameters that both need to be made `const` - `animationLibrary` and `animationName`.  This gives four possibilities - 1) neither parameter is `const`, 2) ony the first parameter is `const`, 3) only the second parameter is `const`, or 4) both parameters are `const`.  Again in the last case we don't need to do anything, but for the other three cases we do; either with three separate replacements one for each case, or with a single replacement that makes the `const` optional and ignored.  Doing it this way does mean that the const-correct version is also matched without a lot of extra work, but it isn't worth fixing because the result is a no-op.  `SendChat` only has one parameter so doesn't need this special consideration, but all the const-correction replacements were auto-generated so it does anyway.  Hence `(?:const\s+)?((?&nonconst))` which optionally finds `const`, ignores it (non-capturing group), then captures a parameter without `const`; instead of just using `((?&parameter))`.
+
+The final result is thus (with `\\` escapes):
+
+```json
+		{
+			"description": "Add `const` to `SendChat`",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))SendChat\\s*\\(\\s*(?:const\\s+)?((?&nonconst))\\s*\\)",
+			"to": "$1$2 $3SendChat(const $4)"
+		}
+```
+
+This will match any of the following variants:
+
+```pawn
+native SendChat(const chat[]);
+stock AC_SendChat(message[])
+{
+}
+@hook(.function = "SendChat") My_SendChat(the_message[])
+{
+}
+```
+
+And replace them with:
+
+```pawn
+native SendChat(const chat[]);
+stock AC_SendChat(const message[])
+{
+}
+@hook(.function = "SendChat") My_SendChat(const the_message[])
+{
+}
+```
+
+Strictly under the semantics of y_hooks this is also a hook of `SendChat`, but isn't detected without using the `Module_Func` naming scheme:
+
+```pawn
+@hook(.function = "SendChat") OtherName(the_message[])
+{
+}
+```
+
+### Another Example
+
+Someone wanted to replace all instances of `va_SendClientMessage` with `SendClientMessage` when there were only three parameters, i.e. when there was no formatting being done and thus the formatting version was pointless to be called.  This could be done by the compiler with some defines, but only if the function is always on a single line.  That's maybe not a terrible assumption to make, but this tool has no such limitation.  As it happens, I did add this short-circuiting feature to y_va natively anyway, but the replacement method is documented here for completeness anyway.  This is looking at function calls, not function declarations, so all the parameters become full expressions in the search, and we only care about a single function's name with exactly three parameters:
+
+Match the function name with `(`:
+
+```
+va_SendClientMessage\s*\(
+```
+
+Match the first parameter with `,`.  Note that we do not need extra `\s*`s here because expressions contain all spaces always, they are the main procedure that does so:
+
+```
+((?&expression)),
+```
+
+Repeat for the second parameter:
+
+```
+((?&expression)),
+```
+
+And the final one, which must be ended by `)` because we want exactly three.  If we wanted an arbitrary the search would be something like `((?&expression),)+((?&expression)\))`:
+
+```
+((?&expression))\)
+```
+
+`{2}` is also an option here for the first two parameters, but the code is clearer as-is:
+
+```json
+		{
+			"description": "Replace `va_SendClientMessage` with `SendClientMessage` when there is no formatting involved",
+			"from": "va_SendClientMessage\\s*\\(((?&expression)),((?&expression)),((?&expression))\\)",
+			"to": "SendClientMessage($1,$2,$3)"
+		}
+```
 
