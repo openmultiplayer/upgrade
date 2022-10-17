@@ -163,3 +163,36 @@ Simple - while the inbuilt grammar does have *expression balancing* which can be
 
 Especially useful for trying to figure out why a replacement you think should have been made wasn't.
 
+ Writing Replacements
+----------------------
+
+The core of the replacement system is regex ([yes, I know](https://xkcd.com/1171/)), this may seem inadequate for most situations, but it uses a lot of pre-defined procedures to enable things like matching a parameter, a declaration, or even an entire nested expression.  Fortunately pawn is fully deterministic in its parsing, so the scanners disable backtracking so that match failures don't explode.  Most of these procedures are also tightly matching, so `&symbol` will match any properly named symbol (starts with a letter, `_`, or `@`; and followed by any of those or a number), but will not consume any trailing whitespace.  Thus the majority of the scanners will use `\s*+` a lot (non-backtracking whitespace).  The pre-defined procedures are:
+
+* `&symbol` - Any properly named pawn symbol (defines, functions, variables, keywords, etc).
+* `&prefix` - The first half of a method-like function, such as `Command_` in `Command_GetName`.
+* `&float` - A floating-point number, including `-`, the `_` separator, and exponents.
+* `&hex` - A hexadecimal number, including the `_` separator.
+* `&binary` - A binary number, including the `_` separator.
+* `&integer` - An integer, including `-` and the `_` separator.
+* `&character` - A character literal, with special handling of `'\''` and `'\\'`.
+* `&string` - A string literal, with special handling of `"\""` and `"\\"`.
+* `&operator` - Any of the pawn operators such as `*` or `>>>=`.
+* `&number` - Any type of number - float, binary, hex, or decimal.
+* `&tag` - One or more tags, so will match `File:` or `{Float, _}:`.
+* `&varargs` - `...` at the end of a function declaration, optionally with a tag.
+* `&expressionpart` - Used internally by the other expression procedures.
+* `&expression` - A complete expression, ended by either `,`, `;`, or an unmatched closing bracket of some type.  Fully handles nested expressions so `(a, b)` can be matched as a *single* expression when being given as, say, a parameter to a function.  This is often the most useful procedure to use when matching code calling your functions to be replaced.  Although it theoretically encompasses many of the above procedures such as numbers and symbols it uses shortcuts by just matching any string of numbers, letters, and operators; without actually caring if the resulting code is technically valid.  Note that while most other procedures do not consume trailing space this one does because it uses some lazy techniques to more quickly match things that look vaguely like expressions.
+* `&squarebrackets` - An expression between `[]`s.  Expressions are ended by unmatched brackets, so this consumes the first one, then uses `&expression`, then checks for the closing one.  May contain multiple expressions separated by `,` or `;` within the brackets.
+* `&roundbrackets` - An expression between `()`s.  Expressions are ended by unmatched brackets, so this consumes the first one, then uses `&expression`, then checks for the closing one.  May contain multiple expressions separated by `,` or `;` within the brackets.
+* `&curlybrackets` - An expression between `{}`s.  Expressions are ended by unmatched brackets, so this consumes the first one, then uses `&expression`, then checks for the closing one.  May contain multiple expressions separated by `,` or `;` within the brackets.
+* `&anglebrackets` - An expression between `<>`s.  Expressions are ended by unmatched brackets, so this consumes the first one, then uses `&expression`, then checks for the closing one.  May contain multiple expressions separated by `,` or `;` within the brackets.  This one is for special arrays, but has not been fully tested in some situations for cases like `new special:array<5 < 6>;`, just don't do that!
+* `&parameter` - Any parameter declaration in a function declaration.  This is more restrictive than a full expression as it must resemble `[const] [&][Tag:]name[size][= default]`; however, both array sizes and default values may be full expressions.
+* `&const` - Like `&parameter`, but must include `const`.
+* `&nonconst` - Like `&parameter`, but must not include `const`.
+* `&untagged` - Like `&parameter`, but must not include a tag, `const`, or an array size.
+* `&parameterlist` - All the parameters in a function declaration.  Includes the `()`s surrounding them, then naught or more parameters, optionally ending with `...`.
+* `&declaration` - A symbol with a tag.
+* `&publics` - A collection of keywords known to be used to declare public functions.
+* `&stocks` - A collection of keywords known to be used to declare normal functions.
+* `&start` - The start of a line, including any leading space.
+
