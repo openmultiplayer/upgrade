@@ -19,6 +19,12 @@ If you don't want to apply the changes immediately use:
 
 Which will instead just tell you of the changes to be made.
 
+The following line may be required before the call on Linux:
+
+```
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+```
+
  Tag Example
 -------------
 
