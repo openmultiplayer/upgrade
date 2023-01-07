@@ -126,7 +126,15 @@ namespace Upgrade
 			// This does things the slow way, with a replacement function and a second regex call
 			// inside it.  This is so we can report accurately.
 			List<Diff> ret = new List<Diff>();
-			using StreamReader fhnd = File.OpenText(name);
+			if (encoding == Encoding.ASCII)
+			{
+				byte[] check = File.ReadAllBytes(name);
+				if (check.Any((b) => b > 0x7F))
+				{
+					Console.WriteLine("    Skipped due to unknown encoding.");
+					return ret;
+				}
+			}
 			string contents = File.ReadAllText(name, encoding);
 			foreach (var rep in Replacements)
 			{
@@ -134,9 +142,9 @@ namespace Upgrade
 				// reading of the documentation).  Each replacement is done separately.
 				if (debug)
 				{
-					System.Console.WriteLine("\nRunning:\n");
-					System.Console.WriteLine(DebugDefines() + rep.From);
-					System.Console.WriteLine("");
+					Console.WriteLine("\nRunning:\n");
+					Console.WriteLine(DebugDefines() + rep.From);
+					Console.WriteLine("");
 				}
 				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.MultiLine);
 				var func = ReplacementPattern.Parse(rep.To);
