@@ -142,11 +142,16 @@ namespace Upgrade
 
 		static void RunScan(string[] args)
 		{
-			string file = ArgOrDefault(args, "--scans", "upgrade.json");
+			string file = ArgOrDefault(args, "--scans", "upgrade");
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
 			string directory = Path.GetFullPath(args.Last());
+			if (File.Exists(directory))
+			{
+				Console.WriteLine("\"" + directory + "\" is a file.");
+				return;
+			}
 			if (!Directory.Exists(directory))
 			{
 				Console.WriteLine("\"" + directory + "\" is not a directory.");
@@ -190,7 +195,7 @@ namespace Upgrade
 				Console.WriteLine("      --generate    - Generate the regex to match the functions in `_generate.json`.");
 				Console.WriteLine("      --debug level - Enable debugging output.\n");
 				Console.WriteLine("      output        - Filename to write to (default console).\n");
-				Console.WriteLine("  upgrade [options] directory\n");
+				Console.WriteLine("  upgrade [options] input\n");
 				Console.WriteLine("    Options:\n");
 				Console.WriteLine("      --report             - Show changes to make, but don't make them.");
 				Console.WriteLine("      --scans file         - Load defines and replacements from `file` (default `upgrade`).");
@@ -199,7 +204,7 @@ namespace Upgrade
 				Console.WriteLine("      --codepage name      - What codepage to run the scans in.");
 				Console.WriteLine("      --exclude file,names - Files to ignore (default `y_compilerdata_codepage`).");
 				Console.WriteLine("      --help               - Show this message and exit.");
-				Console.WriteLine("      directory            - Root directory in which to run the scan.\n");
+				Console.WriteLine("      input                - File to scan, or directory to recurse through.\n");
 			}
 			else if (args.Contains("--generate"))
 			{
