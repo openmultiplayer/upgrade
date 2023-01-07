@@ -142,7 +142,7 @@ namespace Upgrade
 
 		static void RunScan(string[] args)
 		{
-			string file = ArgOrDefault(args, "--scans", "upgrade");
+			string file = ArgOrDefault(args, "--scans", "upgrade.json");
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
@@ -166,7 +166,16 @@ namespace Upgrade
 				defines = (Scanner)serializer.Deserialize(fhnd, typeof(Scanner));
 			}
 			// Get defines specific to this file.
-			using (StreamReader fhnd = File.OpenText(file + ".json"))
+			if (!file.EndsWith(".json"))
+			{
+				file = file + ".json";
+			}
+			if (!File.Exists(file))
+			{
+				Console.WriteLine("Definitions file \"" + file + "\" does not exist.");
+				return;
+			}
+			using (StreamReader fhnd = File.OpenText(file))
 			{
 				JsonSerializer serializer = new JsonSerializer();
 				scanners = (Scanner)serializer.Deserialize(fhnd, typeof(Scanner));
