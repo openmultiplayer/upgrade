@@ -8,6 +8,16 @@
 	"replacements":
 	[
 		{
+			"description": "Add tags to `SetPlayerRaceCheckpoint`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))SetPlayerRaceCheckpoint\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3SetPlayerRaceCheckpoint($4 CP_TYPE:$5$6"
+		},
+		{
+			"description": "Add enums to `SetPlayerRaceCheckpoint`",
+			"from": "((?&prefix))SetPlayerRaceCheckpoint\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|((?&expression)))\\s*+([,)])",
+			"to": "$1SetPlayerRaceCheckpoint($2 ${3:+CP_TYPE_GROUND_NORMAL:${4:+CP_TYPE_GROUND_FINISH:${5:+CP_TYPE_GROUND_EMPTY:${6:+CP_TYPE_AIR_NORMAL:${7:+CP_TYPE_AIR_FINISH:${8:+CP_TYPE_AIR_ROTATING:${9:+CP_TYPE_AIR_STROBING:${10:+CP_TYPE_AIR_SWINGING:${11:+CP_TYPE_AIR_BOBBING:$12}}}}}}}}}$13"
+		},
+		{
 			"description": "Add tags to `AddPlayerClass`",
 			"from": "((?&start))((?&stocks))\\s+((?&prefix))AddPlayerClass\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){5})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?,(\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 $3AddPlayerClass($4 WEAPON:$5 = WEAPON_FIST,$6 WEAPON:$7 = WEAPON_FIST,$8 WEAPON:$9 = WEAPON_FIST$10"
@@ -69,8 +79,8 @@
 		},
 		{
 			"description": "Add tags to `GetWeaponSlot`",
-			"from": "((?&start))((?&stocks))\\s+((?&prefix))GetWeaponSlot\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3GetWeaponSlot(WEAPON:$4$5"
+			"from": "((?&start))((?&stocks))\\s+(?:WEAPON_SLOT\\s*+:\\s*+)?((?&prefix))GetWeaponSlot\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 WEAPON_SLOT:$3GetWeaponSlot(WEAPON:$4$5"
 		},
 		{
 			"description": "Add enums to `GetWeaponSlot`",
@@ -96,6 +106,16 @@
 			"description": "Add enums to `RemovePlayerWeapon`",
 			"from": "((?&prefix))RemovePlayerWeapon\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|(3)|(3)|(4)|(5)|(6)|(7)|(8)|(9)|(10)|(11)|(12)|(13)|(14)|(15)|(16)|(17)|(18)|(18)|(22)|(23)|(24)|(25)|(26)|(27)|(28)|(29)|(30)|(31)|(32)|(33)|(34)|(35)|(36)|(37)|(38)|(39)|(40)|(41)|(42)|(43)|(44)|(45)|(46)|(49)|(53)|(54)|(54)|((?&expression)))\\s*+([,)])",
 			"to": "$1RemovePlayerWeapon($2 ${3:+WEAPON_FIST:${4:+WEAPON_BRASSKNUCKLE:${5:+WEAPON_GOLFCLUB:${6:+WEAPON_NITESTICK:${7:+WEAPON_NIGHTSTICK:${8:+WEAPON_KNIFE:${9:+WEAPON_BAT:${10:+WEAPON_SHOVEL:${11:+WEAPON_POOLSTICK:${12:+WEAPON_KATANA:${13:+WEAPON_CHAINSAW:${14:+WEAPON_DILDO:${15:+WEAPON_DILDO2:${16:+WEAPON_VIBRATOR:${17:+WEAPON_VIBRATOR2:${18:+WEAPON_FLOWER:${19:+WEAPON_CANE:${20:+WEAPON_GRENADE:${21:+WEAPON_TEARGAS:${22:+WEAPON_MOLTOV:${23:+WEAPON_MOLOTOV:${24:+WEAPON_COLT45:${25:+WEAPON_SILENCED:${26:+WEAPON_DEAGLE:${27:+WEAPON_SHOTGUN:${28:+WEAPON_SAWEDOFF:${29:+WEAPON_SHOTGSPA:${30:+WEAPON_UZI:${31:+WEAPON_MP5:${32:+WEAPON_AK47:${33:+WEAPON_M4:${34:+WEAPON_TEC9:${35:+WEAPON_RIFLE:${36:+WEAPON_SNIPER:${37:+WEAPON_ROCKETLAUNCHER:${38:+WEAPON_HEATSEEKER:${39:+WEAPON_FLAMETHROWER:${40:+WEAPON_MINIGUN:${41:+WEAPON_SATCHEL:${42:+WEAPON_BOMB:${43:+WEAPON_SPRAYCAN:${44:+WEAPON_FIREEXTINGUISHER:${45:+WEAPON_CAMERA:${46:+WEAPON_NIGHT_VISION_GOGGLES:${47:+WEAPON_THERMAL_GOGGLES:${48:+WEAPON_PARACHUTE:${49:+WEAPON_VEHICLE:${50:+WEAPON_DROWN:${51:+WEAPON_COLLISION:${52:+WEAPON_SPLAT:$53}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}$54"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(WEAPON:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(3)|(4)|(5)|(6)|(7)|(8)|(9)|(10)|(11)|(12)|(13)|(14)|(15)|(16)|(17)|(18)|(18)|(22)|(23)|(24)|(25)|(26)|(27)|(28)|(29)|(30)|(31)|(32)|(33)|(34)|(35)|(36)|(37)|(38)|(39)|(40)|(41)|(42)|(43)|(44)|(45)|(46)|(49)|(53)|(54)|(54)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+WEAPON_FIST:${3:+WEAPON_BRASSKNUCKLE:${4:+WEAPON_GOLFCLUB:${5:+WEAPON_NITESTICK:${6:+WEAPON_NIGHTSTICK:${7:+WEAPON_KNIFE:${8:+WEAPON_BAT:${9:+WEAPON_SHOVEL:${10:+WEAPON_POOLSTICK:${11:+WEAPON_KATANA:${12:+WEAPON_CHAINSAW:${13:+WEAPON_DILDO:${14:+WEAPON_DILDO2:${15:+WEAPON_VIBRATOR:${16:+WEAPON_VIBRATOR2:${17:+WEAPON_FLOWER:${18:+WEAPON_CANE:${19:+WEAPON_GRENADE:${20:+WEAPON_TEARGAS:${21:+WEAPON_MOLTOV:${22:+WEAPON_MOLOTOV:${23:+WEAPON_COLT45:${24:+WEAPON_SILENCED:${25:+WEAPON_DEAGLE:${26:+WEAPON_SHOTGUN:${27:+WEAPON_SAWEDOFF:${28:+WEAPON_SHOTGSPA:${29:+WEAPON_UZI:${30:+WEAPON_MP5:${31:+WEAPON_AK47:${32:+WEAPON_M4:${33:+WEAPON_TEC9:${34:+WEAPON_RIFLE:${35:+WEAPON_SNIPER:${36:+WEAPON_ROCKETLAUNCHER:${37:+WEAPON_HEATSEEKER:${38:+WEAPON_FLAMETHROWER:${39:+WEAPON_MINIGUN:${40:+WEAPON_SATCHEL:${41:+WEAPON_BOMB:${42:+WEAPON_SPRAYCAN:${43:+WEAPON_FIREEXTINGUISHER:${44:+WEAPON_CAMERA:${45:+WEAPON_NIGHT_VISION_GOGGLES:${46:+WEAPON_THERMAL_GOGGLES:${47:+WEAPON_PARACHUTE:${48:+WEAPON_VEHICLE:${49:+WEAPON_DROWN:${50:+WEAPON_COLLISION:${51:+WEAPON_SPLAT:$52}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}$53"
 		},
 		{
 			"description": "Add tags to `SetPlayerAmmo`",
@@ -128,6 +148,26 @@
 			"to": "$1GetPlayerWeaponData($2 ${3:+WEAPON_FIST:${4:+WEAPON_BRASSKNUCKLE:${5:+WEAPON_GOLFCLUB:${6:+WEAPON_NITESTICK:${7:+WEAPON_NIGHTSTICK:${8:+WEAPON_KNIFE:${9:+WEAPON_BAT:${10:+WEAPON_SHOVEL:${11:+WEAPON_POOLSTICK:${12:+WEAPON_KATANA:${13:+WEAPON_CHAINSAW:${14:+WEAPON_DILDO:${15:+WEAPON_DILDO2:${16:+WEAPON_VIBRATOR:${17:+WEAPON_VIBRATOR2:${18:+WEAPON_FLOWER:${19:+WEAPON_CANE:${20:+WEAPON_GRENADE:${21:+WEAPON_TEARGAS:${22:+WEAPON_MOLTOV:${23:+WEAPON_MOLOTOV:${24:+WEAPON_COLT45:${25:+WEAPON_SILENCED:${26:+WEAPON_DEAGLE:${27:+WEAPON_SHOTGUN:${28:+WEAPON_SAWEDOFF:${29:+WEAPON_SHOTGSPA:${30:+WEAPON_UZI:${31:+WEAPON_MP5:${32:+WEAPON_AK47:${33:+WEAPON_M4:${34:+WEAPON_TEC9:${35:+WEAPON_RIFLE:${36:+WEAPON_SNIPER:${37:+WEAPON_ROCKETLAUNCHER:${38:+WEAPON_HEATSEEKER:${39:+WEAPON_FLAMETHROWER:${40:+WEAPON_MINIGUN:${41:+WEAPON_SATCHEL:${42:+WEAPON_BOMB:${43:+WEAPON_SPRAYCAN:${44:+WEAPON_FIREEXTINGUISHER:${45:+WEAPON_CAMERA:${46:+WEAPON_NIGHT_VISION_GOGGLES:${47:+WEAPON_THERMAL_GOGGLES:${48:+WEAPON_PARACHUTE:${49:+WEAPON_VEHICLE:${50:+WEAPON_DROWN:${51:+WEAPON_COLLISION:${52:+WEAPON_SPLAT:$53}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}$54"
 		},
 		{
+			"description": "Add tags to `GetPlayerWeaponData`",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))GetPlayerWeaponData\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3GetPlayerWeaponData($4 WEAPON_SLOT:$5$6"
+		},
+		{
+			"description": "Add enums to `GetPlayerWeaponData`",
+			"from": "((?&prefix))GetPlayerWeaponData\\s*+\\(((?&expression),)\\s*+(?:(-1)|(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(9)|(10)|(11)|(12)|((?&expression)))\\s*+([,)])",
+			"to": "$1GetPlayerWeaponData($2 ${3:+WEAPON_SLOT_UNKNOWN:${4:+WEAPON_SLOT_UNARMED:${5:+WEAPON_SLOT_MELEE:${6:+WEAPON_SLOT_PISTOL:${7:+WEAPON_SLOT_SHOTGUN:${8:+WEAPON_SLOT_MACHINE_GUN:${9:+WEAPON_SLOT_ASSAULT_RIFLE:${10:+WEAPON_SLOT_LONG_RIFLE:${11:+WEAPON_SLOT_ARTILLERY:${12:+WEAPON_SLOT_EXPLOSIVES:${13:+WEAPON_SLOT_EQUIPMENT:${14:+WEAPON_SLOT_GIFT:${15:+WEAPON_SLOT_GADGET:${16:+WEAPON_SLOT_DETONATOR:$17}}}}}}}}}}}}}}$18"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(WEAPON_SLOT:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(-1)|(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(9)|(10)|(11)|(12)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+WEAPON_SLOT_UNKNOWN:${3:+WEAPON_SLOT_UNARMED:${4:+WEAPON_SLOT_MELEE:${5:+WEAPON_SLOT_PISTOL:${6:+WEAPON_SLOT_SHOTGUN:${7:+WEAPON_SLOT_MACHINE_GUN:${8:+WEAPON_SLOT_ASSAULT_RIFLE:${9:+WEAPON_SLOT_LONG_RIFLE:${10:+WEAPON_SLOT_ARTILLERY:${11:+WEAPON_SLOT_EXPLOSIVES:${12:+WEAPON_SLOT_EQUIPMENT:${13:+WEAPON_SLOT_GIFT:${14:+WEAPON_SLOT_GADGET:${15:+WEAPON_SLOT_DETONATOR:$16}}}}}}}}}}}}}}$17"
+		},
+		{
 			"description": "Add tags to `ShowPlayerMarkers`",
 			"from": "((?&start))((?&stocks))\\s+(?:void\\s*+:\\s*+)?((?&prefix))ShowPlayerMarkers\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 void:$3ShowPlayerMarkers(PLAYER_MARKERS_MODE:$4$5"
@@ -136,16 +176,6 @@
 			"description": "Add enums to `ShowPlayerMarkers`",
 			"from": "((?&prefix))ShowPlayerMarkers\\s*+\\(\\s*+(?:(0)|(1)|(2)|((?&expression)))\\s*+([,)])",
 			"to": "$1ShowPlayerMarkers(${2:+PLAYER_MARKERS_MODE_OFF:${3:+PLAYER_MARKERS_MODE_GLOBAL:${4:+PLAYER_MARKERS_MODE_STREAMED:$5}}}$6"
-		},
-		{
-			"description": "Add tags to `SetPlayerRaceCheckpoint`",
-			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))SetPlayerRaceCheckpoint\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 bool:$3SetPlayerRaceCheckpoint($4 CP_TYPE:$5$6"
-		},
-		{
-			"description": "Add enums to `SetPlayerRaceCheckpoint`",
-			"from": "((?&prefix))SetPlayerRaceCheckpoint\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|((?&expression)))\\s*+([,)])",
-			"to": "$1SetPlayerRaceCheckpoint($2 ${3:+CP_TYPE_GROUND_NORMAL:${4:+CP_TYPE_GROUND_FINISH:${5:+CP_TYPE_GROUND_EMPTY:${6:+CP_TYPE_AIR_NORMAL:${7:+CP_TYPE_AIR_FINISH:${8:+CP_TYPE_AIR_ROTATING:${9:+CP_TYPE_AIR_STROBING:${10:+CP_TYPE_AIR_SWINGING:${11:+CP_TYPE_AIR_BOBBING:$12}}}}}}}}}$13"
 		},
 		{
 			"description": "Add tags to `ShowPlayerDialog`",
@@ -176,6 +206,16 @@
 			"description": "Add enums to `HTTP`",
 			"from": "((?&prefix))HTTP\\s*+\\(((?&expression),)\\s*+(?:(1)|(2)|(3)|((?&expression)))\\s*+([,)])",
 			"to": "$1HTTP($2 ${3:+HTTP_GET:${4:+HTTP_POST:${5:+HTTP_HEAD:$6}}}$7"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(CONNECTION_STATUS:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+CONNECTION_STATUS_NO_ACTION:${3:+CONNECTION_STATUS_DISCONNECT_ASAP:${4:+CONNECTION_STATUS_DISCONNECT_ASAP_SILENTLY:${5:+CONNECTION_STATUS_DISCONNECT_ON_NO_ACK:${6:+CONNECTION_STATUS_REQUESTED_CONNECTION:${7:+CONNECTION_STATUS_HANDLING_CONNECTION_REQUEST:${8:+CONNECTION_STATUS_UNVERIFIED_SENDER:${9:+CONNECTION_STATUS_SET_ENCRYPTION_ON_MULTIPLE_16_BYTE_PACKET:${10:+CONNECTION_STATUS_CONNECTED:$11}}}}}}}}}$12"
 		},
 		{
 			"description": "Add tags to `SetObjectMaterialText`",
@@ -258,6 +298,16 @@
 			"to": "$1GetPlayerObjectMaterialText($2 ${3:+OBJECT_MATERIAL_TEXT_ALIGN_CENTRE:${4:+OBJECT_MATERIAL_TEXT_ALIGN_CENTER:${5:+OBJECT_MATERIAL_TEXT_ALIGN_RIGHT:${6:+OBJECT_MATERIAL_TEXT_ALIGN_LEFT:${7:+OBJECT_MATERIAL_TEXT_ALIGN_CENT:${8:+OBJECT_MATERIAL_TEXT_ALIGN_RIGT:$9}}}}}}$10"
 		},
 		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(PLAYER_STATE:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(7)|(8)|(9)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+PLAYER_STATE_NONE:${3:+PLAYER_STATE_ONFOOT:${4:+PLAYER_STATE_DRIVER:${5:+PLAYER_STATE_PASSENGER:${6:+PLAYER_STATE_WASTED:${7:+PLAYER_STATE_SPAWNED:${8:+PLAYER_STATE_SPECTATING:$9}}}}}}}$10"
+		},
+		{
 			"description": "Add tags to `SetPlayerSpecialAction`",
 			"from": "((?&start))((?&stocks))\\s+((?&prefix))SetPlayerSpecialAction\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 $3SetPlayerSpecialAction($4 SPECIAL_ACTION:$5$6"
@@ -266,6 +316,16 @@
 			"description": "Add enums to `SetPlayerSpecialAction`",
 			"from": "((?&prefix))SetPlayerSpecialAction\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(10)|(11)|(12)|(13)|(20)|(21)|(22)|(23)|(24)|(25)|(68)|((?&expression)))\\s*+([,)])",
 			"to": "$1SetPlayerSpecialAction($2 ${3:+SPECIAL_ACTION_NONE:${4:+SPECIAL_ACTION_DUCK:${5:+SPECIAL_ACTION_USEJETPACK:${6:+SPECIAL_ACTION_ENTER_VEHICLE:${7:+SPECIAL_ACTION_EXIT_VEHICLE:${8:+SPECIAL_ACTION_DANCE1:${9:+SPECIAL_ACTION_DANCE2:${10:+SPECIAL_ACTION_DANCE3:${11:+SPECIAL_ACTION_DANCE4:${12:+SPECIAL_ACTION_HANDSUP:${13:+SPECIAL_ACTION_USECELLPHONE:${14:+SPECIAL_ACTION_SITTING:${15:+SPECIAL_ACTION_STOPUSECELLPHONE:${16:+SPECIAL_ACTION_DRINK_BEER:${17:+SPECIAL_ACTION_SMOKE_CIGGY:${18:+SPECIAL_ACTION_DRINK_WINE:${19:+SPECIAL_ACTION_DRINK_SPRUNK:${20:+SPECIAL_ACTION_CUFFED:${21:+SPECIAL_ACTION_CARRY:${22:+SPECIAL_ACTION_PISSING:$23}}}}}}}}}}}}}}}}}}}}$24"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(SPECIAL_ACTION:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(10)|(11)|(12)|(13)|(20)|(21)|(22)|(23)|(24)|(25)|(68)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+SPECIAL_ACTION_NONE:${3:+SPECIAL_ACTION_DUCK:${4:+SPECIAL_ACTION_USEJETPACK:${5:+SPECIAL_ACTION_ENTER_VEHICLE:${6:+SPECIAL_ACTION_EXIT_VEHICLE:${7:+SPECIAL_ACTION_DANCE1:${8:+SPECIAL_ACTION_DANCE2:${9:+SPECIAL_ACTION_DANCE3:${10:+SPECIAL_ACTION_DANCE4:${11:+SPECIAL_ACTION_HANDSUP:${12:+SPECIAL_ACTION_USECELLPHONE:${13:+SPECIAL_ACTION_SITTING:${14:+SPECIAL_ACTION_STOPUSECELLPHONE:${15:+SPECIAL_ACTION_DRINK_BEER:${16:+SPECIAL_ACTION_SMOKE_CIGGY:${17:+SPECIAL_ACTION_DRINK_WINE:${18:+SPECIAL_ACTION_DRINK_SPRUNK:${19:+SPECIAL_ACTION_CUFFED:${20:+SPECIAL_ACTION_CARRY:${21:+SPECIAL_ACTION_PISSING:$22}}}}}}}}}}}}}}}}}}}}$23"
 		},
 		{
 			"description": "Add tags to `SetPlayerFightingStyle`",
@@ -278,6 +338,16 @@
 			"to": "$1SetPlayerFightingStyle($2 ${3:+FIGHT_STYLE_NORMAL:${4:+FIGHT_STYLE_BOXING:${5:+FIGHT_STYLE_KUNGFU:${6:+FIGHT_STYLE_KNEEHEAD:${7:+FIGHT_STYLE_GRABKICK:${8:+FIGHT_STYLE_ELBOW:$9}}}}}}$10"
 		},
 		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(FIGHT_STYLE:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(4)|(5)|(6)|(7)|(15)|(16)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+FIGHT_STYLE_NORMAL:${3:+FIGHT_STYLE_BOXING:${4:+FIGHT_STYLE_KUNGFU:${5:+FIGHT_STYLE_KNEEHEAD:${6:+FIGHT_STYLE_GRABKICK:${7:+FIGHT_STYLE_ELBOW:$8}}}}}}$9"
+		},
+		{
 			"description": "Add tags to `SetPlayerSkillLevel`",
 			"from": "((?&start))((?&stocks))\\s+((?&prefix))SetPlayerSkillLevel\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 $3SetPlayerSkillLevel($4 WEAPONSKILL:$5$6"
@@ -286,6 +356,16 @@
 			"description": "Add enums to `SetPlayerSkillLevel`",
 			"from": "((?&prefix))SetPlayerSkillLevel\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(9)|(10)|((?&expression)))\\s*+([,)])",
 			"to": "$1SetPlayerSkillLevel($2 ${3:+WEAPONSKILL_PISTOL:${4:+WEAPONSKILL_PISTOL_SILENCED:${5:+WEAPONSKILL_DESERT_EAGLE:${6:+WEAPONSKILL_SHOTGUN:${7:+WEAPONSKILL_SAWNOFF_SHOTGUN:${8:+WEAPONSKILL_SPAS12_SHOTGUN:${9:+WEAPONSKILL_MICRO_UZI:${10:+WEAPONSKILL_MP5:${11:+WEAPONSKILL_AK47:${12:+WEAPONSKILL_M4:${13:+WEAPONSKILL_SNIPERRIFLE:$14}}}}}}}}}}}$15"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(WEAPONSTATE:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(-1)|(0)|(1)|(2)|(3)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+WEAPONSTATE_UNKNOWN:${3:+WEAPONSTATE_NO_BULLETS:${4:+WEAPONSTATE_LAST_BULLET:${5:+WEAPONSTATE_MORE_BULLETS:${6:+WEAPONSTATE_RELOADING:$7}}}}}$8"
 		},
 		{
 			"description": "Add tags to `GetPlayerKeys`",
@@ -328,6 +408,16 @@
 			"to": "$1InterpolateCameraLookAt($2 ${3:+CAMERA_MOVE:${4:+CAMERA_CUT:$5}}$6"
 		},
 		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(CAM_MODE:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(-1)|(0)|(3)|(4)|(7)|(8)|(15)|(16)|(18)|(22)|(46)|(51)|(53)|(55)|(56)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+CAM_MODE_DISCONNECTED:${3:+CAM_MODE_NONE:${4:+CAM_MODE_BEHINDCAR:${5:+CAM_MODE_FOLLOWPED:${6:+CAM_MODE_SNIPER:${7:+CAM_MODE_ROCKETLAUNCHER:${8:+CAM_MODE_FIXED:${9:+CAM_MODE_1STPERSON:${10:+CAM_MODE_CAM_ON_A_STRING:${11:+CAM_MODE_BEHINDBOAT:${12:+CAM_MODE_CAMERA:${13:+CAM_MODE_ROCKETLAUNCHER_HS:${14:+CAM_MODE_AIMWEAPON:${15:+CAM_MODE_AIMWEAPON_FROMCAR:${16:+CAM_MODE_DW_HELI_CHASE:$17}}}}}}}}}}}}}}}$18"
+		},
+		{
 			"description": "Add tags to `SetPlayerMapIcon`",
 			"from": "((?&start))((?&stocks))\\s+((?&prefix))SetPlayerMapIcon\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){7})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 $3SetPlayerMapIcon($4 MAPICON:$5 = MAPICON_LOCAL$6"
@@ -358,14 +448,14 @@
 			"to": "$1PlayerSpectateVehicle($2 ${3:+SPECTATE_MODE_NORMAL:${4:+SPECTATE_MODE_FIXED:${5:+SPECTATE_MODE_SIDE:$6}}}$7"
 		},
 		{
-			"description": "Add tags to `ClearAnimations`",
-			"from": "((?&start))((?&stocks))\\s+((?&prefix))ClearAnimations\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
-			"to": "$1$2 $3ClearAnimations($4 FORCE_SYNC:$5 = SYNC_NONE$6"
+			"description": "Add tags to `StartRecordingPlayerData`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))StartRecordingPlayerData\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3StartRecordingPlayerData($4 PLAYER_RECORDING_TYPE:$5$6"
 		},
 		{
-			"description": "Add enums to `ClearAnimations`",
-			"from": "((?&prefix))ClearAnimations\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|((?&expression)))\\s*+([,)])",
-			"to": "$1ClearAnimations($2 ${3:+SYNC_NONE:${4:+SYNC_ALL:${5:+SYNC_OTHER:$6}}}$7"
+			"description": "Add enums to `StartRecordingPlayerData`",
+			"from": "((?&prefix))StartRecordingPlayerData\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|((?&expression)))\\s*+([,)])",
+			"to": "$1StartRecordingPlayerData($2 ${3:+PLAYER_RECORDING_TYPE_NONE:${4:+PLAYER_RECORDING_TYPE_DRIVER:${5:+PLAYER_RECORDING_TYPE_ONFOOT:$6}}}$7"
 		},
 		{
 			"description": "Add tags to `ApplyAnimation`",
@@ -378,6 +468,16 @@
 			"to": "$1ApplyAnimation($2 ${3:+SYNC_NONE:${4:+SYNC_ALL:${5:+SYNC_OTHER:$6}}}$7"
 		},
 		{
+			"description": "Add tags to `ClearAnimations`",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))ClearAnimations\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3ClearAnimations($4 FORCE_SYNC:$5 = SYNC_NONE$6"
+		},
+		{
+			"description": "Add enums to `ClearAnimations`",
+			"from": "((?&prefix))ClearAnimations\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|((?&expression)))\\s*+([,)])",
+			"to": "$1ClearAnimations($2 ${3:+SYNC_NONE:${4:+SYNC_ALL:${5:+SYNC_OTHER:$6}}}$7"
+		},
+		{
 			"description": "Add tags to `TextDrawFont`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))TextDrawFont\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 bool:$3TextDrawFont($4 TEXT_DRAW_FONT:$5$6"
@@ -386,6 +486,16 @@
 			"description": "Add enums to `TextDrawFont`",
 			"from": "((?&prefix))TextDrawFont\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|((?&expression)))\\s*+([,)])",
 			"to": "$1TextDrawFont($2 ${3:+TEXT_DRAW_FONT_0:${4:+TEXT_DRAW_FONT_1:${5:+TEXT_DRAW_FONT_2:${6:+TEXT_DRAW_FONT_3:${7:+TEXT_DRAW_FONT_SPRITE_DRAW:${8:+TEXT_DRAW_FONT_MODEL_PREVIEW:$9}}}}}}$10"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(TEXT_DRAW_FONT:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+TEXT_DRAW_FONT_0:${3:+TEXT_DRAW_FONT_1:${4:+TEXT_DRAW_FONT_2:${5:+TEXT_DRAW_FONT_3:${6:+TEXT_DRAW_FONT_SPRITE_DRAW:${7:+TEXT_DRAW_FONT_MODEL_PREVIEW:$8}}}}}}$9"
 		},
 		{
 			"description": "Add tags to `PlayerTextDrawFont`",
@@ -398,6 +508,16 @@
 			"to": "$1PlayerTextDrawFont($2 ${3:+TEXT_DRAW_FONT_0:${4:+TEXT_DRAW_FONT_1:${5:+TEXT_DRAW_FONT_2:${6:+TEXT_DRAW_FONT_3:${7:+TEXT_DRAW_FONT_SPRITE_DRAW:${8:+TEXT_DRAW_FONT_MODEL_PREVIEW:$9}}}}}}$10"
 		},
 		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(TEXT_DRAW_FONT:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+TEXT_DRAW_FONT_0:${3:+TEXT_DRAW_FONT_1:${4:+TEXT_DRAW_FONT_2:${5:+TEXT_DRAW_FONT_3:${6:+TEXT_DRAW_FONT_SPRITE_DRAW:${7:+TEXT_DRAW_FONT_MODEL_PREVIEW:$8}}}}}}$9"
+		},
+		{
 			"description": "Add tags to `TextDrawAlignment`",
 			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))TextDrawAlignment\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 bool:$3TextDrawAlignment($4 TEXT_DRAW_ALIGN:$5$6"
@@ -406,6 +526,16 @@
 			"description": "Add enums to `TextDrawAlignment`",
 			"from": "((?&prefix))TextDrawAlignment\\s*+\\(((?&expression),)\\s*+(?:(1)|(2)|(2)|(3)|((?&expression)))\\s*+([,)])",
 			"to": "$1TextDrawAlignment($2 ${3:+TEXT_DRAW_ALIGN_LEFT:${4:+TEXT_DRAW_ALIGN_CENTRE:${5:+TEXT_DRAW_ALIGN_CENTER:${6:+TEXT_DRAW_ALIGN_RIGHT:$7}}}}$8"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(TEXT_DRAW_ALIGN:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(1)|(2)|(2)|(3)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+TEXT_DRAW_ALIGN_LEFT:${3:+TEXT_DRAW_ALIGN_CENTRE:${4:+TEXT_DRAW_ALIGN_CENTER:${5:+TEXT_DRAW_ALIGN_RIGHT:$6}}}}$7"
 		},
 		{
 			"description": "Add tags to `PlayerTextDrawAlignment`",
@@ -418,6 +548,36 @@
 			"to": "$1PlayerTextDrawAlignment($2 ${3:+TEXT_DRAW_ALIGN_LEFT:${4:+TEXT_DRAW_ALIGN_CENTRE:${5:+TEXT_DRAW_ALIGN_CENTER:${6:+TEXT_DRAW_ALIGN_RIGHT:$7}}}}$8"
 		},
 		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(TEXT_DRAW_ALIGN:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(1)|(2)|(2)|(3)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+TEXT_DRAW_ALIGN_LEFT:${3:+TEXT_DRAW_ALIGN_CENTRE:${4:+TEXT_DRAW_ALIGN_CENTER:${5:+TEXT_DRAW_ALIGN_RIGHT:$6}}}}$7"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(const VARTYPE:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(0)|(1)|(2)|(3)|(0)|(1)|(2)|(3)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+VARTYPE_NONE:${3:+VARTYPE_INT:${4:+VARTYPE_STRING:${5:+VARTYPE_FLOAT:${6:+SERVER_VARTYPE_NONE:${7:+SERVER_VARTYPE_INT:${8:+SERVER_VARTYPE_STRING:${9:+SERVER_VARTYPE_FLOAT:${10:+PLAYER_VARTYPE_NONE:${11:+PLAYER_VARTYPE_INT:${12:+PLAYER_VARTYPE_STRING:${13:+PLAYER_VARTYPE_FLOAT:$14}}}}}}}}}}}}$15"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(VARTYPE:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(0)|(1)|(2)|(3)|(0)|(1)|(2)|(3)|(0)|(1)|(2)|(3)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+VARTYPE_NONE:${3:+VARTYPE_INT:${4:+VARTYPE_STRING:${5:+VARTYPE_FLOAT:${6:+SERVER_VARTYPE_NONE:${7:+SERVER_VARTYPE_INT:${8:+SERVER_VARTYPE_STRING:${9:+SERVER_VARTYPE_FLOAT:${10:+PLAYER_VARTYPE_NONE:${11:+PLAYER_VARTYPE_INT:${12:+PLAYER_VARTYPE_STRING:${13:+PLAYER_VARTYPE_FLOAT:$14}}}}}}}}}}}}$15"
+		},
+		{
 			"description": "Add tags to `GetVehicleComponentInSlot`",
 			"from": "((?&start))((?&stocks))\\s+((?&prefix))GetVehicleComponentInSlot\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 $3GetVehicleComponentInSlot($4 CARMODTYPE:$5$6"
@@ -426,6 +586,16 @@
 			"description": "Add enums to `GetVehicleComponentInSlot`",
 			"from": "((?&prefix))GetVehicleComponentInSlot\\s*+\\(((?&expression),)\\s*+(?:(-1)|(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(9)|(10)|(11)|(12)|(13)|(14)|(15)|((?&expression)))\\s*+([,)])",
 			"to": "$1GetVehicleComponentInSlot($2 ${3:+CARMODTYPE_NONE:${4:+CARMODTYPE_SPOILER:${5:+CARMODTYPE_HOOD:${6:+CARMODTYPE_ROOF:${7:+CARMODTYPE_SIDESKIRT:${8:+CARMODTYPE_LAMPS:${9:+CARMODTYPE_NITRO:${10:+CARMODTYPE_EXHAUST:${11:+CARMODTYPE_WHEELS:${12:+CARMODTYPE_STEREO:${13:+CARMODTYPE_HYDRAULICS:${14:+CARMODTYPE_FRONT_BUMPER:${15:+CARMODTYPE_REAR_BUMPER:${16:+CARMODTYPE_VENT_RIGHT:${17:+CARMODTYPE_VENT_LEFT:${18:+CARMODTYPE_FRONT_BULLBAR:${19:+CARMODTYPE_REAR_BULLBAR:$20}}}}}}}}}}}}}}}}}$21"
+		},
+		{
+			"description": "Add tags to ``",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3(CARMODTYPE:$4$5"
+		},
+		{
+			"description": "Add enums to ``",
+			"from": "((?&prefix))\\s*+\\(\\s*+(?:(-1)|(0)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(9)|(10)|(11)|(12)|(13)|(14)|(15)|((?&expression)))\\s*+([,)])",
+			"to": "$1(${2:+CARMODTYPE_NONE:${3:+CARMODTYPE_SPOILER:${4:+CARMODTYPE_HOOD:${5:+CARMODTYPE_ROOF:${6:+CARMODTYPE_SIDESKIRT:${7:+CARMODTYPE_LAMPS:${8:+CARMODTYPE_NITRO:${9:+CARMODTYPE_EXHAUST:${10:+CARMODTYPE_WHEELS:${11:+CARMODTYPE_STEREO:${12:+CARMODTYPE_HYDRAULICS:${13:+CARMODTYPE_FRONT_BUMPER:${14:+CARMODTYPE_REAR_BUMPER:${15:+CARMODTYPE_VENT_RIGHT:${16:+CARMODTYPE_VENT_LEFT:${17:+CARMODTYPE_FRONT_BULLBAR:${18:+CARMODTYPE_REAR_BULLBAR:$19}}}}}}}}}}}}}}}}}$20"
 		},
 		{
 			"description": "Add tags to `GetVehicleModelInfo`",
@@ -568,6 +738,36 @@
 			"to": "$1TogglePlayerControllable($2 ${3:+false:${4:+true:$5}}$6"
 		},
 		{
+			"description": "Add tags to `AllowInteriorWeapons`",
+			"from": "((?&start))((?&stocks))\\s+(?:void\\s*+:\\s*+)?((?&prefix))AllowInteriorWeapons\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 void:$3AllowInteriorWeapons(bool:$4$5"
+		},
+		{
+			"description": "Add enums to `AllowInteriorWeapons`",
+			"from": "((?&prefix))AllowInteriorWeapons\\s*+\\(\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1AllowInteriorWeapons(${2:+false:${3:+true:$4}}$5"
+		},
+		{
+			"description": "Add tags to `AllowPlayerTeleport`",
+			"from": "((?&start))((?&stocks))\\s+((?&prefix))AllowPlayerTeleport\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 $3AllowPlayerTeleport($4 bool:$5$6"
+		},
+		{
+			"description": "Add enums to `AllowPlayerTeleport`",
+			"from": "((?&prefix))AllowPlayerTeleport\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1AllowPlayerTeleport($2 ${3:+false:${4:+true:$5}}$6"
+		},
+		{
+			"description": "Add tags to `AllowAdminTeleport`",
+			"from": "((?&start))((?&stocks))\\s+(?:void\\s*+:\\s*+)?((?&prefix))AllowAdminTeleport\\s*+\\(\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 void:$3AllowAdminTeleport(bool:$4$5"
+		},
+		{
+			"description": "Add enums to `AllowAdminTeleport`",
+			"from": "((?&prefix))AllowAdminTeleport\\s*+\\(\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1AllowAdminTeleport(${2:+false:${3:+true:$4}}$5"
+		},
+		{
 			"description": "Add tags to `CreateVehicle`",
 			"from": "((?&start))((?&stocks))\\s+((?&prefix))CreateVehicle\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){8})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
 			"to": "$1$2 $3CreateVehicle($4 bool:$5 = false$6"
@@ -609,4 +809,3 @@
 		}
 	]
 }
-

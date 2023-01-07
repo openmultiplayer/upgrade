@@ -1,7 +1,6 @@
 {
 	"generators":
 	[
-
 		{
 			"enum": "enum CP_TYPE:__CP_TYPE { CP_TYPE_GROUND_NORMAL = 0, CP_TYPE_GROUND_FINISH = 1, CP_TYPE_GROUND_EMPTY = 2, CP_TYPE_AIR_NORMAL = 3, CP_TYPE_AIR_FINISH = 4, CP_TYPE_AIR_ROTATING = 5, CP_TYPE_AIR_STROBING = 6, CP_TYPE_AIR_SWINGING = 7, CP_TYPE_AIR_BOBBING = 8 }",
 			"code": "native bool:SetPlayerRaceCheckpoint(playerid, $:type, Float:centreX, Float:centreY, Float:centreZ, Float:nextX, Float:nextY, Float:nextZ, Float:radius)"
