@@ -95,15 +95,18 @@ namespace Upgrade
 			Console.WriteLine("");
 		}
 
-		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks, Encoding encoding)
+		private static void ScanDir(string root, string[] types, string[] excludes, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks, Encoding encoding)
 		{
 			foreach (var type in types)
 			{
 				string pattern = "*." + type;
 				foreach (var file in Directory.EnumerateFiles(root, pattern))
 				{
-					// Loop over all the files and do the replacements.
-					DoOneFile(file, scanner, report, debug, tasks, encoding);
+					if (!excludes.Contains(Path.GetFileNameWithoutExtension(file)))
+					{
+						// Loop over all the files and do the replacements.
+						DoOneFile(file, scanner, report, debug, tasks, encoding);
+					}
 				}
 			}
 			if (recurse)
@@ -114,7 +117,7 @@ namespace Upgrade
 					DirectoryInfo info = new DirectoryInfo(dir);
 					if (!info.Attributes.HasFlag(FileAttributes.ReparsePoint))
 					{
-						ScanDir(dir, types, scanner, report, recurse, debug, tasks, encoding);
+						ScanDir(dir, types, excludes, scanner, report, recurse, debug, tasks, encoding);
 					}
 				}
 			}
@@ -172,6 +175,7 @@ namespace Upgrade
 				}
 			}
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
+			string[] excludes = ArgOrDefault(args, "--exclude", "y_compilerdata_codepage").Split(',');
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
 			string directory = Path.GetFullPath(args.Last());
@@ -218,7 +222,7 @@ namespace Upgrade
 			else
 			{
 				// Descend.
-				ScanDir(directory, types, scanner, report, true, debug, tasks, encoding);
+				ScanDir(directory, types, excludes, scanner, report, true, debug, tasks, encoding);
 			}
 			Task.WaitAll(tasks.ToArray());
 		}
@@ -239,7 +243,7 @@ namespace Upgrade
 				Console.WriteLine("    Options:\n");
 				Console.WriteLine("    --report             - Show changes to make, but don't make them.");
 				Console.WriteLine("    --scans file         - Load defines and replacements from `file` (default `upgrade`).");
-				Console.WriteLine("    --types types        - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
+				Console.WriteLine("    --types file,types   - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("    --debug level        - Enable debugging output.");
 				Console.WriteLine("    --codepage name      - What codepage to run the scans in.");
 				Console.WriteLine("    --exclude file,names - Files to ignore (default `y_compilerdata_codepage`).");
