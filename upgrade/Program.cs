@@ -171,7 +171,6 @@ namespace Upgrade
 					return;
 				}
 			}
-			Console.WriteLine("Encoding: " + encoding);
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
