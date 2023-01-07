@@ -9,6 +9,7 @@
 using Newtonsoft.Json;
 using PCRE;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -434,7 +435,7 @@ namespace Upgrade
 			}
 		}
 
-		public void Dump()
+		public void Dump(string output)
 		{
 			var sb = new StringBuilder("{\n\t\"defines\":\n\t{\n\t},\n\t\"replacements\":\n\t[");
 			bool first = true;
@@ -463,7 +464,14 @@ namespace Upgrade
 				sb.Append("\"\n\t\t}");
 			}
 			sb.Append("\n\t]\n}\n\n");
-			System.Console.WriteLine(sb.ToString());
+			if (output == "")
+			{
+				System.Console.WriteLine(sb.ToString());
+			}
+			else
+			{
+				File.WriteAllText(output, sb.ToString());
+			}
 		}
 
 		public Generator()

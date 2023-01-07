@@ -117,12 +117,26 @@ namespace Upgrade
 
 		static void RunGenerate(string[] args)
 		{
+			// `1` by default for `--generate`.
+			int argc = 1;
+			int debug = 0;
+			if (args.Contains("--debug"))
+			{
+				argc += 2;
+				debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
+			}
+			string output = "";
+			if (args.Length > argc)
+			{
+				// There's a trailing argument that's not part of a `--` argument.
+				output = args.Last();
+			}
 			Generator generator;
 			using (StreamReader fhnd = File.OpenText("_generate.json"))
 			{
 				JsonSerializer serializer = new JsonSerializer();
 				generator = (Generator)serializer.Deserialize(fhnd, typeof(Generator));
-				generator.Dump();
+				generator.Dump(output);
 			}
 		}
 
@@ -171,10 +185,11 @@ namespace Upgrade
 				// Display the help message.
 				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp\n");
 				Console.WriteLine("Usage:\n");
-				Console.WriteLine("  upgrade --generate [options]\n");
+				Console.WriteLine("  upgrade --generate [options] [output]\n");
 				Console.WriteLine("    Options:\n");
 				Console.WriteLine("      --generate    - Generate the regex to match the functions in `_generate.json`.");
 				Console.WriteLine("      --debug level - Enable debugging output.\n");
+				Console.WriteLine("      output        - Filename to write to (default console).\n");
 				Console.WriteLine("  upgrade [options] directory\n");
 				Console.WriteLine("    Options:\n");
 				Console.WriteLine("      --report             - Show changes to make, but don't make them.");
