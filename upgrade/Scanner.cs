@@ -8,8 +8,10 @@
 
 using Newtonsoft.Json;
 using PCRE;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -164,6 +166,15 @@ namespace Upgrade
 		{
 			// Actually does the replacements.
 			List<Diff> ret = new List<Diff>();
+			if (encoding == Encoding.ASCII)
+			{
+				byte[] check = File.ReadAllBytes(name);
+				if (check.Any((b) => b > 0x7F))
+				{
+					Console.WriteLine("    Skipped due to unknown encoding.");
+					return 0;
+				}
+			}
 			string contents = await File.ReadAllTextAsync(name, encoding);
 			foreach (var rep in Replacements)
 			{

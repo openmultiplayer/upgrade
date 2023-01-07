@@ -148,8 +148,30 @@ namespace Upgrade
 		static void RunScan(string[] args)
 		{
 			string file = ArgOrDefault(args, "--scans", "upgrade.json");
-			string codepage = ArgOrDefault(args, "--codepage", "ASCII");
-			Encoding encoding = Encoding.GetEncoding(codepage);
+			Encoding encoding = Encoding.ASCII;
+			string codepage = ArgOrDefault(args, "--codepage", "");
+			if (codepage != "")
+			{
+				try
+				{
+					encoding = Encoding.GetEncoding(codepage);
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine("");
+					Console.WriteLine("Unknown codepage \"" + codepage + "\".");
+					Console.WriteLine("");
+					Console.WriteLine("Valid codepages:");
+					Console.WriteLine("");
+					foreach (EncodingInfo info in Encoding.GetEncodings())
+					{
+						Console.WriteLine("    " + info.Name + "\t- " + info.DisplayName);
+					}
+					Console.WriteLine("");
+					return;
+				}
+			}
+			Console.WriteLine("Encoding: " + encoding);
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
@@ -209,21 +231,21 @@ namespace Upgrade
 				// Display the help message.
 				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp\n");
 				Console.WriteLine("Usage:\n");
-				Console.WriteLine("  upgrade --generate [options] [output]\n");
+				Console.WriteLine("upgrade --generate [options] [output]\n");
 				Console.WriteLine("    Options:\n");
-				Console.WriteLine("      --generate    - Generate the regex to match the functions in `_generate.json`.");
-				Console.WriteLine("      --debug level - Enable debugging output.\n");
-				Console.WriteLine("      output        - Filename to write to (default console).\n");
-				Console.WriteLine("  upgrade [options] input\n");
+				Console.WriteLine("    --generate    - Generate the regex to match the functions in `_generate.json`.");
+				Console.WriteLine("    --debug level - Enable debugging output.");
+				Console.WriteLine("    output        - Filename to write to (default console).\n");
+				Console.WriteLine("upgrade [options] input\n");
 				Console.WriteLine("    Options:\n");
-				Console.WriteLine("      --report             - Show changes to make, but don't make them.");
-				Console.WriteLine("      --scans file         - Load defines and replacements from `file` (default `upgrade`).");
-				Console.WriteLine("      --types types        - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
-				Console.WriteLine("      --debug level        - Enable debugging output.");
-				Console.WriteLine("      --codepage name      - What codepage to run the scans in.");
-				Console.WriteLine("      --exclude file,names - Files to ignore (default `y_compilerdata_codepage`).");
-				Console.WriteLine("      --help               - Show this message and exit.");
-				Console.WriteLine("      input                - File to scan, or directory to recurse through.\n");
+				Console.WriteLine("    --report             - Show changes to make, but don't make them.");
+				Console.WriteLine("    --scans file         - Load defines and replacements from `file` (default `upgrade`).");
+				Console.WriteLine("    --types types        - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
+				Console.WriteLine("    --debug level        - Enable debugging output.");
+				Console.WriteLine("    --codepage name      - What codepage to run the scans in.");
+				Console.WriteLine("    --exclude file,names - Files to ignore (default `y_compilerdata_codepage`).");
+				Console.WriteLine("    --help               - Show this message and exit.");
+				Console.WriteLine("    input                - File to scan, or directory to recurse through.\n");
 			}
 			else if (args.Contains("--generate"))
 			{
