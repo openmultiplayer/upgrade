@@ -57,13 +57,13 @@ namespace Upgrade
 			return args[idx];
 		}
 
-		private static void DoOneFile(string file, Scanner scanner, bool report, int debug, List<Task> tasks)
+		private static void DoOneFile(string file, Scanner scanner, bool report, int debug, List<Task> tasks, Encoding encoding)
 		{
 			Console.WriteLine("Scanning file: " + file);
 			Console.WriteLine("");
 			if (report)
 			{
-				IOrderedEnumerable<Diff> diffs = scanner.Report(file, debug != 0).OrderBy((d) => d.Line);
+				IOrderedEnumerable<Diff> diffs = scanner.Report(file, debug != 0, encoding).OrderBy((d) => d.Line);
 				if (diffs.Count() == 0)
 				{
 					Console.WriteLine("    No replacements found.");
@@ -77,7 +77,7 @@ namespace Upgrade
 			}
 			else
 			{
-				tasks.Add(scanner.Replace(file));
+				tasks.Add(scanner.Replace(file, encoding));
 				//int diffs = scanner.Replace(file);
 				//switch (diffs)
 				//{
@@ -95,7 +95,7 @@ namespace Upgrade
 			Console.WriteLine("");
 		}
 
-		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks)
+		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks, Encoding encoding)
 		{
 			foreach (var type in types)
 			{
@@ -103,7 +103,7 @@ namespace Upgrade
 				foreach (var file in Directory.EnumerateFiles(root, pattern))
 				{
 					// Loop over all the files and do the replacements.
-					DoOneFile(file, scanner, report, debug, tasks);
+					DoOneFile(file, scanner, report, debug, tasks, encoding);
 				}
 			}
 			if (recurse)
@@ -114,7 +114,7 @@ namespace Upgrade
 					DirectoryInfo info = new DirectoryInfo(dir);
 					if (!info.Attributes.HasFlag(FileAttributes.ReparsePoint))
 					{
-						ScanDir(dir, types, scanner, report, recurse, debug, tasks);
+						ScanDir(dir, types, scanner, report, recurse, debug, tasks, encoding);
 					}
 				}
 			}
@@ -148,6 +148,8 @@ namespace Upgrade
 		static void RunScan(string[] args)
 		{
 			string file = ArgOrDefault(args, "--scans", "upgrade.json");
+			string codepage = ArgOrDefault(args, "--codepage", "ASCII");
+			Encoding encoding = Encoding.GetEncoding(codepage);
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
@@ -190,12 +192,12 @@ namespace Upgrade
 			if (File.Exists(directory))
 			{
 				// Do one.
-				DoOneFile(directory, scanner, report, debug, tasks);
+				DoOneFile(directory, scanner, report, debug, tasks, encoding);
 			}
 			else
 			{
 				// Descend.
-				ScanDir(directory, types, scanner, report, true, debug, tasks);
+				ScanDir(directory, types, scanner, report, true, debug, tasks, encoding);
 			}
 			Task.WaitAll(tasks.ToArray());
 		}

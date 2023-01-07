@@ -119,13 +119,13 @@ namespace Upgrade
 			return count;
 		}
 
-		public IEnumerable<Diff> Report(string name, bool debug)
+		public IEnumerable<Diff> Report(string name, bool debug, Encoding encoding)
 		{
 			// This does things the slow way, with a replacement function and a second regex call
 			// inside it.  This is so we can report accurately.
 			List<Diff> ret = new List<Diff>();
 			using StreamReader fhnd = File.OpenText(name);
-			string contents = fhnd.ReadToEnd();
+			string contents = File.ReadAllText(name, encoding);
 			foreach (var rep in Replacements)
 			{
 				// Now we go for the most efficient scanning method we can (based on very little
@@ -160,24 +160,20 @@ namespace Upgrade
 			return ret;
 		}
 
-		public async Task<int> Replace(string name)
+		public async Task<int> Replace(string name, Encoding encoding)
 		{
 			// Actually does the replacements.
 			List<Diff> ret = new List<Diff>();
-			string contents = "";
-			using (StreamReader fhnd = File.OpenText(name))
+			string contents = await File.ReadAllTextAsync(name, encoding);
+			foreach (var rep in Replacements)
 			{
-				contents = await fhnd.ReadToEndAsync();
-				foreach (var rep in Replacements)
-				{
-					var func = ReplacementPattern.Parse(rep.To);
-					// Now we go for the most efficient scanning method we can (based on very little
-					// reading of the documentation).  Each replacement is done separately.
-					var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
-					contents = regex.Replace(contents, func);
-				}
+				var func = ReplacementPattern.Parse(rep.To);
+				// Now we go for the most efficient scanning method we can (based on very little
+				// reading of the documentation).  Each replacement is done separately.
+				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
+				contents = regex.Replace(contents, func);
 			}
-			await File.WriteAllTextAsync(name, contents);
+			await File.WriteAllTextAsync(name, contents, encoding);
 			// It turns out that counting the replacements is hard when we want to be fast.
 			return 0;
 		}
