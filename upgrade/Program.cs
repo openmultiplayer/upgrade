@@ -57,6 +57,44 @@ namespace Upgrade
 			return args[idx];
 		}
 
+		private static void DoOneFile(string file, Scanner scanner, bool report, int debug, List<Task> tasks)
+		{
+			Console.WriteLine("Scanning file: " + file);
+			Console.WriteLine("");
+			if (report)
+			{
+				IOrderedEnumerable<Diff> diffs = scanner.Report(file, debug != 0).OrderBy((d) => d.Line);
+				if (diffs.Count() == 0)
+				{
+					Console.WriteLine("    No replacements found.");
+				}
+				// How many lines the output has grown or shrunk by.
+				int change = 0;
+				foreach (var diff in diffs)
+				{
+					Console.WriteLine(MakeDiff(diff, ref change));
+				}
+			}
+			else
+			{
+				tasks.Add(scanner.Replace(file));
+				//int diffs = scanner.Replace(file);
+				//switch (diffs)
+				//{
+				//case 0:
+				//	Console.WriteLine("  No replacements made.");
+				//	break;
+				//case 1:
+				//	Console.WriteLine("  1 replacement made.");
+				//	break;
+				//default:
+				//	Console.WriteLine("  " + diffs + " replacements made.");
+				//	break;
+				//}
+			}
+			Console.WriteLine("");
+		}
+
 		private static void ScanDir(string root, string[] types, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks)
 		{
 			foreach (var type in types)
@@ -65,40 +103,7 @@ namespace Upgrade
 				foreach (var file in Directory.EnumerateFiles(root, pattern))
 				{
 					// Loop over all the files and do the replacements.
-					Console.WriteLine("Scanning file: " + file);
-					Console.WriteLine("");
-					if (report)
-					{
-						IOrderedEnumerable<Diff> diffs = scanner.Report(file, debug != 0).OrderBy((d) => d.Line);
-						if (diffs.Count() == 0)
-						{
-							Console.WriteLine("    No replacements found.");
-						}
-						// How many lines the output has grown or shrunk by.
-						int change = 0;
-						foreach (var diff in diffs)
-						{
-							Console.WriteLine(MakeDiff(diff, ref change));
-						}
-					}
-					else
-					{
-						tasks.Add(scanner.Replace(file));
-						//int diffs = scanner.Replace(file);
-						//switch (diffs)
-						//{
-						//case 0:
-						//	Console.WriteLine("  No replacements made.");
-						//	break;
-						//case 1:
-						//	Console.WriteLine("  1 replacement made.");
-						//	break;
-						//default:
-						//	Console.WriteLine("  " + diffs + " replacements made.");
-						//	break;
-						//}
-					}
-					Console.WriteLine("");
+					DoOneFile(file, scanner, report, debug, tasks);
 				}
 			}
 			if (recurse)
@@ -147,18 +152,13 @@ namespace Upgrade
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
 			string directory = Path.GetFullPath(args.Last());
-			if (File.Exists(directory))
+			if (!File.Exists(directory) && !Directory.Exists(directory))
 			{
-				Console.WriteLine("\"" + directory + "\" is a file.");
-				return;
-			}
-			if (!Directory.Exists(directory))
-			{
-				Console.WriteLine("\"" + directory + "\" is not a directory.");
+				Console.WriteLine("Input file/dir \"" + directory + "\" does not exist.");
 				return;
 			}
 			Scanner defines;
-			Scanner scanners;
+			Scanner scanner;
 			// Get generic shared defines.
 			using (StreamReader fhnd = File.OpenText("_define.json"))
 			{
@@ -178,17 +178,25 @@ namespace Upgrade
 			using (StreamReader fhnd = File.OpenText(file))
 			{
 				JsonSerializer serializer = new JsonSerializer();
-				scanners = (Scanner)serializer.Deserialize(fhnd, typeof(Scanner));
+				scanner = (Scanner)serializer.Deserialize(fhnd, typeof(Scanner));
 			}
 			// Merge them, preferring specific ones over generic ones.
 			foreach (var kv in defines.Defines)
 			{
-				scanners.Defines.TryAdd(kv.Key, kv.Value);
+				scanner.Defines.TryAdd(kv.Key, kv.Value);
 			}
-			scanners.UpdateDefines();
-			// Descend.
+			scanner.UpdateDefines();
 			List<Task> tasks = new List<Task>();
-			ScanDir(directory, types, scanners, report, true, debug, tasks);
+			if (File.Exists(directory))
+			{
+				// Do one.
+				DoOneFile(directory, scanner, report, debug, tasks);
+			}
+			else
+			{
+				// Descend.
+				ScanDir(directory, types, scanner, report, true, debug, tasks);
+			}
 			Task.WaitAll(tasks.ToArray());
 		}
 
