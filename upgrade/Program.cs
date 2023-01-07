@@ -170,17 +170,21 @@ namespace Upgrade
 			{
 				// Display the help message.
 				Console.WriteLine("Upgrades a lot of code from SA:MP to open.mp\n");
-				Console.WriteLine("Usage:");
-				Console.WriteLine("\n    upgrade --generate [--debug level]\n");
-				Console.WriteLine("  --generate - Generate the regex to match the functions in `_generate.json`.");
-				Console.WriteLine("  --debug level - Enable debugging output.");
-				Console.WriteLine("\n    upgrade [--report] [--scans file] [--types types] [--debug level] [--help] directory\n");
-				Console.WriteLine("  --report - Show changes to make, but don't make them.");
-				Console.WriteLine("  --scans file - Load defines and replacements from `file` (default `upgrade`).");
-				Console.WriteLine("  --types types - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
-				Console.WriteLine("  --debug level - Enable debugging output.");
-				Console.WriteLine("  --help - Show this message and exit.");
-				Console.WriteLine("  directory - Root directory in which to run the scan.");
+				Console.WriteLine("Usage:\n");
+				Console.WriteLine("  upgrade --generate [options]\n");
+				Console.WriteLine("    Options:\n");
+				Console.WriteLine("      --generate    - Generate the regex to match the functions in `_generate.json`.");
+				Console.WriteLine("      --debug level - Enable debugging output.\n");
+				Console.WriteLine("  upgrade [options] directory\n");
+				Console.WriteLine("    Options:\n");
+				Console.WriteLine("      --report             - Show changes to make, but don't make them.");
+				Console.WriteLine("      --scans file         - Load defines and replacements from `file` (default `upgrade`).");
+				Console.WriteLine("      --types types        - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
+				Console.WriteLine("      --debug level        - Enable debugging output.");
+				Console.WriteLine("      --codepage name      - What codepage to run the scans in.");
+				Console.WriteLine("      --exclude file,names - Files to ignore (default `y_compilerdata_codepage`).");
+				Console.WriteLine("      --help               - Show this message and exit.");
+				Console.WriteLine("      directory            - Root directory in which to run the scan.\n");
 			}
 			else if (args.Contains("--generate"))
 			{
