@@ -77,20 +77,22 @@ namespace Upgrade
 			}
 			else
 			{
-				tasks.Add(scanner.Replace(file, encoding));
-				//int diffs = scanner.Replace(file);
-				//switch (diffs)
-				//{
-				//case 0:
-				//	Console.WriteLine("  No replacements made.");
-				//	break;
-				//case 1:
-				//	Console.WriteLine("  1 replacement made.");
-				//	break;
-				//default:
-				//	Console.WriteLine("  " + diffs + " replacements made.");
-				//	break;
-				//}
+				//tasks.Add(scanner.Replace(file, encoding));
+				var task = scanner.Replace(file, encoding);
+				task.Wait();
+				int diffs = task.Result;
+				switch (diffs)
+				{
+				case 0:
+					Console.WriteLine("  No replacements made.");
+					break;
+				case 1:
+					Console.WriteLine("  1 replacement made.");
+					break;
+				default:
+					Console.WriteLine("  " + diffs + " replacements made.");
+					break;
+				}
 			}
 			Console.WriteLine("");
 		}
