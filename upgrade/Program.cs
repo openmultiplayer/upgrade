@@ -79,7 +79,7 @@ namespace Upgrade
 			else
 			{
 				//tasks.Add(scanner.Replace(file, encoding));
-				var task = scanner.Replace(file, encoding);
+				var task = scanner.Replace(file, encoding, debug != 0);
 				task.Wait();
 				int diffs = task.Result;
 				switch (diffs)

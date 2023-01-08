@@ -170,7 +170,7 @@ namespace Upgrade
 			return ret;
 		}
 
-		public async Task<int> Replace(string name, Encoding encoding)
+		public async Task<int> Replace(string name, Encoding encoding, bool debug)
 		{
 			// Actually does the replacements.
 			List<Diff> ret = new List<Diff>();
@@ -180,6 +180,10 @@ namespace Upgrade
 				if (check.Any((b) => b > 0x7F))
 				{
 					Console.WriteLine("    Skipped due to unknown encoding.");
+					if (debug)
+					{
+						Console.WriteLine("    (" + check.First((b) => b > 0x7F) + ")");
+					}
 					return 0;
 				}
 			}
