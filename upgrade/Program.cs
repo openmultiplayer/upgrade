@@ -13,6 +13,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using PCRE;
 
 namespace Upgrade
 {
@@ -97,14 +98,14 @@ namespace Upgrade
 			Console.WriteLine("");
 		}
 
-		private static void ScanDir(string root, string[] types, string[] excludes, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks, Encoding encoding)
+		private static void ScanDir(string root, string[] types, PcreRegex[] excludes, Scanner scanner, bool report, bool recurse, int debug, List<Task> tasks, Encoding encoding)
 		{
 			foreach (var type in types)
 			{
 				string pattern = "*." + type;
 				foreach (var file in Directory.EnumerateFiles(root, pattern))
 				{
-					if (!excludes.Contains(Path.GetFileNameWithoutExtension(file)))
+					if (excludes.All((e) => !e.IsMatch(file)))
 					{
 						// Loop over all the files and do the replacements.
 						DoOneFile(file, scanner, report, debug, tasks, encoding);
@@ -177,7 +178,10 @@ namespace Upgrade
 				}
 			}
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
-			string[] excludes = ArgOrDefault(args, "--exclude", "y_compilerdata_codepage").Split(',');
+			PcreRegex[] excludes = ArgOrDefault(args, "--exclude", "YSI_*\\y_*.inc,YSI_*\\y_*\\y_*.inc,fixes.inc").Split(',').Select((e) =>
+			{
+				return new PcreRegex(e.Replace("\\", "\\\\").Replace("*", "[^\\\\]*") + "$");
+			}).ToArray();
 			bool report = args.Contains("--report");
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
 			string directory = Path.GetFullPath(args.Last());
@@ -248,7 +252,7 @@ namespace Upgrade
 				Console.WriteLine("    --types file,types   - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("    --debug level        - Enable debugging output.");
 				Console.WriteLine("    --codepage name      - What codepage to run the scans in.");
-				Console.WriteLine("    --exclude file,names - Files to ignore (default `y_compilerdata_codepage`).");
+				Console.WriteLine("    --exclude file,names - Files to ignore (default `YSI_*\\y_*.inc,YSI_*\\y_*\\y_*.inc,fixes.inc`).");
 				Console.WriteLine("    --help               - Show this message and exit.");
 				Console.WriteLine("    input                - File to scan, or directory to recurse through.\n");
 			}
