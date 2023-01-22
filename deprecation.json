@@ -1,0 +1,472 @@
+{
+	/* You must escape `\`, so `\\\\\\\\` matches `\\` in a test input. */
+	"defines":
+	{
+		/* These are mostly defined in _defines.json. */
+		/* There should be no capture groups in here. */
+	},
+	"replacements":
+	[
+		{
+			"description": "Change `fmkdir` to `fcreatedir`",
+			"from": "fmkdir",
+			"to": "fcreatedir"
+		},
+		{
+			"description": "Change `dcreate` to `fcreatedir`",
+			"from": "dcreate",
+			"to": "fcreatedir"
+		},
+		{
+			"description": "Change `drename` to `frename`",
+			"from": "drename",
+			"to": "frename"
+		},
+		{
+			"description": "Change `GameTextForAllf` to `GameTextForAll`",
+			"from": "GameTextForAllf",
+			"to": "GameTextForAll"
+		},
+		{
+			"description": "Change `GetServerVarAsString` to `GetConsoleVarAsString`",
+			"from": "GetServerVarAsString",
+			"to": "GetConsoleVarAsString"
+		},
+		{
+			"description": "Change `GetServerVarAsString` to `GetConsoleVarAsString`",
+			"from": "GetServerVarAsString",
+			"to": "GetConsoleVarAsString"
+		},
+		{
+			"description": "Change `GetServerVarAsInt` to `GetConsoleVarAsInt`",
+			"from": "GetServerVarAsInt",
+			"to": "GetConsoleVarAsInt"
+		},
+		{
+			"description": "Change `GetServerVarAsFloat` to `GetConsoleVarAsFloat`",
+			"from": "GetServerVarAsFloat",
+			"to": "GetConsoleVarAsFloat"
+		},
+		{
+			"description": "Change `GetServerVarAsBool` to `GetConsoleVarAsBool`",
+			"from": "GetServerVarAsBool",
+			"to": "GetConsoleVarAsBool"
+		},
+		{
+			"description": "Change `SendPlayerMessageToAllf` to `SendPlayerMessageToAll`",
+			"from": "SendPlayerMessageToAllf",
+			"to": "SendPlayerMessageToAll"
+		},
+		{
+			"description": "Change `GetRunningTimers` to `CountRunningTimers`",
+			"from": "GetRunningTimers",
+			"to": "CountRunningTimers"
+		},
+		{
+			"description": "Change `db_open` to `DB_Open`",
+			"from": "db_open",
+			"to": "DB_Open"
+		},
+		{
+			"description": "Change `db_close` to `DB_Close`",
+			"from": "db_close",
+			"to": "DB_Close"
+		},
+		{
+			"description": "Change `db_query` to `DB_ExecuteQuery`",
+			"from": "db_query",
+			"to": "DB_ExecuteQuery"
+		},
+		{
+			"description": "Change `db_free_result` to `DB_FreeResultSet`",
+			"from": "db_free_result",
+			"to": "DB_FreeResultSet"
+		},
+		{
+			"description": "Change `db_num_rows` to `DB_GetRowCount`",
+			"from": "db_num_rows",
+			"to": "DB_GetRowCount"
+		},
+		{
+			"description": "Change `db_next_row` to `DB_SelectNextRow`",
+			"from": "db_next_row",
+			"to": "DB_SelectNextRow"
+		},
+		{
+			"description": "Change `db_num_fields` to `DB_GetFieldCount`",
+			"from": "db_num_fields",
+			"to": "DB_GetFieldCount"
+		},
+		{
+			"description": "Change `db_field_name` to `DB_GetFieldName`",
+			"from": "db_field_name",
+			"to": "DB_GetFieldName"
+		},
+		{
+			"description": "Change `db_get_field` to `DB_GetFieldString`",
+			"from": "db_get_field",
+			"to": "DB_GetFieldString"
+		},
+		{
+			"description": "Change `db_get_field_int` to `DB_GetFieldInt`",
+			"from": "db_get_field_int",
+			"to": "DB_GetFieldInt"
+		},
+		{
+			"description": "Change `db_get_field_float` to `DB_GetFieldFloat`",
+			"from": "db_get_field_float",
+			"to": "DB_GetFieldFloat"
+		},
+		{
+			"description": "Change `db_get_field_assoc` to `DB_GetFieldStringByName`",
+			"from": "db_get_field_assoc",
+			"to": "DB_GetFieldStringByName"
+		},
+		{
+			"description": "Change `db_get_field_assoc_int` to `DB_GetFieldIntByName`",
+			"from": "db_get_field_assoc_int",
+			"to": "DB_GetFieldIntByName"
+		},
+		{
+			"description": "Change `db_get_field_assoc_float` to `DB_GetFieldFloatByName`",
+			"from": "db_get_field_assoc_float",
+			"to": "DB_GetFieldFloatByName"
+		},
+		{
+			"description": "Change `db_get_mem_handle` to `DB_GetMemHandle`",
+			"from": "db_get_mem_handle",
+			"to": "DB_GetMemHandle"
+		},
+		{
+			"description": "Change `db_get_result_mem_handle` to `DB_GetLegacyDBResult`",
+			"from": "db_get_result_mem_handle",
+			"to": "DB_GetLegacyDBResult"
+		},
+		{
+			"description": "Change `db_debug_openfiles` to `DB_GetDatabaseConnectionCount`",
+			"from": "db_debug_openfiles",
+			"to": "DB_GetDatabaseConnectionCount"
+		},
+		{
+			"description": "Change `db_debug_openresults` to `DB_GetDatabaseResultSetCount`",
+			"from": "db_debug_openresults",
+			"to": "DB_GetDatabaseResultSetCount"
+		},
+		{
+			"description": "Change `DB_Query` to `DB_ExecuteQuery`",
+			"from": "DB_Query",
+			"to": "DB_ExecuteQuery"
+		},
+		{
+			"description": "Change `DB_FreeResult` to `DB_FreeResultSet`",
+			"from": "DB_FreeResult",
+			"to": "DB_FreeResultSet"
+		},
+		{
+			"description": "Change `DB_NumRows` to `DB_GetRowCount`",
+			"from": "DB_NumRows",
+			"to": "DB_GetRowCount"
+		},
+		{
+			"description": "Change `DB_NextRow` to `DB_SelectNextRow`",
+			"from": "DB_NextRow",
+			"to": "DB_SelectNextRow"
+		},
+		{
+			"description": "Change `DB_NumFields` to `DB_GetFieldCount`",
+			"from": "DB_NumFields",
+			"to": "DB_GetFieldCount"
+		},
+		{
+			"description": "Change `DB_FieldName` to `DB_GetFieldName`",
+			"from": "DB_FieldName",
+			"to": "DB_GetFieldName"
+		},
+		{
+			"description": "Change `DB_GetField` to `DB_GetFieldString`",
+			"from": "DB_GetField",
+			"to": "DB_GetFieldString"
+		},
+		{
+			"description": "Change `DB_GetFieldAssoc` to `DB_GetFieldStringByName`",
+			"from": "DB_GetFieldAssoc",
+			"to": "DB_GetFieldStringByName"
+		},
+		{
+			"description": "Change `DB_GetFieldAssocInt` to `DB_GetFieldIntByName`",
+			"from": "DB_GetFieldAssocInt",
+			"to": "DB_GetFieldIntByName"
+		},
+		{
+			"description": "Change `DB_GetFieldAssocFloat` to `DB_GetFieldFloatByName`",
+			"from": "DB_GetFieldAssocFloat",
+			"to": "DB_GetFieldFloatByName"
+		},
+		{
+			"description": "Change `DB_GetResultMemHandle` to `DB_GetLegacyDBResult`",
+			"from": "DB_GetResultMemHandle",
+			"to": "DB_GetLegacyDBResult"
+		},
+		{
+			"description": "Change `DB_DebugOpenFiles` to `DB_GetDatabaseConnectionCount`",
+			"from": "DB_DebugOpenFiles",
+			"to": "DB_GetDatabaseConnectionCount"
+		},
+		{
+			"description": "Change `DB_DebugOpenResults` to `DB_GetDatabaseResultSetCount`",
+			"from": "DB_DebugOpenResults",
+			"to": "DB_GetDatabaseResultSetCount"
+		},
+		{
+			"description": "Change `GetPlayerDialog` to `GetPlayerDialogID`",
+			"from": "GetPlayerDialog",
+			"to": "GetPlayerDialogID"
+		},
+		{
+			"description": "Change `GangZoneGetColorForPlayer` to `GangZoneGetColourForPlayer`",
+			"from": "GangZoneGetColorForPlayer",
+			"to": "GangZoneGetColourForPlayer"
+		},
+		{
+			"description": "Change `GangZoneGetFlashColorForPlayer` to `GangZoneGetFlashColourForPlayer`",
+			"from": "GangZoneGetFlashColorForPlayer",
+			"to": "GangZoneGetFlashColourForPlayer"
+		},
+		{
+			"description": "Change `PlayerGangZoneGetColor` to `PlayerGangZoneGetColour`",
+			"from": "PlayerGangZoneGetColor",
+			"to": "PlayerGangZoneGetColour"
+		},
+		{
+			"description": "Change `PlayerGangZoneGetFlashColor` to `PlayerGangZoneGetFlashColour`",
+			"from": "PlayerGangZoneGetFlashColor",
+			"to": "PlayerGangZoneGetFlashColour"
+		},
+		{
+			"description": "Change `SendRconCommandf` to `SendRconCommand`",
+			"from": "SendRconCommandf",
+			"to": "SendRconCommand"
+		},
+		{
+			"description": "Change `gpci` to `GPCI`",
+			"from": "gpci",
+			"to": "GPCI"
+		},
+		{
+			"description": "Change `SelectObject` to `BeginObjectSelecting`",
+			"from": "SelectObject",
+			"to": "BeginObjectSelecting"
+		},
+		{
+			"description": "Change `EditObject` to `BeginObjectEditing`",
+			"from": "EditObject",
+			"to": "BeginObjectEditing"
+		},
+		{
+			"description": "Change `EditPlayerObject` to `BeginPlayerObjectEditing`",
+			"from": "EditPlayerObject",
+			"to": "BeginPlayerObjectEditing"
+		},
+		{
+			"description": "Change `CancelEdit` to `EndObjectEditing`",
+			"from": "CancelEdit",
+			"to": "EndObjectEditing"
+		},
+		{
+			"description": "Change `GetObjectTarget` to `GetObjectMovingTargetPos`",
+			"from": "GetObjectTarget",
+			"to": "GetObjectMovingTargetPos"
+		},
+		{
+			"description": "Change `SetObjectsDefaultCameraCol` to `SetObjectsDefaultCameraCollision`",
+			"from": "SetObjectsDefaultCameraCol",
+			"to": "SetObjectsDefaultCameraCollision"
+		},
+		{
+			"description": "Change `SetObjectNoCameraCol` to `SetObjectNoCameraCollision`",
+			"from": "SetObjectNoCameraCol",
+			"to": "SetObjectNoCameraCollision"
+		},
+		{
+			"description": "Change `SetPlayerObjectNoCameraCol` to `SetPlayerObjectNoCameraCollision`",
+			"from": "SetPlayerObjectNoCameraCol",
+			"to": "SetPlayerObjectNoCameraCollision"
+		},
+		{
+			"description": "Change `GetPlayerCameraTargetPlayerObj` to `GetPlayerCameraTargetPlayerObject`",
+			"from": "GetPlayerCameraTargetPlayerObj",
+			"to": "GetPlayerCameraTargetPlayerObject"
+		},
+		{
+			"description": "Change `SendClientMessagef` to `SendClientMessage`",
+			"from": "SendClientMessagef",
+			"to": "SendClientMessage"
+		},
+		{
+			"description": "Change `SendClientMessageToAllf` to `SendClientMessageToAll`",
+			"from": "SendClientMessageToAllf",
+			"to": "SendClientMessageToAll"
+		},
+		{
+			"description": "Change `GameTextForPlayerf` to `GameTextForPlayer`",
+			"from": "GameTextForPlayerf",
+			"to": "GameTextForPlayer"
+		},
+		{
+			"description": "Change `SendPlayerMessageToPlayerf` to `SendPlayerMessageToPlayer`",
+			"from": "SendPlayerMessageToPlayerf",
+			"to": "SendPlayerMessageToPlayer"
+		},
+		{
+			"description": "Change `TextDrawColor` to `TextDrawColour`",
+			"from": "TextDrawColor",
+			"to": "TextDrawColour"
+		},
+		{
+			"description": "Change `TextDrawBoxColor` to `TextDrawBoxColour`",
+			"from": "TextDrawBoxColor",
+			"to": "TextDrawBoxColour"
+		},
+		{
+			"description": "Change `TextDrawBackgroundColor` to `TextDrawBackgroundColour`",
+			"from": "TextDrawBackgroundColor",
+			"to": "TextDrawBackgroundColour"
+		},
+		{
+			"description": "Change `TextDrawSetPreviewVehCol` to `TextDrawSetPreviewVehicleColours`",
+			"from": "TextDrawSetPreviewVehCol",
+			"to": "TextDrawSetPreviewVehicleColours"
+		},
+		{
+			"description": "Change `PlayerTextDrawColor` to `PlayerTextDrawColour`",
+			"from": "PlayerTextDrawColor",
+			"to": "PlayerTextDrawColour"
+		},
+		{
+			"description": "Change `PlayerTextDrawBoxColor` to `PlayerTextDrawBoxColour`",
+			"from": "PlayerTextDrawBoxColor",
+			"to": "PlayerTextDrawBoxColour"
+		},
+		{
+			"description": "Change `PlayerTextDrawBackgroundColor` to `PlayerTextDrawBackgroundColour`",
+			"from": "PlayerTextDrawBackgroundColor",
+			"to": "PlayerTextDrawBackgroundColour"
+		},
+		{
+			"description": "Change `PlayerTextDrawSetPreviewVehCol` to `PlayerTextDrawSetPreviewVehicleColours`",
+			"from": "PlayerTextDrawSetPreviewVehCol",
+			"to": "PlayerTextDrawSetPreviewVehicleColours"
+		},
+		{
+			"description": "Change `TextDrawGetColor` to `TextDrawGetColour`",
+			"from": "TextDrawGetColor",
+			"to": "TextDrawGetColour"
+		},
+		{
+			"description": "Change `TextDrawGetBoxColor` to `TextDrawGetBoxColour`",
+			"from": "TextDrawGetBoxColor",
+			"to": "TextDrawGetBoxColour"
+		},
+		{
+			"description": "Change `TextDrawGetBackgroundColor` to `TextDrawGetBackgroundColour`",
+			"from": "TextDrawGetBackgroundColor",
+			"to": "TextDrawGetBackgroundColour"
+		},
+		{
+			"description": "Change `TextDrawGetPreviewVehCol` to `TextDrawGetPreviewVehicleColours`",
+			"from": "TextDrawGetPreviewVehCol",
+			"to": "TextDrawGetPreviewVehicleColours"
+		},
+		{
+			"description": "Change `PlayerTextDrawGetColor` to `PlayerTextDrawGetColour`",
+			"from": "PlayerTextDrawGetColor",
+			"to": "PlayerTextDrawGetColour"
+		},
+		{
+			"description": "Change `PlayerTextDrawGetBoxColor` to `PlayerTextDrawGetBoxColour`",
+			"from": "PlayerTextDrawGetBoxColor",
+			"to": "PlayerTextDrawGetBoxColour"
+		},
+		{
+			"description": "Change `PlayerTextDrawGetBackgroundCol` to `PlayerTextDrawGetBackgroundColour`",
+			"from": "PlayerTextDrawGetBackgroundCol",
+			"to": "PlayerTextDrawGetBackgroundColour"
+		},
+		{
+			"description": "Change `PlayerTextDrawGetPreviewVehCol` to `PlayerTextDrawGetPreviewVehicleColours`",
+			"from": "PlayerTextDrawGetPreviewVehCol",
+			"to": "PlayerTextDrawGetPreviewVehicleColours"
+		},
+		{
+			"description": "Change `Get3DTextLabelColor` to `Get3DTextLabelColour`",
+			"from": "Get3DTextLabelColor",
+			"to": "Get3DTextLabelColour"
+		},
+		{
+			"description": "Change `GetPlayer3DTextLabelColor` to `GetPlayer3DTextLabelColour`",
+			"from": "GetPlayer3DTextLabelColor",
+			"to": "GetPlayer3DTextLabelColour"
+		},
+		{
+			"description": "Change `GetPlayer3DTextLabelDrawDist` to `GetPlayer3DTextLabelDrawDistance`",
+			"from": "GetPlayer3DTextLabelDrawDist",
+			"to": "GetPlayer3DTextLabelDrawDistance"
+		},
+		{
+			"description": "Change `SetPlayer3DTextLabelDrawDist` to `SetPlayer3DTextLabelDrawDistance`",
+			"from": "SetPlayer3DTextLabelDrawDist",
+			"to": "SetPlayer3DTextLabelDrawDistance"
+		},
+		{
+			"description": "Change `GetPlayer3DTextLabelVirtualW` to `GetPlayer3DTextLabelVirtualWorld`",
+			"from": "GetPlayer3DTextLabelVirtualW",
+			"to": "GetPlayer3DTextLabelVirtualWorld"
+		},
+		{
+			"description": "Change `GetPlayer3DTextLabelAttached` to `GetPlayer3DTextLabelAttachedData`",
+			"from": "GetPlayer3DTextLabelAttached",
+			"to": "GetPlayer3DTextLabelAttachedData"
+		},
+		{
+			"description": "Change `GetVehicleTower` to `GetVehicleCab`",
+			"from": "GetVehicleTower",
+			"to": "GetVehicleCab"
+		},
+		{
+			"description": "Change `ChangeVehicleColor` to `ChangeVehicleColours`",
+			"from": "ChangeVehicleColor",
+			"to": "ChangeVehicleColours"
+		},
+		{
+			"description": "Change `GetVehicleColor` to `GetVehicleColours`",
+			"from": "GetVehicleColor",
+			"to": "GetVehicleColours"
+		},
+		{
+			"description": "Change `GetRandomCarColPair` to `GetRandomVehicleColourPair`",
+			"from": "GetRandomCarColPair",
+			"to": "GetRandomVehicleColourPair"
+		},
+		{
+			"description": "Change `CarColIndexToColour` to `VehicleColourIndexToColour`",
+			"from": "CarColIndexToColour",
+			"to": "VehicleColourIndexToColour"
+		},
+		{
+			"description": "Change `GetPlayerPoolSize` to `MAX_PLAYERS`",
+			"from": "((?&prefix))GetPlayerPoolSize\\s*+\\(\\s*+\\)",
+			"to": "(MAX_PLAYERS - 1)"
+		},
+		{
+			"description": "Change `GetVehiclePoolSize` to `MAX_VEHICLES`",
+			"from": "((?&prefix))GetVehiclePoolSize\\s*+\\(\\s*+\\)",
+			"to": "(MAX_VEHICLES - 1)"
+		},
+		{
+			"description": "Change `GetActorPoolSize` to `MAX_ACTORS`",
+			"from": "((?&prefix))GetActorPoolSize\\s*+\\(\\s*+\\)",
+			"to": "(MAX_ACTORS - 1)"
+		}
+	]
+}
+
