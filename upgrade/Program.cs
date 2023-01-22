@@ -178,7 +178,7 @@ namespace Upgrade
 				}
 			}
 			string[] types = ArgOrDefault(args, "--types", "pwn,p,pawn,inc,own").Split(',');
-			PcreRegex[] excludes = ArgOrDefault(args, "--exclude", "YSI_*\\y_*.inc,YSI_*\\y_*\\y_*.inc,fixes.inc,breaks.inc").Split(',').Select((e) =>
+			PcreRegex[] excludes = ArgOrDefault(args, "--exclude", "YSI_*\\y_*.inc,YSI_*\\y_*\\y_*.inc,fixes.inc,breaks.inc,omp_*.inc").Split(',').Select((e) =>
 			{
 				return new PcreRegex(e.Replace("\\", "\\\\").Replace("*", "[^\\\\]*") + "$");
 			}).ToArray();
@@ -252,7 +252,7 @@ namespace Upgrade
 				Console.WriteLine("    --types file,types   - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("    --debug level        - Enable debugging output.");
 				Console.WriteLine("    --codepage name      - What codepage to run the scans in.");
-				Console.WriteLine("    --exclude file,names - Files to ignore (default `YSI_*\\y_*.inc,YSI_*\\y_*\\y_*.inc,fixes.inc,breaks.inc`).");
+				Console.WriteLine("    --exclude file,names - Files to ignore (default `YSI_*\\y_*.inc,YSI_*\\y_*\\y_*.inc,fixes.inc,breaks.inc,omp_*.inc`).");
 				Console.WriteLine("    --help               - Show this message and exit.");
 				Console.WriteLine("    input                - File to scan, or directory to recurse through.\n");
 			}
