@@ -412,7 +412,7 @@
 		{
 			"description": "Add enums to `TextDrawFont`",
 			"from": "((?&prefix))TextDrawFont\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|((?&expression)))\\s*+([,)])",
-			"to": "$1TextDrawFont($2 ${3:+TEXT_DRAW_FONT_0:${4:+TEXT_DRAW_FONT_1:${5:+TEXT_DRAW_FONT_2:${6:+TEXT_DRAW_FONT_3:${7:+TEXT_DRAW_FONT_SPRITE_DRAW:${8:+TEXT_DRAW_FONT_MODEL_PREVIEW:$9}}}}}}$10"
+			"to": "$1TextDrawFont($2 ${3:+TEXT_DRAW_FONT_BANK:${4:+TEXT_DRAW_FONT_STANDARD:${5:+TEXT_DRAW_FONT_SPACEAGE:${6:+TEXT_DRAW_FONT_HEADING:${7:+TEXT_DRAW_FONT_SPRITE:${8:+TEXT_DRAW_FONT_PREVIEW:$9}}}}}}$10"
 		},
 		{
 			"description": "Add tags to `PlayerTextDrawFont`",
@@ -422,7 +422,7 @@
 		{
 			"description": "Add enums to `PlayerTextDrawFont`",
 			"from": "((?&prefix))PlayerTextDrawFont\\s*+\\(((?:(?&expression),){2})\\s*+(?:(0)|(1)|(2)|(3)|(4)|(5)|((?&expression)))\\s*+([,)])",
-			"to": "$1PlayerTextDrawFont($2 ${3:+TEXT_DRAW_FONT_0:${4:+TEXT_DRAW_FONT_1:${5:+TEXT_DRAW_FONT_2:${6:+TEXT_DRAW_FONT_3:${7:+TEXT_DRAW_FONT_SPRITE_DRAW:${8:+TEXT_DRAW_FONT_MODEL_PREVIEW:$9}}}}}}$10"
+			"to": "$1PlayerTextDrawFont($2 ${3:+TEXT_DRAW_FONT_BANK:${4:+TEXT_DRAW_FONT_STANDARD:${5:+TEXT_DRAW_FONT_SPACEAGE:${6:+TEXT_DRAW_FONT_HEADING:${7:+TEXT_DRAW_FONT_SPRITE:${8:+TEXT_DRAW_FONT_PREVIEW:$9}}}}}}$10"
 		},
 		{
 			"description": "Add tags to `TextDrawAlignment`",
