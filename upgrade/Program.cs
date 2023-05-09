@@ -84,14 +84,19 @@ namespace Upgrade
 				int diffs = task.Result;
 				switch (diffs)
 				{
-				case 0:
-					Console.WriteLine("  No replacements made.");
+				case -2:
+                    break;
+				case -1:
+                    Console.WriteLine("    Done (replacements not reported).");
+                    break;
+                case 0:
+					Console.WriteLine("    No replacements made.");
 					break;
 				case 1:
-					Console.WriteLine("  1 replacement made.");
+					Console.WriteLine("    1 replacement made.");
 					break;
 				default:
-					Console.WriteLine("  " + diffs + " replacements made.");
+					Console.WriteLine("    " + diffs + " replacements made.");
 					break;
 				}
 			}

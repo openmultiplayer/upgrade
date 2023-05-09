@@ -184,7 +184,7 @@ namespace Upgrade
 					{
 						Console.WriteLine("    (" + check.First((b) => b > 0x7F) + ")");
 					}
-					return 0;
+					return -2;
 				}
 			}
 			string contents = await File.ReadAllTextAsync(name, encoding);
@@ -198,7 +198,7 @@ namespace Upgrade
 			}
 			await File.WriteAllTextAsync(name, contents, encoding);
 			// It turns out that counting the replacements is hard when we want to be fast.
-			return 0;
+			return -1;
 		}
 	}
 }
