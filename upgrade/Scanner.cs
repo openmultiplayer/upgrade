@@ -170,7 +170,7 @@ namespace Upgrade
 			return ret;
 		}
 
-		public async Task<int> Replace(string name, Encoding encoding, bool debug)
+		public async Task<int> Replace(string name, Encoding encoding, bool debug, FileStream os)
 		{
 			// Actually does the replacements.
 			List<Diff> ret = new List<Diff>();
@@ -196,7 +196,14 @@ namespace Upgrade
 				var regex = new PcreRegex(RegexDefine + rep.From, PcreOptions.Compiled | PcreOptions.Extended | PcreOptions.MultiLine);
 				contents = regex.Replace(contents, func);
 			}
-			await File.WriteAllTextAsync(name, contents, encoding);
+			if (os is null)
+			{
+				await File.WriteAllTextAsync(name, contents, encoding);
+			}
+			else
+			{
+				await os.WriteAsync(encoding.GetBytes(contents));
+			}
 			// It turns out that counting the replacements is hard when we want to be fast.
 			return -1;
 		}

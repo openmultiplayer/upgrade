@@ -58,7 +58,7 @@ namespace Upgrade
 			return args[idx];
 		}
 
-		private static void DoOneFile(string file, Scanner scanner, bool report, int debug, List<Task> tasks, Encoding encoding)
+		private static void DoOneFile(string file, Scanner scanner, bool report, int debug, List<Task> tasks, Encoding encoding, FileStream os)
 		{
 			Console.WriteLine("Scanning file: " + file);
 			Console.WriteLine("");
@@ -79,17 +79,17 @@ namespace Upgrade
 			else
 			{
 				//tasks.Add(scanner.Replace(file, encoding));
-				var task = scanner.Replace(file, encoding, debug != 0);
+				var task = scanner.Replace(file, encoding, debug != 0, os);
 				task.Wait();
 				int diffs = task.Result;
 				switch (diffs)
 				{
 				case -2:
-                    break;
+					break;
 				case -1:
-                    Console.WriteLine("    Done (replacements not reported).");
-                    break;
-                case 0:
+					Console.WriteLine("    Done (replacements not reported).");
+					break;
+				case 0:
 					Console.WriteLine("    No replacements made.");
 					break;
 				case 1:
@@ -113,7 +113,7 @@ namespace Upgrade
 					if (excludes.All((e) => !e.IsMatch(file)))
 					{
 						// Loop over all the files and do the replacements.
-						DoOneFile(file, scanner, report, debug, tasks, encoding);
+						DoOneFile(file, scanner, report, debug, tasks, encoding, null);
 					}
 				}
 			}
@@ -206,6 +206,11 @@ namespace Upgrade
 				Console.WriteLine("Input file/dir \"" + directory + "\" does not exist.");
 				return;
 			}
+			string output = ArgOrDefault(args, "--output", "");
+			if (output != "")
+			{
+				output = Path.GetFullPath(output);
+			}
 			Scanner defines;
 			Scanner scanner;
 			// Get generic shared defines.
@@ -217,7 +222,7 @@ namespace Upgrade
 			// Get defines specific to this file.
 			if (!file.EndsWith(".json"))
 			{
-				file = file + ".json";
+				file += ".json";
 			}
 			if (!File.Exists(file))
 			{
@@ -236,17 +241,39 @@ namespace Upgrade
 			}
 			scanner.UpdateDefines();
 			List<Task> tasks = new List<Task>();
+			FileStream os = null;
 			if (File.Exists(directory))
 			{
+				if (output != "")
+				{
+					try
+					{
+						os = File.Create(output);
+					}
+					catch (Exception)
+					{
+						Console.WriteLine("Cannot open output file for writing.");
+						return;
+					}
+				}
 				// Do one.
-				DoOneFile(directory, scanner, report, debug, tasks, encoding);
+				DoOneFile(directory, scanner, report, debug, tasks, encoding, os);
 			}
 			else
 			{
+				if (output != "")
+				{
+					Console.WriteLine("Cannot give an output file for multiple input files.");
+					return;
+				}
 				// Descend.
 				ScanDir(directory, types, excludes, scanner, report, true, debug, tasks, encoding);
 			}
 			Task.WaitAll(tasks.ToArray());
+			if (!(os is null))
+			{
+				os.Close();
+			}
 		}
 
 		static void Main(string[] args)
@@ -265,6 +292,7 @@ namespace Upgrade
 				Console.WriteLine("    Options:\n");
 				Console.WriteLine("    --report             - Show found changes, but don't make them.");
 				Console.WriteLine("    --replace            - Actually apply the changes.");
+				Console.WriteLine("    --output file        - Specify an alternate location to write a single files's changes to.");
 				Console.WriteLine("    --scans file         - Load defines and replacements from `file` (default `upgrade`).");
 				Console.WriteLine("    --types file,types   - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("    --debug level        - Enable debugging output.");
