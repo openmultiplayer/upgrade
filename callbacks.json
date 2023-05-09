@@ -34,8 +34,33 @@
 		},
 		{
 			"description": "Adding `BULLET_HIT_TYPE` tag to `OnPlayerWeaponShot`",
-			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerWeaponShot\\s*\\(\\s*playerid\\s*,\\s*weaponid\\s*,\\s*hittype\\s*,\\s*hitid\\s*,\\s*Float\\s*:\\s*fX\\s*,\\s*Float\\s*:\\s*fY\\s*,\\s*Float\\s*:\\s*fZ\\s*\\)",
-			"to": "$1#if !defined BULLET_HIT_TYPE\n$1\t#define BULLET_HIT_TYPE: _:\n$1#endif\n$1$2 $3OnPlayerWeaponShot(playerid, weaponid, BULLET_HIT_TYPE:hittype, hitid, Float:fX, Float:fY, Float:fZ)"
+			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerWeaponShot\\s*\\(\\s*playerid\\s*,\\s*((?&tag)\\s*+)?weaponid\\s*,\\s*hittype\\s*,\\s*hitid\\s*,\\s*Float\\s*:\\s*fX\\s*,\\s*Float\\s*:\\s*fY\\s*,\\s*Float\\s*:\\s*fZ\\s*\\)",
+			"to": "$1#if !defined BULLET_HIT_TYPE\n$1\t#define BULLET_HIT_TYPE: _:\n$1#endif\n$1$2 $3OnPlayerWeaponShot(playerid, $4weaponid, BULLET_HIT_TYPE:hittype, hitid, Float:fX, Float:fY, Float:fZ)"
+		},
+		{
+			"description": "Adding `WEAPON` tag to `OnPlayerDeath`",
+			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerDeath\\s*\\(\\s*playerid\\s*,\\s*killerid\\s*,\\s*reason\\s*\\)",
+			"to": "$1#if !defined WEAPON\n$1\t#define WEAPON: _:\n$1#endif\n$1$2 $3OnPlayerDeath(playerid, killerid, WEAPON:reason)"
+		},
+		{
+			"description": "Adding `WEAPON` tag to `OnPlayerWeaponShot`",
+			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerWeaponShot\\s*\\(\\s*playerid\\s*,\\s*weaponid\\s*,\\s*((?&tag)\\s*+)?hittype\\s*,\\s*hitid\\s*,\\s*Float\\s*:\\s*fX\\s*,\\s*Float\\s*:\\s*fY\\s*,\\s*Float\\s*:\\s*fZ\\s*\\)",
+			"to": "$1#if !defined WEAPON\n$1\t#define WEAPON: _:\n$1#endif\n$1$2 $3OnPlayerWeaponShot(playerid, WEAPON:weaponid, $4hittype, hitid, Float:fX, Float:fY, Float:fZ)"
+		},
+		{
+			"description": "Adding `WEAPON` tag to `OnPlayerTakeDamage`",
+			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerTakeDamage\\s*\\(\\s*playerid\\s*,\\s*issuerid\\s*,\\s*Float\\s*:\\s*amount\\s*,\\s*weaponid\\s*,\\s*bodypart\\s*\\)",
+			"to": "$1#if !defined WEAPON\n$1\t#define WEAPON: _:\n$1#endif\n$1$2 $3OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodypart)"
+		},
+		{
+			"description": "Adding `WEAPON` tag to `OnPlayerGiveDamage`",
+			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerGiveDamage\\s*\\(\\s*playerid\\s*,\\s*damagedid\\s*,\\s*Float\\s*:\\s*amount\\s*,\\s*weaponid\\s*,\\s*bodypart\\s*\\)",
+			"to": "$1#if !defined WEAPON\n$1\t#define WEAPON: _:\n$1#endif\n$1$2 $3OnPlayerGiveDamage(playerid, damagedid, Float:amount, WEAPON:weaponid, bodypart)"
+		},
+		{
+			"description": "Adding `WEAPON` tag to `OnPlayerGiveDamageActor`",
+			"from": "((?&start))((?&publics))\\s+((?&symbol))?OnPlayerGiveDamageActor\\s*\\(\\s*playerid\\s*,\\s*damaged_actorid\\s*,\\s*Float\\s*:\\s*amount\\s*,\\s*weaponid\\s*,\\s*bodypart\\s*\\)",
+			"to": "$1#if !defined WEAPON\n$1\t#define WEAPON: _:\n$1#endif\n$1$2 $3OnPlayerGiveDamage(playerid, damaged_actorid, Float:amount, WEAPON:weaponid, bodypart)"
 		},
 		{
 			"description": "Adding `KEY` tag to `OnPlayerKeyStateChange`",
