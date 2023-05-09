@@ -167,7 +167,7 @@ namespace Upgrade
 				{
 					encoding = Encoding.GetEncoding(codepage);
 				}
-				catch (ArgumentException e)
+				catch (ArgumentException)
 				{
 					Console.WriteLine("");
 					Console.WriteLine("Unknown codepage \"" + codepage + "\".");
@@ -188,6 +188,17 @@ namespace Upgrade
 				return new PcreRegex(e.Replace("\\", "\\\\").Replace("*", "[^\\\\]*") + "$");
 			}).ToArray();
 			bool report = args.Contains("--report");
+			bool replace = args.Contains("--replace");
+			if (!report && !replace)
+			{
+				Console.WriteLine("Replacements are no longer the default action.  Please specify either `--report` or `--replace`.");
+				return;
+			}
+			if (report && replace)
+			{
+				Console.WriteLine("Mutually exclusive options given.  Please specify either `--report` or `--replace`.");
+				return;
+			}
 			int debug = int.Parse(ArgOrDefault(args, "--debug", "0"));
 			string directory = Path.GetFullPath(args.Last());
 			if (!File.Exists(directory) && !Directory.Exists(directory))
@@ -252,7 +263,8 @@ namespace Upgrade
 				Console.WriteLine("    output        - Filename to write to (default console).\n");
 				Console.WriteLine("upgrade [options] input\n");
 				Console.WriteLine("    Options:\n");
-				Console.WriteLine("    --report             - Show changes to make, but don't make them.");
+				Console.WriteLine("    --report             - Show found changes, but don't make them.");
+				Console.WriteLine("    --replace            - Actually apply the changes.");
 				Console.WriteLine("    --scans file         - Load defines and replacements from `file` (default `upgrade`).");
 				Console.WriteLine("    --types file,types   - File types to replace in.  Default `pwn,p,pawn,inc,own`.");
 				Console.WriteLine("    --debug level        - Enable debugging output.");
