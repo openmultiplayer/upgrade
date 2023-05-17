@@ -663,6 +663,66 @@
 			"description": "Add enums to `TogglePlayerClock`",
 			"from": "((?&prefix))TogglePlayerClock\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
 			"to": "$1TogglePlayerClock($2 ${3:+false:${4:+true:$5}}$6"
+		},
+		{
+			"description": "Add tags to `TextDrawUseBox`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))TextDrawUseBox\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3TextDrawUseBox($4 bool:$5$6"
+		},
+		{
+			"description": "Add enums to `TextDrawUseBox`",
+			"from": "((?&prefix))TextDrawUseBox\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1TextDrawUseBox($2 ${3:+false:${4:+true:$5}}$6"
+		},
+		{
+			"description": "Add tags to `PlayerTextDrawUseBox`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))PlayerTextDrawUseBox\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){2})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3PlayerTextDrawUseBox($4 bool:$5$6"
+		},
+		{
+			"description": "Add enums to `PlayerTextDrawUseBox`",
+			"from": "((?&prefix))PlayerTextDrawUseBox\\s*+\\(((?:(?&expression),){2})\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1PlayerTextDrawUseBox($2 ${3:+false:${4:+true:$5}}$6"
+		},
+		{
+			"description": "Add tags to `TextDrawSetProportional`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))TextDrawSetProportional\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3TextDrawSetProportional($4 bool:$5$6"
+		},
+		{
+			"description": "Add enums to `TextDrawSetProportional`",
+			"from": "((?&prefix))TextDrawSetProportional\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1TextDrawSetProportional($2 ${3:+false:${4:+true:$5}}$6"
+		},
+		{
+			"description": "Add tags to `PlayerTextDrawSetProportional`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))PlayerTextDrawSetProportional\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){2})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3PlayerTextDrawSetProportional($4 bool:$5$6"
+		},
+		{
+			"description": "Add enums to `PlayerTextDrawSetProportional`",
+			"from": "((?&prefix))PlayerTextDrawSetProportional\\s*+\\(((?:(?&expression),){2})\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1PlayerTextDrawSetProportional($2 ${3:+false:${4:+true:$5}}$6"
+		},
+		{
+			"description": "Add tags to `TextDrawSetSelectable`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))TextDrawSetSelectable\\s*+\\((\\s*+(?&parameter)\\s*+,)\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3TextDrawSetSelectable($4 bool:$5$6"
+		},
+		{
+			"description": "Add enums to `TextDrawSetSelectable`",
+			"from": "((?&prefix))TextDrawSetSelectable\\s*+\\(((?&expression),)\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1TextDrawSetSelectable($2 ${3:+false:${4:+true:$5}}$6"
+		},
+		{
+			"description": "Add tags to `PlayerTextDrawSetSelectable`",
+			"from": "((?&start))((?&stocks))\\s+(?:bool\\s*+:\\s*+)?((?&prefix))PlayerTextDrawSetSelectable\\s*+\\(((?:\\s*+(?&parameter)\\s*+,){2})\\s*+(?:const\\s++)?(?:&\\s*+)?(?:(?&tag)\\s*+)?((?&symbol))\\s*+(?:(?&squarebrackets)\\s*+)*+(?:=(?&expression))?([,)])",
+			"to": "$1$2 bool:$3PlayerTextDrawSetSelectable($4 bool:$5$6"
+		},
+		{
+			"description": "Add enums to `PlayerTextDrawSetSelectable`",
+			"from": "((?&prefix))PlayerTextDrawSetSelectable\\s*+\\(((?:(?&expression),){2})\\s*+(?:(0)|(1)|((?&expression)))\\s*+([,)])",
+			"to": "$1PlayerTextDrawSetSelectable($2 ${3:+false:${4:+true:$5}}$6"
 		}
 	]
 }

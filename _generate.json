@@ -264,6 +264,30 @@
 		{
 			"enum": "enum bool:__bool { false, true }",
 			"code": "native TogglePlayerClock(playerid, $:toggle)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native bool:TextDrawUseBox(Text:textid, $:enableBox)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native bool:PlayerTextDrawUseBox(playerid, PlayerText:textid, $:boxEnabled)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native bool:TextDrawSetProportional(Text:textid, $:proportional)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native bool:PlayerTextDrawSetProportional(playerid, PlayerText:textid, $:proportional)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native bool:TextDrawSetSelectable(Text:textid, $:selectable)"
+		},
+		{
+			"enum": "enum bool:__bool { false, true }",
+			"code": "native bool:PlayerTextDrawSetSelectable(playerid, PlayerText:textid, $:selectable)"
 		}
 	]
 }
